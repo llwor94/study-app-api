@@ -4,6 +4,7 @@ exports.up = function(knex, Promise) {
 		table.text('message').notNullable();
 		table.int('from').unsigned().references('users.id');
 		table.int('to').unsigned().references('users.id');
+		table.timestamp('created_at').defaultTo(knex.fn.now());
 	});
 };
 

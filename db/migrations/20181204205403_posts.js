@@ -4,6 +4,7 @@ exports.up = function(knex, Promise) {
 		table.string('title').notNullable();
 		table.text('body').notNullable();
 		table.int('author').references('users.id');
+		table.timestamp('created_at').defaultTo(knex.fn.now());
 	});
 };
 
