@@ -1,42 +1,44 @@
 const express = require('express');
-const router = express.Router();
 const jwt = require('jsonwebtoken');
 const bcrypt = require('bcryptjs');
-const db = require('../../db/dbConfig');
 
+const db = require('../../db/dbConfig');
+const { invalidLogin, invalidRegister } = require('../schema');
+
+const router = express.Router();
 const SALT_ROUNDS = 8;
 
 function generateToken(payload) {
 	return jwt.sign(payload, process.env.SECRET || 'secret', {
-		expiresIn: '3h',
+		expiresIn: '1y',
 	});
 }
 
-router.post('/register', (req, res, next) => {
-	let { username, password, email } = req.body;
-	if (!username || !password || !email) return next({ code: 400 });
-	password = bcrypt.hashSync(password, SALT_ROUNDS);
-	return db('users')
-		.insert({ username, password, email })
-		.then(ids => {
-			let id = ids[0];
+router.post('/register', ({ body }, res, next) => {
+	if (invalidRegister(body)) return next({ code: 400 });
+
+	body.password = bcrypt.hashSync(body.password, SALT_ROUNDS);
+	db('users')
+		.insert(body)
+		.then(([ id ]) => {
 			let token = generateToken({ id });
-			res.json({ id, token, username });
+			return res.json({ token });
 		})
 		.catch(next);
 });
 
-router.post('/login', (req, res, next) => {
-	let { email, password } = req.body;
-	if (!email || !password) return next({ code: 404 });
-	return db('users')
-		.where({ email })
+router.post('/login', ({ body }, res, next) => {
+	if (invalidLogin(body)) return next({ code: 400 });
+
+	db('users')
+		.where({ email: body.email })
 		.first()
-		.then(user => {
-			if (user && bcrypt.compareSync(password, user.password)) {
-				const token = generateToken({ id: user.id });
-				res.json({ id: user.id, token, username: user.username });
-			} else next({ code: 400 });
+		.then(({ password, id }) => {
+			if (!id) return next({ code: 404 });
+			if (bcrypt.compareSync(password, body.password)) return next({ code: 400 });
+
+			const token = generateToken({ id });
+			return res.json({ token });
 		})
 		.catch(next);
 });

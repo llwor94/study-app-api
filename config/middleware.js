@@ -2,63 +2,43 @@ const jwt = require('jsonwebtoken');
 const secret = 'secret';
 
 module.exports = {
-	protected: function(req, res, next) {
+	protected(req, res, next) {
 		const token = req.headers.authorization;
+		if (!token) return next({ code: 403 });
 
-		if (token) {
-			jwt.verify(token, secret, (err, decodedToken) => {
-				if (err) {
-					console.log(err);
-					return res.json({
-						error: true,
-						message: 'You are not authorized',
-					});
-				} else {
-					req.user = decodedToken.user;
-					next();
-				}
-			});
-		} else {
-			return res
-				.json({
-					error: true,
-					message: 'No token provided',
-				})
-				.catch(err => res.status(500).send(err));
-		}
+		jwt.verify(token, secret, (err, decodedToken) => {
+			if (err) return next(err);
+
+			req.user = decodedToken.id;
+			next();
+		});
 	},
-	errorHandler: function(err, req, res, next) {
-		console.log(err);
-		if (err.errno === 19)
-			return res.status(405).json({
-				error: true,
-				message: 'Title is already taken',
-			});
+	errorHandler(err, req, res, next) {
+		console.log('err', err);
 		switch (err.code) {
 			case 404:
-				res.status(404).json({
+				return res.status(404).json({
 					error: true,
-					message: 'The requested file does not exist.',
+					message: 'The requested content does not exist.',
 				});
-				break;
+
 			case 400:
-				res.status(400).json({
+				return res.status(400).json({
 					error: true,
-					message: 'Please complete all the required fields',
+					message: 'There was a problem with your request.',
 				});
-				break;
-			case 403:
-				res.json({
+
+			case 401:
+				return res.status(401).json({
 					error: true,
 					message: 'You are unathorized to view the content.',
 				});
-				break;
+
 			default:
-				res.status(500).json({
+				return res.status(500).json({
 					error: true,
 					message: 'There was an error performing the required operation',
 				});
-				break;
 		}
 	},
 };

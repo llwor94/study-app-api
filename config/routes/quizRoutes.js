@@ -1,24 +1,45 @@
 const express = require('express');
 const router = express.Router();
-const { getQuizzes, getQuiz } = require('../../db/helpers/quizhelpers');
+const { protected } = require('../middleware');
+const { invalidQuiz } = require('../schema');
+const { getQuizzes, getQuiz, getTopics, createQuiz } = require('../../db/helpers/quizhelpers');
 
 router.get('/', ({ query }, res, next) => {
-	console.log(query.topic);
+	console.log('quizzes/', query.topic);
 	getQuizzes(query.topic)
-		.then(data => {
-			res.json({ error: false, data });
+		.then(quizzes => {
+			res.json(quizzes);
+		})
+		.catch(next);
+});
+
+router.get('/topics', ({ query }, res, next) => {
+	console.log('query', query.name);
+	getTopics(query.name)
+		.then(topics => {
+			res.json(topics);
 		})
 		.catch(next);
 });
 
 router.get('/:id', ({ params }, res, next) => {
-	console.log(params.id);
+	console.log('quizzes/:id', params.id);
 	getQuiz(params.id)
-		.then(data => {
-			if (!data) return next({ code: 404 });
-			res.json({ error: false, data });
+		.then(quiz => {
+			if (!quiz) return next({ code: 404 });
+			res.json(quiz);
 		})
 		.catch(next);
 });
 
+router.post('/', protected, ({ body, user }, res, next) => {
+	if (invalidQuiz(body)) return next({ code: 400 });
+	body.author = user;
+	createQuiz(body)
+		.then(quiz => {
+			if (!quiz) return next({ code: 404 });
+			res.json(quiz);
+		})
+		.catch(next);
+});
 module.exports = router;
