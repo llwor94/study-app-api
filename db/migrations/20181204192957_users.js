@@ -4,7 +4,7 @@ exports.up = function(knex, Promise) {
 		table.string('username', 128).notNullable().unique();
 		table.string('email').notNullable().unique();
 		table.string('password').notNullable();
-		table.integer('score').unsigned().defaultTo(0);
+		table.string('img_url');
 	});
 };
 

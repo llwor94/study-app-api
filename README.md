@@ -5,65 +5,73 @@
 | Field    | Data Type                     |
 | -------- | ----------------------------- |
 | id       | Unsigned Int (auto increment) |
-| username | Text (unique)                 |
-| password | Text                          |
+| email    | String (unique) (required)    |
+| username | String (unique) (required)    |
+| password | String (required)             |
+| img_url  | String                        |
 
 ## Questions
 
 | Field    | Data Type                     |
 | -------- | ----------------------------- |
 | id       | Unsigned Int (auto increment) |
-| question | String                        |
-| option1  | String                        |
-| option2  | String                        |
+| question | String (required)             |
+| option1  | String (required)             |
+| option2  | String (required)             |
 | option3  | String                        |
 | option4  | String                        |
 | answer   | Unsigned Int (1-4)            |
 | author   | Unsigned Int (ref to users)   |
+| quiz_id  | Unsigned Int (ref to quizzes) |
 
 ## Quizzes
 
 | Field              | Data Type                     |
 | ------------------ | ----------------------------- |
 | id                 | Unsigned Int (auto increment) |
-| quiz_title         | String                        |
+| title              | String (required)             |
 | author             | Unsigned Int (ref to users)   |
 | time_limit_seconds | Unsigned Int                  |
-| votes              | Int                           |
+| votes              | Int (default: 0)              |
+| topic              | Unsigned Int (ref to topics)  |
 
-## Quiz-Question
+## Topics 
+
+| Field       | Data Type                     |
+| ----------- | ----------------------------- |
+| id          | Unsigned Int (auto increment) |
+| name        | String (required)             |
+
+## User-Quizzes
 
 | Field       | Data Type                      |
 | ----------- | ------------------------------ |
 | id          | Unsigned Int (auto increment)  |
-| quiz_id     | Unsigned Int (ref to quiz)     |
-| question_id | Unsigned Int (ref to question) |
+| quiz_id     | Unsigned Int (ref to quizzes)  |
+| user_id     | Unsigned Int (ref to users)    |
+| score       | Unsigned Int (default: 0)      |
+| vote        | Int (default: 0) (-1 || 1)     |    
+| favorite    | Bool (default: false)          |           
 
 ## Posts
 
 | Field      | Data Type                     |
 | ---------- | ----------------------------- |
 | id         | Unsigned Int (auto increment) |
-| post_title | Text                          |
-| post_body  | Text                          |
+| title      | String (required)             |
+| body       | Text (required)               |
 | author     | Unsigned Int (ref to users)   |
+| created_at | Timestamp (default: Date.now) |
 
 ## Comments
 
 | Field        | Data Type                     |
 | ------------ | ----------------------------- |
 | id           | Unsigned Int (auto increment) |
-| comment_text | Text                          |
+| text         | Text (required)               |
 | author       | Unsigned Int (ref to users)   |
 | post_id      | Unsigned Int (ref to posts)   |
-
-## User-Favorites
-
-| Field   | Data Type                      |
-| ------- | ------------------------------ |
-| id      | Unsigned Int (auto increments) |
-| quiz_id | Unsigned Int (ref to quizzes)  |
-| user_id | Unsigned Int (ref to users)    |
+| created_at   | Timestamp (default: Date.now) |
 
 **STRETCH GOALS**
 
@@ -75,14 +83,15 @@
 | user_1 | Unsigned Int (ref to users)    |
 | user_2 | Unsigned Int (ref to users)    |
 
-## Direct Messages
+## Direct-Messages
 
-| Field   | Data Type                      |
-| ------- | ------------------------------ |
-| id      | Unsigned Int (auto increments) |
-| from    | Unsinged Int (ref to users)    |
-| to      | Unsinged Int (ref to users)    |
-| message | Text                           |
+| Field      | Data Type                      |
+| ---------- | ------------------------------ |
+| id         | Unsigned Int (auto increments) |
+| from       | Unsinged Int (ref to users)    |
+| to         | Unsinged Int (ref to users)    |
+| message    | Text (required)                |
+| created_at | Timestamp (default: Date.now)  |
 
 _If you feel ambitious allow to field to have multiple recpients, need another
 table for that_

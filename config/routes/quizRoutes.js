@@ -10,4 +10,8 @@ router.get('/', (req, res, next) => {
 		.catch(next);
 });
 
+router.get('/:id', (req, res, next) => {
+	db('quizzes as qz').join('questions as q', 'q.quiz', 'qz.id');
+});
+
 module.exports = router;

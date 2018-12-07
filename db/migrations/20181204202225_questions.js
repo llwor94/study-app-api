@@ -7,8 +7,8 @@ exports.up = function(knex, Promise) {
 		table.string('option3');
 		table.string('option4');
 		table.integer('answer').unsigned();
-		table.integer('author').references('users.id');
-		table.integer('quiz').references('quizzes.id');
+		table.integer('author').unsigned().references('users.id');
+		table.integer('quiz_id').unsigned().references('quizzes.id');
 	});
 };
 

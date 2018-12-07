@@ -2,9 +2,10 @@ exports.up = function(knex, Promise) {
 	return knex.schema.createTable('quizzes', table => {
 		table.increments();
 		table.string('title').notNullable();
-		table.integer('author').references('users.id');
+		table.integer('author').unsigned().references('users.id');
 		table.integer('time_limit_seconds').unsigned();
-		table.integer('votes');
+		table.integer('votes').defaultTo(0);
+		table.integer('topic_id').unsigned().references('topics.id');
 	});
 };
 
