@@ -9,8 +9,10 @@
 
 *Argument:*
 
+
 ```
-{username: "exampleUsername",
+{
+  username: "exampleUsername",
   password: "examplePasword",
   email: "exampleEmail@email.com",
   img_url: "www.yourprofileimage.com" //This key is optional.
@@ -19,7 +21,7 @@
 
 *Response:*
 ```
-response.body === {token: JSON Web Token}
+{token: JSON Web Token}
 ```
 
 ## **LOGIN**
@@ -32,15 +34,15 @@ response.body === {token: JSON Web Token}
 *Argument:*
 
 ```
-{username: "exampleUsername",
+{
+  username: "exampleUsername",
   password: "eamplePassword"
 }
 ```
 
 *Response:*
-
 ```
-response.body === {token: JSON Web Token}
+{token: JSON Web Token}
 ```
 
 
@@ -60,10 +62,46 @@ response.body === {token: JSON Web Token}
 
 If the user is NOT logged in
 
+```
+
+[{
+  id: 12345,
+  title: "Title",
+  author: "Author"
+  votes: 123,
+  topic: "Topic"
+}, ...]
+```
+
+If the user IS logged in
 
 ```
-response.body ===
-{id: 12345,
+[{
+  id: 12345,
+  title: "Title",
+  author: "Author",
+  votes: 123,
+  topic: "Topic",
+  score: 123,
+  user_vote: -1, //Will be either -1, 0, or 1
+  favorite: false //Will always start at false
+}, ...]
+```
+
+## **GET SPECIFIC QUIZ**
+### Gets a quiz with a specified ID
+
+*Method Url:* `/api/quizzes/:id`
+
+*HTTP method:* **[GET]**
+
+*Response*
+
+If the user is NOT logged in
+
+```
+{
+  id: 12345,
   title: "Title",
   author: "Author"
   votes: 123,
@@ -74,8 +112,8 @@ response.body ===
 If the user IS logged in
 
 ```
-response.body ===
-{id: 12345,
+{
+  id: 12345,
   title: "Title",
   author: "Author",
   votes: 123,
@@ -86,7 +124,9 @@ response.body ===
 }
 ```
 
-## **GET TOPICS**
-### Gets and array of topics
+## **EDIT SPECIFIC QUIZ**
+### Edits one or more details of a specific quiz
 
-*Method Url:*
+*Method Url:* `/api/quizzes/:id`
+
+*HTTP method:* **[PATCH]**
