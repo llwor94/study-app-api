@@ -1,15 +1,17 @@
 const express = require('express');
 const router = express.Router();
-const { protected } = require('../middleware');
-const { invalidQuiz, invalidQuestion } = require('../schema');
+const questionRouter = require('./questionRoutes');
+const { protected } = require('../../middleware');
+const { invalidQuiz } = require('../../schema');
 const {
 	getQuizzes,
 	getQuiz,
 	getTopics,
 	createQuiz,
-	createQuestion,
 	updateQuiz,
-} = require('../../db/helpers/quizhelpers');
+} = require('../../../db/helpers/quizhelpers');
+
+router.use('/:id/questions', questionRouter);
 
 router.get('/', ({ query }, res, next) => {
 	console.log('quizzes/', query.topic);
@@ -39,24 +41,7 @@ router.get('/:id', ({ params }, res, next) => {
 		.catch(next);
 });
 
-router.put('/:id/questions', protected, ({ params, body, user }, res, next) => {
-	if (invalidQuestion(body)) return next({ code: 400 });
-	getQuiz(params.id)
-		.then(quiz => {
-			if (!quiz) return next({ code: 404 });
-			if (quiz.author !== user) return next({ code: 401 });
-			question = { ...body, author: user, quiz_id: params.id };
-			createQuestion(question)
-				.then(question => {
-					if (!question) return next({ code: 404 });
-					res.json(question);
-				})
-				.catch(next);
-		})
-		.catch(next);
-});
-
-router.patch('/:id/edit', protected, ({ params, body, user }, res, next) => {
+router.patch('/:id', protected, ({ params, body, user }, res, next) => {
 	getQuiz(params.id)
 		.then(quiz => {
 			if (!quiz) return next({ code: 404 });
@@ -82,4 +67,5 @@ router.post('/', protected, ({ body, user }, res, next) => {
 		})
 		.catch(next);
 });
+
 module.exports = router;
