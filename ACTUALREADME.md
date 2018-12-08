@@ -56,6 +56,10 @@
 
 *HTTP method:* **[GET]**
 
+*Request Reqiurements:*
+HEADER - 
+```{Authoriation: JSON Web Token}```
+
 *Argument (optional):*  `"Topic"`
 
 *Response:*
@@ -63,7 +67,6 @@
 If the user is NOT logged in
 
 ```
-
 [{
   id: 12345,
   title: "Title",
@@ -95,6 +98,10 @@ If the user IS logged in
 
 *HTTP method:* **[GET]**
 
+*Request Reqiurements:*
+HEADER - 
+```{Authoriation: JSON Web Token}```
+
 *Response*
 
 If the user is NOT logged in
@@ -125,8 +132,50 @@ If the user IS logged in
 ```
 
 ## **EDIT SPECIFIC QUIZ**
-### Edits one or more details of a specific quiz
+### Edits one or more details of a specific quiz created by the current user.
 
 *Method Url:* `/api/quizzes/:id`
 
 *HTTP method:* **[PATCH]**
+
+*Request Reqiurements:*
+HEADER - 
+```{Authoriation: JSON Web Token}```
+
+*Argument:*
+
+```
+{
+  title: "Edited Title",
+  topic: "Edited Topic"
+  //You may pass an object with one or both of these keys.
+}
+```
+
+*Response:*
+
+```[1268] //This integer is the ID of the edited quiz```
+
+## **ADD NEW QUIZ**
+### Adds a new
+
+*Method Url:* `/api/quizzes`
+
+*HTTP method:* **[POST]**
+
+*Request Reqiurements:*
+HEADER - 
+```{Authoriation: JSON Web Token}```
+
+*Argment:*
+
+```
+{
+  title: "Some New Title",
+  topic: "Some New Topic"
+}
+```
+*Response:*
+
+```[1269] //This Integer is the ID of the newly added quiz```
+
