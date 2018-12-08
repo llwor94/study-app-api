@@ -3,7 +3,7 @@ const router = express.Router();
 const db = require('../../db/dbConfig');
 
 router.get('/', (req, res, next) => {
-	db('users').then(data => res.send({ error: false, data }));
+	db('users').then(users => res.json(users)).catch(next);
 });
 
 module.exports = router;

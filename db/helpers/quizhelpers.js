@@ -4,8 +4,11 @@ module.exports = {
 	getQuizzes(topic) {
 		if (topic) {
 			let topic = db('topics').where('id', topic).orWhere('name', topic).select('id');
-			return db('quizzes').where('topic', topic);
-		} else return db('quizzes');
+			return db('quizzes').where('topic_id', topic);
+		} else
+			return db('quizzes as q')
+				.join('topics as t', 'q.topic_id', 't.id')
+				.select('q.id', 'q.title', 'q.author', 'q.votes', 't.name as topic');
 	},
 	async getQuiz(id) {
 		let questions = await db('questions').where('quiz_id', id);
@@ -29,9 +32,8 @@ module.exports = {
 		if (!id) {
 			[ id ] = await db('topics').returning('id').insert({ name: topic });
 		}
-		topic_id = id;
 		return db('quizzes')
 			.returning('id')
-			.insert({ title, author, time_limit_seconds, topic_id });
+			.insert({ title, author, time_limit_seconds, topic_id: id });
 	},
 };
