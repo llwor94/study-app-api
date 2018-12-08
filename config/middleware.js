@@ -13,6 +13,17 @@ module.exports = {
 			next();
 		});
 	},
+	optionalProtected(req, res, next) {
+		const token = req.headers.authorization;
+		if (!token) return next();
+
+		jwt.verify(token, secret, (err, decodedToken) => {
+			if (err) return next(err);
+
+			req.user = decodedToken.id;
+			next();
+		});
+	},
 	errorHandler(err, req, res, next) {
 		console.log('err', err);
 		switch (err.code) {

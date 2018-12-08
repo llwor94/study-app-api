@@ -16,6 +16,16 @@ const quizSchema = {
 	title: Joi.string().alphanum().required(),
 	time_limit_seconds: Joi.number().integer(),
 	topic: Joi.string().alphanum().max(20).required(),
+	votes: Joi.number().integer(),
+};
+
+const questionSchema = {
+	question: Joi.string().required(),
+	option1: Joi.string().required(),
+	option2: Joi.string().required(),
+	option3: Joi.string(),
+	option4: Joi.string(),
+	answer: Joi.number().integer().required().min(1).max(4),
 };
 
 module.exports = {
@@ -29,6 +39,11 @@ module.exports = {
 	},
 	invalidQuiz(quiz) {
 		const { error } = Joi.validate(quiz, quizSchema);
+		return error;
+	},
+	invalidQuestion(question) {
+		const { error } = Joi.validate(question, questionSchema);
+		console.log(error);
 		return error;
 	},
 };

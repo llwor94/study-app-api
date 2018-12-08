@@ -8,11 +8,18 @@ module.exports = {
 		} else
 			return db('quizzes as q')
 				.join('topics as t', 'q.topic_id', 't.id')
-				.select('q.id', 'q.title', 'q.author', 'q.votes', 't.name as topic');
+				.join('users as u', 'q.author', 'u.id')
+				.select('q.id', 'q.title', 'u.username as author', 'q.votes', 't.name as topic');
 	},
 	async getQuiz(id) {
-		let questions = await db('questions').where('quiz_id', id);
-		let quiz = await db('quizzes').where({ id }).first();
+		let questions = await db('questions')
+			.where('quiz_id', id)
+			.select('id', 'question', 'option1', 'option2', 'option3', 'option4', 'answer');
+		let quiz = await db('quizzes as q')
+			.join('users as u', 'q.author', 'u.id')
+			.where('q.id', id)
+			.select('q.id', 'q.title', 'u.username as author', 'q.votes', 'q.time_limit_seconds')
+			.first();
 		if (!quiz) return;
 		quiz.questions = questions;
 		return quiz;
@@ -23,17 +30,31 @@ module.exports = {
 		}
 		return db('topics');
 	},
-	async createQuiz({ title, author, time_limit_seconds, topic }) {
+	async getTopicId(name) {
 		let { id } = await db('topics')
-			.where(db.raw('LOWER("name") = ?', topic.toLowerCase()))
+			.where(db.raw('LOWER("name") = ?', name.toLowerCase()))
 			.select('id')
 			.first();
-
 		if (!id) {
 			[ id ] = await db('topics').returning('id').insert({ name: topic });
 		}
+		return id;
+	},
+	createQuiz({ title, author, time_limit_seconds, topic }) {
+		let topic_id = this.getTopicId(topic);
+
 		return db('quizzes')
 			.returning('id')
-			.insert({ title, author, time_limit_seconds, topic_id: id });
+			.insert({ title, author, time_limit_seconds, topic_id });
+	},
+	createQuestion(question) {
+		return db('questions').returning('id').insert(question);
+	},
+	updateQuiz({ topic = undefined, title = undefined }, id) {
+		let topic_id = undefined;
+		if (topic) {
+			topic_id = this.getTopicId(topic);
+		}
+		return db('quizzes').where({ id }).update({ topic_id, title });
 	},
 };
