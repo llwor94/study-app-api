@@ -2,7 +2,10 @@ const express = require('express');
 const router = express.Router({ mergeParams: true });
 const { protected } = require('../../middleware');
 const { invalidQuestion } = require('../../schema');
-const { getQuiz, createQuestion } = require('../../../db/helpers/quizhelpers');
+const { getQuiz } = require('../../../db/helpers/quizhelpers');
+const { createQuestion } = require('../../../db/helpers/questionHelpers');
+
+router.get('/');
 
 router.post('/', protected, ({ params, body, user }, res, next) => {
 	if (invalidQuestion(body)) return next({ code: 400 });
@@ -19,6 +22,13 @@ router.post('/', protected, ({ params, body, user }, res, next) => {
 				.catch(next);
 		})
 		.catch(next);
+});
+
+router.patch('/:id', protected, ({ params, body, user }, res, next) => {
+	getQuiz(params.id).then(quiz => {
+		if (!quiz) return next({ code: 404 });
+		if (quiz.author !== user) return next({ code: 401 });
+	});
 });
 
 module.exports = router;

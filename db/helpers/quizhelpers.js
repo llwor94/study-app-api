@@ -14,7 +14,7 @@ module.exports = {
 	async getQuiz(id) {
 		let questions = await db('questions')
 			.where('quiz_id', id)
-			.select('id', 'question', 'option1', 'option2', 'option3', 'option4', 'answer');
+			.select('id', 'question', 'option1', 'option2', 'option3', 'option4');
 		let quiz = await db('quizzes as q')
 			.join('users as u', 'q.author', 'u.id')
 			.where('q.id', id)
@@ -46,9 +46,6 @@ module.exports = {
 		return db('quizzes')
 			.returning('id')
 			.insert({ title, author, time_limit_seconds, topic_id });
-	},
-	createQuestion(question) {
-		return db('questions').returning('id').insert(question);
 	},
 	updateQuiz({ topic = undefined, title = undefined }, id) {
 		let topic_id = undefined;
