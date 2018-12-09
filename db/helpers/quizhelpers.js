@@ -6,12 +6,10 @@ module.exports = {
 			let topic = db('topics').where('id', topic).orWhere('name', topic).select('id');
 			return db('quizzes').where('topic_id', topic);
 		}
-		return (
-			db('quizzes as q')
-				.join('topics as t', 'q.topic_id', 't.id')
-				//.join('users as u', 'q.author', 'u.id')
-				.select('q.id', 'q.title', 'q.votes', 't.name as topic')
-		);
+		return db('quizzes as q')
+			.join('topics as t', 'q.topic_id', 't.id')
+			.join('users as u', 'q.author', 'u.id')
+			.select('q.id', 'q.title', 'q.votes', 'u.username as author', 't.name as topic');
 	},
 	async getQuiz(id) {
 		let quiz = await db('quizzes as q')
@@ -38,22 +36,21 @@ module.exports = {
 		return db('topics');
 	},
 	async getTopicId(name) {
-		let id;
 		let topic = await db('topics')
 			.where(db.raw('LOWER("name") = ?', name.toLowerCase()))
 			.select('id')
 			.first();
 		if (!topic) {
+			console.log('none');
 			let [ id ] = await db('topics').returning('id').insert({ name });
+			return id;
 		} else {
-			let { id } = topic;
+			return topic.id;
 		}
-
-		return id;
 	},
-	createQuiz(body) {
-		let topic_id = this.getTopicId(body.topic);
-		console.log(topic_id);
+	async createQuiz({ title, author, time_limit_seconds, topic }) {
+		let topic_id = await this.getTopicId(topic);
+		console.log('createQuiz', topic_id);
 		return db('quizzes')
 			.returning('id')
 			.insert({ title, author, time_limit_seconds, topic_id });
