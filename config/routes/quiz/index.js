@@ -1,7 +1,6 @@
 const express = require('express');
 const router = express.Router();
 const questionRouter = require('./questionRoutes');
-const { protected } = require('../../middleware');
 const { invalidQuiz } = require('../../schema');
 const {
 	getQuizzes,
@@ -9,7 +8,7 @@ const {
 	getTopics,
 	createQuiz,
 	updateQuiz,
-} = require('../../../db/helpers/quizhelpers');
+} = require('../../../db/helpers/quizHelpers');
 
 router.use('/:quizId/questions', questionRouter);
 
