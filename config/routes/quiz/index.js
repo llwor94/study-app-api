@@ -49,8 +49,6 @@ router.get('/:quizId', ({ quiz }, res, next) => {
 });
 
 router.patch('/:quizId', ({ quiz, body, user }, res, next) => {
-	console.log(quiz, body, user);
-
 	if (!user.authorized) return next({ code: 401 });
 	if (invalidQuiz(body, true)) return next({ code: 400 });
 	updateQuiz(body, quiz.id)
@@ -70,6 +68,10 @@ router.post('/', ({ body, user }, res, next) => {
 			res.json(quiz);
 		})
 		.catch(next);
+});
+
+router.delete('/:quizId', ({ quiz, body, user }, res, next) => {
+	if (!user.authorized) return next({ code: 401 });
 });
 
 module.exports = router;

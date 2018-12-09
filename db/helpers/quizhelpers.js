@@ -61,4 +61,5 @@ module.exports = {
 		}
 		return db('quizzes').where({ id }).update({ topic_id, title, time_limit_seconds });
 	},
+	deleteQuiz(id) {},
 };

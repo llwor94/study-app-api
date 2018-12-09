@@ -1,12 +1,12 @@
 const express = require('express');
 const router = express.Router({ mergeParams: true });
-const { protected, optionalProtected } = require('../../middleware');
 const { invalidQuestion } = require('../../schema');
 const {
 	createQuestion,
 	getQuestions,
 	getQuestion,
 	updateQuestion,
+	deleteQuestion,
 } = require('../../../db/helpers/questionHelpers');
 
 router.param('questionId', (req, res, next, id) => {
@@ -47,10 +47,22 @@ router.post('/', ({ quiz, body, user }, res, next) => {
 router.patch('/:questionId', ({ question, body, user }, res, next) => {
 	if (!user.authorized) return next({ code: 401 });
 	if (invalidQuestion(body, true)) return next({ code: 400 });
-	updateQuestion(body, question.id).then(response => {
-		if (!response) return next({ code: 404 });
-		res.json(response);
-	});
+	updateQuestion(body, question.id)
+		.then(response => {
+			if (!response) return next({ code: 404 });
+			res.json(response);
+		})
+		.catch(next);
+});
+
+router.delete('/:questionId', ({ question, user }, res, next) => {
+	if (!user.authorized) return next({ code: 401 });
+	deleteQuestion(question.id)
+		.then(response => {
+			if (!response) return next({ code: 404 });
+			res.json(response);
+		})
+		.catch(next);
 });
 
 module.exports = router;

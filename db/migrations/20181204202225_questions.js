@@ -8,7 +8,7 @@ exports.up = function(knex, Promise) {
 		table.string('option4');
 		table.integer('answer').unsigned();
 		table.integer('author').unsigned().references('users.id');
-		table.integer('quiz_id').unsigned().references('quizzes.id');
+		table.integer('quiz_id').unsigned().references('quizzes.id').onDelete('CASCADE');
 	});
 };
 

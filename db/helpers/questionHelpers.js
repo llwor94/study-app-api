@@ -29,4 +29,7 @@ module.exports = {
 			.where({ id })
 			.update({ question, option2, option3, option4, answer });
 	},
+	deleteQuestion(id) {
+		return db('questions').where({ id }).del();
+	},
 };

@@ -6,6 +6,11 @@ module.exports = {
 		connection: {
 			filename: './db/db.sqlite3',
 		},
+		pool: {
+			afterCreate: function(conn, cb) {
+				conn.run('PRAGMA foreign_keys = ON', cb);
+			},
+		},
 		useNullAsDefault: true,
 		migrations: {
 			directory: './db/migrations',
