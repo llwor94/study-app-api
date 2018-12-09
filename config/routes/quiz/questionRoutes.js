@@ -1,17 +1,12 @@
 const express = require('express');
 const router = express.Router({ mergeParams: true });
 const { invalidQuestion } = require('../../schema');
-const {
-	createQuestion,
-	getQuestions,
-	getQuestion,
-	updateQuestion,
-	deleteQuestion,
-} = require('../../../db/helpers/questionHelpers');
+const helpers = require('../../../db/helpers/questionHelpers');
 
 router.param('questionId', (req, res, next, id) => {
 	console.log(req.quiz, req.user, id);
-	getQuestion(id)
+	helpers
+		.getQuestion(id)
 		.then(response => {
 			req.question = response;
 			next();
@@ -20,7 +15,8 @@ router.param('questionId', (req, res, next, id) => {
 });
 
 router.get('/', ({ quiz }, res, next) => {
-	getQuestions(quiz.id)
+	helpers
+		.getQuestions(quiz.id)
 		.then(response => {
 			res.json(response);
 		})
@@ -36,7 +32,8 @@ router.post('/', ({ quiz, body, user }, res, next) => {
 
 	if (!user.authorized) return next({ code: 401 });
 	let question = { ...body, author: user.id, quiz_id: quiz.id };
-	createQuestion(question)
+	helpers
+		.createQuestion(question)
 		.then(response => {
 			if (!response) return next({ code: 404 });
 			res.json(response);
@@ -47,7 +44,8 @@ router.post('/', ({ quiz, body, user }, res, next) => {
 router.patch('/:questionId', ({ question, body, user }, res, next) => {
 	if (!user.authorized) return next({ code: 401 });
 	if (invalidQuestion(body, true)) return next({ code: 400 });
-	updateQuestion(body, question.id)
+	helpers
+		.updateQuestion(body, question)
 		.then(response => {
 			if (!response) return next({ code: 404 });
 			res.json(response);
@@ -61,7 +59,8 @@ router.patch('/:questionId/play', ({ question, body, user }, res, next) => {
 
 router.delete('/:questionId', ({ question, user }, res, next) => {
 	if (!user.authorized) return next({ code: 401 });
-	deleteQuestion(question.id)
+	helpers
+		.deleteQuestion(question.id)
 		.then(response => {
 			if (!response) return next({ code: 404 });
 			res.json(response);

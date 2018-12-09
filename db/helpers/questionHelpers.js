@@ -2,7 +2,12 @@ const db = require('../dbConfig');
 const _ = require('lodash');
 
 module.exports = {
-	createQuestion: question => {
+	createQuestion(question) {
+		if (
+			(!question.option3 && question.answer === 3) ||
+			(!question.option4 && question.answer === 4)
+		)
+			return;
 		return db('questions').returning('id').insert(question);
 	},
 	async getQuestions(quiz_id) {
@@ -30,7 +35,7 @@ module.exports = {
 		question.options = _.compact(Object.values(options));
 		return question;
 	},
-	updateQuestion: (
+	updateQuestion(
 		{
 			question = undefined,
 			option1 = undefined,
@@ -39,13 +44,21 @@ module.exports = {
 			option4 = undefined,
 			answer = undefined,
 		},
-		id,
-	) => {
+		currentQuestion,
+	) {
+		if (
+			(!currentQuestion.option3 &&
+				!option3 &&
+				(currentQuestion.answer === 3 || answer === 3)) ||
+			(!currentQuestion.option4 && !option4 && (currentQuestion.answer === 4 || answer === 4))
+		)
+			return;
+
 		return db('questions')
-			.where({ id })
+			.where('id', currentQuestion.id)
 			.update({ question, option1, option2, option3, option4, answer });
 	},
-	deleteQuestion: id => {
+	deleteQuestion(id) {
 		return db('questions').where({ id }).del();
 	},
 };
