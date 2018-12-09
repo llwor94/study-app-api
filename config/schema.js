@@ -55,6 +55,18 @@ const updateQuestionSchema = Joi.object()
 	})
 	.or('question', 'option1', 'option2', 'option3', 'option4', 'answer');
 
+const postSchema = {
+	title: Joi.string().required(),
+	body: Joi.string().required(),
+};
+
+const updatePostSchema = Joi.object()
+	.keys({
+		title: Joi.string(),
+		body: Joi.string(),
+	})
+	.or('title', 'body');
+
 module.exports = {
 	invalidRegister(user) {
 		const { error } = Joi.validate(user, registerUserSchema);
@@ -85,6 +97,14 @@ module.exports = {
 	},
 	invalidUserQuizUpdate(input) {
 		const { error } = Joi.validate(input, UserQuizSchema);
+		return error;
+	},
+	invalidPost(post, update) {
+		if (update) {
+			const { error } = Joi.validate(post, updatePostSchema);
+			return error;
+		}
+		const { error } = Joi.validate(post, postSchema);
 		return error;
 	},
 };
