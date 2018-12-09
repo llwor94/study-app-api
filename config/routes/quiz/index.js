@@ -11,7 +11,19 @@ const {
 	updateQuiz,
 } = require('../../../db/helpers/quizhelpers');
 
-router.use('/:id/questions', questionRouter);
+router.use('/:quizId/questions', questionRouter);
+
+router.param('quizId', (req, res, next, id) => {
+	console.log('this is the quiz route', id, req.user);
+	getQuiz(id)
+		.then(quiz => {
+			if (!quiz) return next({ code: 404 });
+			if (quiz.author.id === req.user.id) req.user.authorized = true;
+			req.quiz = quiz;
+			next();
+		})
+		.catch(next);
+});
 
 router.get('/', ({ query }, res, next) => {
 	console.log('quizzes/', query.topic);
@@ -31,9 +43,17 @@ router.get('/topics', ({ query }, res, next) => {
 		.catch(next);
 });
 
-router.get('/:id', ({ params }, res, next) => {
-	console.log('quizzes/:id', params.id);
-	getQuiz(params.id)
+router.get('/:quizId', ({ quiz }, res, next) => {
+	console.log('quizzes/:id', quiz);
+	res.json(quiz);
+});
+
+router.patch('/:quizId', ({ quiz, body, user }, res, next) => {
+	console.log(quiz, body, user);
+
+	if (!user.authorized) return next({ code: 401 });
+	if (invalidQuiz(body, true)) return next({ code: 400 });
+	updateQuiz(body, quiz.id)
 		.then(quiz => {
 			if (!quiz) return next({ code: 404 });
 			res.json(quiz);
@@ -41,25 +61,9 @@ router.get('/:id', ({ params }, res, next) => {
 		.catch(next);
 });
 
-router.patch('/:id', protected, ({ params, body, user }, res, next) => {
-	getQuiz(params.id)
-		.then(quiz => {
-			if (!quiz) return next({ code: 404 });
-			if (quiz.author !== user) return next({ code: 401 });
-			if (body.votes || (!body.title && !body.topic)) return next({ code: 400 });
-			updateQuiz(body, params.id)
-				.then(quiz => {
-					if (!quiz) return next({ code: 404 });
-					res.json(quiz);
-				})
-				.catch(next);
-		})
-		.catch(next);
-});
-
-router.post('/', protected, ({ body, user }, res, next) => {
+router.post('/', ({ body, user }, res, next) => {
 	if (invalidQuiz(body)) return next({ code: 400 });
-	body.author = user;
+	body.author = user.id;
 	createQuiz(body)
 		.then(quiz => {
 			if (!quiz) return next({ code: 404 });

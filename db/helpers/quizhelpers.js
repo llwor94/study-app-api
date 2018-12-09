@@ -12,16 +12,23 @@ module.exports = {
 				.select('q.id', 'q.title', 'u.username as author', 'q.votes', 't.name as topic');
 	},
 	async getQuiz(id) {
-		let questions = await db('questions')
-			.where('quiz_id', id)
-			.select('id', 'question', 'option1', 'option2', 'option3', 'option4');
 		let quiz = await db('quizzes as q')
-			.join('users as u', 'q.author', 'u.id')
 			.where('q.id', id)
-			.select('q.id', 'q.title', 'u.username as author', 'q.votes', 'q.time_limit_seconds')
+			.join('topics as t', 'q.topic_id', 't.id')
+			.select(
+				'q.id',
+				'q.title',
+				'q.votes',
+				'q.time_limit_seconds',
+				'q.author',
+				't.name as topic',
+			)
 			.first();
-		if (!quiz) return;
-		quiz.questions = questions;
+		let author = await db('users')
+			.where('id', quiz.author)
+			.select('id', 'username', 'img_url')
+			.first();
+		quiz.author = author;
 		return quiz;
 	},
 	getTopics(name) {
@@ -47,11 +54,11 @@ module.exports = {
 			.returning('id')
 			.insert({ title, author, time_limit_seconds, topic_id });
 	},
-	updateQuiz({ topic = undefined, title = undefined }, id) {
+	updateQuiz({ topic = undefined, title = undefined, time_limit_seconds = undefined }, id) {
 		let topic_id = undefined;
 		if (topic) {
 			topic_id = this.getTopicId(topic);
 		}
-		return db('quizzes').where({ id }).update({ topic_id, title });
+		return db('quizzes').where({ id }).update({ topic_id, title, time_limit_seconds });
 	},
 };

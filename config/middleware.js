@@ -2,25 +2,14 @@ const jwt = require('jsonwebtoken');
 const secret = 'secret';
 
 module.exports = {
-	protected(req, res, next) {
+	getUser(req, res, next) {
 		const token = req.headers.authorization;
-		if (!token) return next({ code: 403 });
-
-		jwt.verify(token, secret, (err, decodedToken) => {
-			if (err) return next(err);
-
-			req.user = decodedToken.id;
-			next();
-		});
-	},
-	optionalProtected(req, res, next) {
-		const token = req.headers.authorization;
+		req.user = {};
 		if (!token) return next();
 
 		jwt.verify(token, secret, (err, decodedToken) => {
 			if (err) return next(err);
-
-			req.user = decodedToken.id;
+			req.user.id = decodedToken.id;
 			next();
 		});
 	},
