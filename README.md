@@ -49,9 +49,17 @@
 | id          | Unsigned Int (auto increment)  |
 | quiz_id     | Unsigned Int (ref to quizzes)  |
 | user_id     | Unsigned Int (ref to users)    |
-| score       | Unsigned Int (default: 0)      |
 | vote        | Int (default: 0) (-1 || 1)     |    
 | favorite    | Bool (default: false)          |           
+
+## User-Questions
+
+| Field       | Data Type                      |
+| ----------- | ------------------------------ |
+| id          | Unsigned Int (auto increment)  |
+| quiz_id     | Unsigned Int (ref to quizzes)  |
+| question_id | Unsigned Int (ref to questions)|  
+| score       | Unsigned Int(default: 0)       |     
 
 ## Posts
 

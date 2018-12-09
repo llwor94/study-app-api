@@ -13,7 +13,7 @@ module.exports = {
 	async getQuestions(quiz_id) {
 		let questions = await db('questions')
 			.where({ quiz_id })
-			.select('question', 'option1', 'option2', 'option3', 'option4', 'quiz_id as quiz');
+			.select('question', 'option1', 'option2', 'option3', 'option4', 'quiz_id');
 
 		return questions.map(question => {
 			question.options = _.compact([
@@ -26,7 +26,10 @@ module.exports = {
 		});
 	},
 	async getQuestion(id) {
-		let question = await db('questions').where({ id }).select('question', 'quiz_id').first();
+		let question = await db('questions')
+			.where({ id })
+			.select('question', 'quiz_id', 'answer')
+			.first();
 		let options = await db('questions')
 			.where({ id })
 			.select('option1', 'option2', 'option3', 'option4')
@@ -61,4 +64,5 @@ module.exports = {
 	deleteQuestion(id) {
 		return db('questions').where({ id }).del();
 	},
+	updateUser(question, option) {},
 };

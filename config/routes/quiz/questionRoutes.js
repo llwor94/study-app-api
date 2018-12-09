@@ -1,5 +1,6 @@
 const express = require('express');
 const router = express.Router({ mergeParams: true });
+const _ = require('lodash');
 const { invalidQuestion } = require('../../schema');
 const helpers = require('../../../db/helpers/questionHelpers');
 
@@ -24,7 +25,7 @@ router.get('/', ({ quiz }, res, next) => {
 });
 
 router.get('/:questionId', ({ question }, res, next) => {
-	res.json(question);
+	res.json(_.pick(question, [ 'question', 'options', 'quiz_id' ]));
 });
 
 router.post('/', ({ quiz, body, user }, res, next) => {
@@ -54,7 +55,14 @@ router.patch('/:questionId', ({ question, body, user }, res, next) => {
 });
 
 router.patch('/:questionId/play', ({ question, body, user }, res, next) => {
-	console.log(user);
+	if (!body.option) return next({ code: 400 });
+	if (!user.id) {
+		if (body.option === question.answer)
+			return res.json({ question: question.id, correct: true });
+		return res.json({ question: question.id, correct: false });
+	}
+	if (body.option === question.answer) {
+	}
 });
 
 router.delete('/:questionId', ({ question, user }, res, next) => {
