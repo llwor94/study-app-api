@@ -1,16 +1,69 @@
 const express = require('express');
 const router = express.Router({ mergeParams: true });
 
-router.param('quizId', (req, res, next, id) => {
+const helpers = require('../../../db/helpers/commentHelpers');
+
+router.param('commentId', (req, res, next, id) => {
 	console.log('this is the quiz route', id, req.user);
 	helpers
-		.getQuiz(id)
-		.then(quiz => {
-			console.log(quiz);
-			if (!quiz) return next({ code: 404 });
-			if (quiz.author.id === req.user.id) req.user.authorized = true;
-			req.quiz = quiz;
+		.getComment(id)
+		.then(comment => {
+			console.log(comment);
+			if (!comment) return next({ code: 404 });
+			if (comment.author.id === req.user.id) req.user.authorized = true;
+			req.comment = comment;
 			next();
+		})
+		.catch(next);
+});
+
+router.get('/', ({ post }, res, next) => {
+	helpers
+		.getComments(post.id)
+		.then(response => {
+			console.log(response);
+			res.json(response);
+		})
+		.catch(next);
+});
+
+router.get('/:commentId', ({ comment }, res, next) => {
+	res.json(comment);
+});
+
+router.post('/', ({ post, user, body }, res, next) => {
+	if (!body.text) return next({ code: 400 });
+	if (!user.id) return next({ code: 401 });
+	body.author = user.id;
+	helpers
+		.createComment(body, post.id)
+		.then(response => {
+			console.log(response);
+			if (!response) return next({ code: 404 });
+			res.json(response);
+		})
+		.catch(next);
+});
+
+router.patch('/:commentId', ({ comment, user, body }, res, next) => {
+	if (!body.text) return next({ code: 400 });
+	if (!user.authorized) return next({ code: 401 });
+
+	helpers
+		.editComment(comment.id, body.text)
+		.then(response => {
+			res.json(response);
+		})
+		.catch(next);
+});
+
+router.delete('/:commentId', ({ comment, user }, res, next) => {
+	if (!user.authorized) return next({ code: 401 });
+
+	helpers
+		.deleteComment(comment.id)
+		.then(response => {
+			res.json(response);
 		})
 		.catch(next);
 });
