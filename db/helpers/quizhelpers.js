@@ -54,10 +54,10 @@ module.exports = {
 			.returning('id')
 			.insert({ title, author, time_limit_seconds, topic_id });
 	},
-	updateQuiz({ topic = undefined, title = undefined, time_limit_seconds = undefined }, id) {
+	async updateQuiz({ topic = undefined, title = undefined, time_limit_seconds = undefined }, id) {
 		let topic_id = undefined;
 		if (topic) {
-			topic_id = this.getTopicId(topic);
+			topic_id = await this.getTopicId(topic);
 		}
 		return db('quizzes').where({ id }).update({ topic_id, title, time_limit_seconds });
 	},

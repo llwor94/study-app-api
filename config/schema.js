@@ -13,7 +13,7 @@ const loginUserSchema = {
 };
 
 const quizSchema = {
-	title: Joi.string().alphanum().required(),
+	title: Joi.string().required(),
 	time_limit_seconds: Joi.number().integer(),
 	topic: Joi.string().max(20).required(),
 	votes: Joi.number().integer(),
@@ -21,7 +21,7 @@ const quizSchema = {
 
 const updateQuizSchema = Joi.object()
 	.keys({
-		title: Joi.string().alphanum(),
+		title: Joi.string(),
 		time_limit_seconds: Joi.number().integer(),
 		topic: Joi.string().max(20),
 	})
@@ -59,6 +59,7 @@ module.exports = {
 	invalidQuiz(quiz, update) {
 		if (update) {
 			const { error } = Joi.validate(quiz, updateQuizSchema);
+			console.log(error);
 			return error;
 		}
 		const { error } = Joi.validate(quiz, quizSchema);
