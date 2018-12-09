@@ -22,7 +22,6 @@ router.get('/', ({ query }, res, next) => {
 	helpers
 		.getQuizzes(query.topic)
 		.then(response => {
-			console.log('response', response);
 			res.json(response);
 		})
 		.catch(next);

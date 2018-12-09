@@ -24,7 +24,7 @@ module.exports = {
 				't.name as topic',
 			)
 			.first();
-		console.log(quiz);
+		if (!quiz) return;
 		let author = await db('users')
 			.where('id', quiz.author)
 			.select('id', 'username', 'img_url')
@@ -41,7 +41,6 @@ module.exports = {
 			.select('id')
 			.first();
 		if (!topic) {
-			console.log('none');
 			let [ id ] = await db('topics').returning('id').insert({ name });
 			return id;
 		} else {
@@ -50,7 +49,7 @@ module.exports = {
 	},
 	async createQuiz({ title, author, time_limit_seconds, topic }) {
 		let topic_id = await this.getTopicId(topic);
-		console.log('createQuiz', topic_id);
+
 		return db('quizzes')
 			.returning('id')
 			.insert({ title, author, time_limit_seconds, topic_id });
