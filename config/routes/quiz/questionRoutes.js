@@ -5,7 +5,6 @@ const { invalidQuestion } = require('../../schema');
 const helpers = require('../../../db/helpers/questionHelpers');
 
 router.param('questionId', (req, res, next, id) => {
-	console.log(req.quiz, req.user, id);
 	helpers
 		.getQuestion(id)
 		.then(response => {
@@ -46,7 +45,7 @@ router.patch('/:questionId', ({ question, body, user }, res, next) => {
 	if (!user.authorized) return next({ code: 401 });
 	if (invalidQuestion(body, true)) return next({ code: 400 });
 	helpers
-		.updateQuestion(body, question)
+		.updateQuestion(body, question.id)
 		.then(response => {
 			if (!response) return next({ code: 404 });
 			res.json(response);
@@ -56,12 +55,10 @@ router.patch('/:questionId', ({ question, body, user }, res, next) => {
 
 router.patch('/:questionId/play', ({ question, body, user }, res, next) => {
 	if (!body.option) return next({ code: 400 });
+	let correct = body.option === question.answer;
 	if (!user.id) {
-		if (body.option === question.answer)
-			return res.json({ question: question.id, correct: true });
-		return res.json({ question: question.id, correct: false });
-	}
-	if (body.option === question.answer) {
+		if (correct) return res.json({ question: question.id, correct });
+		return res.json({ question: question.id, correct });
 	}
 });
 

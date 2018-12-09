@@ -68,7 +68,8 @@ module.exports = {
 	},
 	invalidQuestion(question, update) {
 		if (update) {
-			const { error } = Joi.validate(quiz, updateQuestionSchema);
+			const { error } = Joi.validate(question, updateQuestionSchema);
+			console.log(error);
 			return error;
 		}
 		const { error } = Joi.validate(question, questionSchema);

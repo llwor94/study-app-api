@@ -9,6 +9,7 @@ router.param('quizId', (req, res, next, id) => {
 	helpers
 		.getQuiz(id)
 		.then(quiz => {
+			console.log(quiz);
 			if (!quiz) return next({ code: 404 });
 			if (quiz.author.id === req.user.id) req.user.authorized = true;
 			req.quiz = quiz;
@@ -41,7 +42,7 @@ router.get('/:quizId', ({ quiz }, res, next) => {
 	res.json(quiz);
 });
 
-router.patch('/:quizId', ({ quiz, body, user }, res, next) => {
+router.patch('/:quizId/edit', ({ quiz, body, user }, res, next) => {
 	if (!user.authorized) return next({ code: 401 });
 	if (invalidQuiz(body, true)) return next({ code: 400 });
 	helpers
@@ -51,6 +52,10 @@ router.patch('/:quizId', ({ quiz, body, user }, res, next) => {
 			res.json(response);
 		})
 		.catch(next);
+});
+
+router.patch('/:quizId', ({ quiz, body, user }, res, next) => {
+	if (!user.id) return next({ code: 401 });
 });
 
 router.post('/', ({ body, user }, res, next) => {

@@ -5,6 +5,7 @@ exports.up = function(knex, Promise) {
 		table.integer('quiz_id').unsigned().references('quizzes.id').onDelete('CASCADE');
 		table.integer('vote').defaultTo(0);
 		table.boolean('favorite').defaultTo(false);
+		table.integer('score').unsigned().defaultTo(0);
 	});
 };
 

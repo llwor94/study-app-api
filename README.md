@@ -33,7 +33,7 @@
 | author             | Unsigned Int (ref to users)   |
 | time_limit_seconds | Unsigned Int                  |
 | votes              | Int (default: 0)              |
-| topic              | Unsigned Int (ref to topics)  |
+| topic_id              | Unsigned Int (ref to topics)  |
 
 ## Topics 
 
@@ -50,14 +50,15 @@
 | quiz_id     | Unsigned Int (ref to quizzes)  |
 | user_id     | Unsigned Int (ref to users)    |
 | vote        | Int (default: 0) (-1 || 1)     |    
-| favorite    | Bool (default: false)          |           
+| favorite    | Bool (default: false)          |
+          
 
 ## User-Questions
 
 | Field       | Data Type                      |
 | ----------- | ------------------------------ |
 | id          | Unsigned Int (auto increment)  |
-| quiz_id     | Unsigned Int (ref to quizzes)  |
+| user_id     | Unsigned Int (ref to users)  |
 | question_id | Unsigned Int (ref to questions)|  
 | score       | Unsigned Int(default: 0)       |     
 

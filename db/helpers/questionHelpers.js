@@ -13,7 +13,7 @@ module.exports = {
 	async getQuestions(quiz_id) {
 		let questions = await db('questions')
 			.where({ quiz_id })
-			.select('question', 'option1', 'option2', 'option3', 'option4', 'quiz_id');
+			.select('id', 'question', 'option1', 'option2', 'option3', 'option4', 'quiz_id');
 
 		return questions.map(question => {
 			question.options = _.compact([
@@ -28,7 +28,7 @@ module.exports = {
 	async getQuestion(id) {
 		let question = await db('questions')
 			.where({ id })
-			.select('question', 'quiz_id', 'answer')
+			.select('id', 'question', 'quiz_id', 'answer')
 			.first();
 		let options = await db('questions')
 			.where({ id })
@@ -38,7 +38,7 @@ module.exports = {
 		question.options = _.compact(Object.values(options));
 		return question;
 	},
-	updateQuestion(
+	async updateQuestion(
 		{
 			question = undefined,
 			option1 = undefined,
@@ -47,22 +47,24 @@ module.exports = {
 			option4 = undefined,
 			answer = undefined,
 		},
-		currentQuestion,
+		id,
 	) {
+		let currentQuestion = await db('questions').where({ id }).first();
 		if (
 			(!currentQuestion.option3 &&
 				!option3 &&
 				(currentQuestion.answer === 3 || answer === 3)) ||
 			(!currentQuestion.option4 && !option4 && (currentQuestion.answer === 4 || answer === 4))
-		)
-			return;
+		) {
+			console.log('somethin happened here');
+			return null;
+		}
 
 		return db('questions')
-			.where('id', currentQuestion.id)
+			.where({ id })
 			.update({ question, option1, option2, option3, option4, answer });
 	},
 	deleteQuestion(id) {
 		return db('questions').where({ id }).del();
 	},
-	updateUser(question, option) {},
 };
