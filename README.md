@@ -51,16 +51,8 @@
 | user_id     | Unsigned Int (ref to users)    |
 | vote        | Int (default: 0) (-1 || 1)     |    
 | favorite    | Bool (default: false)          |
-          
+| score       | Unsigned Int(default: 0)       |           
 
-## User-Questions
-
-| Field       | Data Type                      |
-| ----------- | ------------------------------ |
-| id          | Unsigned Int (auto increment)  |
-| user_id     | Unsigned Int (ref to users)  |
-| question_id | Unsigned Int (ref to questions)|  
-| score       | Unsigned Int(default: 0)       |     
 
 ## Posts
 
