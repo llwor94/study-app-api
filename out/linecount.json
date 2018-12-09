@@ -1,0 +1,204 @@
+{
+    "extension": "linecount",
+    "version": "0.1.7",
+    "workspace": "/Users/lauren/Lambda-School/React-Study-App",
+    "linecount": [
+        {
+            "version": "0.1.7",
+            "counttime": "2018-12-09 14:05:47",
+            "filesum": 31,
+            "codesum": 1073,
+            "commentsum": 39,
+            "blanksum": 183,
+            "filelist": [
+                {
+                    "blank": 1,
+                    "code": 1,
+                    "comment": 0,
+                    "filename": ".gitignore"
+                },
+                {
+                    "blank": 64,
+                    "code": 160,
+                    "comment": 8,
+                    "filename": "ACTUALREADME.md"
+                },
+                {
+                    "blank": 3,
+                    "code": 12,
+                    "comment": 0,
+                    "filename": "config/index.js"
+                },
+                {
+                    "blank": 5,
+                    "code": 39,
+                    "comment": 0,
+                    "filename": "config/middleware.js"
+                },
+                {
+                    "blank": 9,
+                    "code": 37,
+                    "comment": 0,
+                    "filename": "config/routes/authRoutes.js"
+                },
+                {
+                    "blank": 11,
+                    "code": 57,
+                    "comment": 0,
+                    "filename": "config/routes/posts/commentRouter.js"
+                },
+                {
+                    "blank": 9,
+                    "code": 62,
+                    "comment": 0,
+                    "filename": "config/routes/posts/index.js"
+                },
+                {
+                    "blank": 10,
+                    "code": 73,
+                    "comment": 0,
+                    "filename": "config/routes/quizzes/index.js"
+                },
+                {
+                    "blank": 8,
+                    "code": 67,
+                    "comment": 0,
+                    "filename": "config/routes/quizzes/questionRoutes.js"
+                },
+                {
+                    "blank": 2,
+                    "code": 7,
+                    "comment": 0,
+                    "filename": "config/routes/userRoutes.js"
+                },
+                {
+                    "blank": 10,
+                    "code": 100,
+                    "comment": 0,
+                    "filename": "config/schema.js"
+                },
+                {
+                    "filename": "db/db.sqlite3",
+                    "isbinaryfile": true,
+                    "blank": 0,
+                    "code": 0,
+                    "comment": 0
+                },
+                {
+                    "blank": 2,
+                    "code": 3,
+                    "comment": 0,
+                    "filename": "db/dbConfig.js"
+                },
+                {
+                    "blank": 1,
+                    "code": 27,
+                    "comment": 0,
+                    "filename": "db/helpers/commentHelpers.js"
+                },
+                {
+                    "blank": 1,
+                    "code": 23,
+                    "comment": 0,
+                    "filename": "db/helpers/postHelpers.js"
+                },
+                {
+                    "blank": 4,
+                    "code": 66,
+                    "comment": 0,
+                    "filename": "db/helpers/questionHelpers.js"
+                },
+                {
+                    "blank": 3,
+                    "code": 94,
+                    "comment": 0,
+                    "filename": "db/helpers/quizHelpers.js"
+                },
+                {
+                    "blank": 1,
+                    "code": 12,
+                    "comment": 0,
+                    "filename": "db/migrations/20181204192957_users.js"
+                },
+                {
+                    "blank": 1,
+                    "code": 16,
+                    "comment": 0,
+                    "filename": "db/migrations/20181204202225_questions.js"
+                },
+                {
+                    "blank": 1,
+                    "code": 13,
+                    "comment": 0,
+                    "filename": "db/migrations/20181204204127_quizzes.js"
+                },
+                {
+                    "blank": 1,
+                    "code": 13,
+                    "comment": 0,
+                    "filename": "db/migrations/20181204204454_user_scores.js"
+                },
+                {
+                    "blank": 1,
+                    "code": 12,
+                    "comment": 0,
+                    "filename": "db/migrations/20181204205403_posts.js"
+                },
+                {
+                    "blank": 1,
+                    "code": 12,
+                    "comment": 0,
+                    "filename": "db/migrations/20181204205821_comments.js"
+                },
+                {
+                    "blank": 1,
+                    "code": 12,
+                    "comment": 0,
+                    "filename": "db/migrations/20181204205958_direct-messages.js"
+                },
+                {
+                    "blank": 1,
+                    "code": 9,
+                    "comment": 0,
+                    "filename": "db/migrations/20181206144942_topics.js"
+                },
+                {
+                    "blank": 1,
+                    "code": 10,
+                    "comment": 0,
+                    "filename": "db/migrations/20181206164258_friends.js"
+                },
+                {
+                    "blank": 1,
+                    "code": 5,
+                    "comment": 0,
+                    "filename": "index.js"
+                },
+                {
+                    "blank": 3,
+                    "code": 19,
+                    "comment": 31,
+                    "filename": "knexfile.js"
+                },
+                {
+                    "blank": 0,
+                    "code": 23,
+                    "comment": 0,
+                    "filename": "package.json"
+                },
+                {
+                    "blank": 23,
+                    "code": 79,
+                    "comment": 0,
+                    "filename": "README.md"
+                },
+                {
+                    "blank": 4,
+                    "code": 10,
+                    "comment": 0,
+                    "filename": "server.js"
+                }
+            ]
+        }
+    ]
+}

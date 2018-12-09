@@ -4,11 +4,9 @@ const router = express.Router({ mergeParams: true });
 const helpers = require('../../../db/helpers/commentHelpers');
 
 router.param('commentId', (req, res, next, id) => {
-	console.log('this is the quiz route', id, req.user);
 	helpers
 		.getComment(id)
 		.then(comment => {
-			console.log(comment);
 			if (!comment) return next({ code: 404 });
 			if (comment.author.id === req.user.id) req.user.authorized = true;
 			req.comment = comment;
@@ -21,7 +19,6 @@ router.get('/', ({ post }, res, next) => {
 	helpers
 		.getComments(post.id)
 		.then(response => {
-			console.log(response);
 			res.status(200).json(response);
 		})
 		.catch(next);
@@ -35,10 +32,10 @@ router.post('/', ({ post, user, body }, res, next) => {
 	if (!body.text) return next({ code: 400 });
 	if (!user.id) return next({ code: 401 });
 	body.author = user.id;
+
 	helpers
 		.createComment(body, post.id)
 		.then(response => {
-			console.log(response);
 			if (!response) return next({ code: 404 });
 			res.status(200).json(response);
 		})

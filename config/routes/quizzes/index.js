@@ -5,11 +5,9 @@ const { invalidQuiz, invalidUserQuizUpdate } = require('../../schema');
 const helpers = require('../../../db/helpers/quizHelpers');
 
 router.param('quizId', (req, res, next, id) => {
-	console.log('this is the quiz route', id, req.user);
 	helpers
-		.getQuiz(id)
+		.getQuiz(id, user.id)
 		.then(quiz => {
-			console.log(quiz);
 			if (!quiz) return next({ code: 404 });
 			if (quiz.author.id === req.user.id) req.user.authorized = true;
 			req.quiz = quiz;
@@ -19,7 +17,6 @@ router.param('quizId', (req, res, next, id) => {
 });
 
 router.get('/', ({ query }, res, next) => {
-	console.log('quizzes/', query.topic);
 	helpers
 		.getQuizzes(query.topic)
 		.then(response => {
@@ -38,7 +35,6 @@ router.get('/topics', (req, res, next) => {
 });
 
 router.get('/:quizId', ({ quiz }, res, next) => {
-	console.log('quizzes/:id', quiz);
 	res.status(200).json(quiz);
 });
 

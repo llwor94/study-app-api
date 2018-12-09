@@ -29,16 +29,28 @@
   username: "lauren",
   password: "password123",
   email: "lauren@email.com",
-  img_url: "www.yourprofileimage.com" 
+  img_url: "https://i.ytimg.com/vi/YCaGYUIfdy4/maxresdefault.jpg" 
 }
 ```
 
-#### Response:
+#### Response
+
+##### 200 (OK)
+>If you successfully register, the endpoint will return an HTTP response with a status code `200` and a body as below.
 ```
 {
-  token: JSON Web Token
+  "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MSwiaWF0IjoxNTQ0MzM1NjUxLCJleHAiOjE1NzU4OTMyNTF9.uqd2OHBYkGQpwjLTPPiPWYkYOKlG7whQDFkk46xGXoE"
 }
 ```
+##### 400 (Bad Request)
+>If you send in invalid fields, the endpoint will return an HTTP response with a status code `400` and a body as below.
+```
+{
+  "error": true,
+  "message": "There was a problem with your request."
+}
+```
+
 ____
 
 ## **LOGIN**
@@ -48,21 +60,55 @@ ____
 
 *HTTP method:* **[POST]**
 
-*Argument:*
+#### Headers
+
+| name           | type   | required | description              |
+| -------------- | ------ | -------- | ------------------------ |
+| `Content-Type` | String | Yes      | Must be application/json |
+
+#### Body
+
+| name           | type   | required | description              |
+| -------------- | ------ | -------- | ------------------------ |
+| `email`        | String | Yes      | Must match an email in the database |
+| `password`     | String | Yes      | Must match a password in the database corresponding to above email |
+
+*example:*
 
 ```
 {
-  username: "exampleUsername",
-  password: "eamplePassword"
+  email: "lauren@email.com",
+  password: "password123"
 }
 ```
 
-*Response:*
+#### Response
+
+##### 200 (OK)
+>If you successfully login, the endpoint will return an HTTP response with a status code `200` and a body as below.
 ```
-{token: JSON Web Token}
+{
+  "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MSwiaWF0IjoxNTQ0MzM1NjUxLCJleHAiOjE1NzU4OTMyNTF9.uqd2OHBYkGQpwjLTPPiPWYkYOKlG7whQDFkk46xGXoE"
+}
+```
+##### 400 (Bad Request)
+>If you send in invalid fields or the passwords do not match, the endpoint will return an HTTP response with a status code `400` and a body as below.
+```
+{
+  "error": true,
+  "message": "There was a problem with your request."
+}
+```
+##### 404 (Not Found)
+>If you send in an email address that does not match one in the database, the endpoint will return an HTTP response with a status code `404` and a body as below.
+```
+{
+  "error": true,
+  "message": "The requested content does not exist."
+}
 ```
 
-
+---
 
 # QUIZ ROUTES
 
@@ -73,63 +119,74 @@ ____
 
 *HTTP method:* **[GET]**
 
-*Request Reqiurements:*
-HEADER - 
-```{Authoriation: JSON Web Token}```
+#### Headers
 
-*Argument (optional):*  `"Topic"`
+| name           | type   | required | description              |
+| -------------- | ------ | -------- | ------------------------ |
+| `Content-Type` | String | Yes      | Must be application/json |
 
-*Response:*
+#### Parameters
 
-If the user is NOT logged in
+| name    | type   | required | description              |
+| --------| ------ | -------- | ------------------------ |
+| `topic` | String | No       | Query parameters in order to receive quizzes of specific topic |
 
-```
-[{
-  id: 12345,
-  title: "Title",
-  author: "Author"
-  votes: 123,
-  topic: "Topic"
-}, ...]
-```
+#### Response 
 
-If the user IS logged in
+##### 200 (OK)
 
 ```
-[{
-  id: 12345,
-  title: "Title",
-  author: "Author",
-  votes: 123,
-  topic: "Topic",
-  score: 123,
-  user_vote: -1, //Will be either -1, 0, or 1
-  favorite: false //Default false
-}, ...]
+[
+  {
+    "id": 2,
+    "title": "Array Methods",
+    "votes": 123,
+    "author": "lauren"
+    "topic": "JavaScript"
+  }
+]
 ```
 
-## **GET SPECIFIC QUIZ**
+___
+
+## **GET ONE QUIZ**
 ### Gets a quiz with a specified ID
 
 *Method Url:* `/api/quizzes/:id`
 
 *HTTP method:* **[GET]**
 
-*Request Reqiurements:*
-HEADER - 
-```{Authoriation: JSON Web Token}```
+#### Headers
 
-*Response*
+| name           | type   | required | description                    |
+| -------------- | ------ | -------- | ------------------------------ |
+| `Content-Type` | String | Yes      | Must be application/json       |
+| `Authorization`| String | No       | Bearer JWT authorization token |
+
+#### Parameters
+
+| name    | type   | required | description              |
+| --------| ------ | -------- | ------------------------ |
+| `quizId`| Int    | Yes      | Id of specific quiz |
+
+
+#### Response 
+
+##### 200 (OK)
 
 If the user is NOT logged in
 
 ```
 {
-  id: 12345,
-  title: "Title",
-  author: "Author"
-  votes: 123,
-  topic: "Topic"
+  "id": 2,
+  "title": "Array Methods",
+  "votes": 123,
+  "author": {
+    "id": 1,
+    "username": "lauren",
+    "img_url": "https://i.ytimg.com/vi/YCaGYUIfdy4/maxresdefault.jpg"
+  },
+  "topic": "JavaScript"
 }
 ```
 

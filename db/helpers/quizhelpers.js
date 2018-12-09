@@ -12,20 +12,37 @@ module.exports = {
 			.join('users as u', 'q.author', 'u.id')
 			.select('q.id', 'q.title', 'q.votes', 'u.username as author', 't.name as topic');
 	},
-	async getQuiz(id) {
-		let quiz = await db('quizzes as q')
-			.where('q.id', id)
-			.join('topics as t', 'q.topic_id', 't.id')
-			.select(
-				'q.id',
-				'q.title',
-				'q.votes',
-				'q.time_limit_seconds',
-				'q.author',
-				't.name as topic',
-			)
-			.first();
+	async getQuiz(id, user_id) {
+		let quiz = undefined;
+		if (user_id) {
+			quiz = await db('quizzes as q')
+				.where('q.id', id)
+				.join('topics as t', 'q.topic_id', 't.id')
+				.select(
+					'q.id',
+					'q.title',
+					'q.votes',
+					'q.time_limit_seconds',
+					'q.author',
+					't.name as topic',
+				)
+				.first();
+		} else {
+			quiz = await db('quizzes as q')
+				.where('q.id', id)
+				.join('topics as t', 'q.topic_id', 't.id')
+				.select(
+					'q.id',
+					'q.title',
+					'q.votes',
+					'q.time_limit_seconds',
+					'q.author',
+					't.name as topic',
+				)
+				.first();
+		}
 		if (!quiz) return;
+
 		let author = await db('users')
 			.where('id', quiz.author)
 			.select('id', 'username', 'img_url')

@@ -6,7 +6,6 @@ const helpers = require('../../../db/helpers/postHelpers');
 const { invalidPost } = require('../../schema');
 
 router.param('postId', (req, res, next, id) => {
-	console.log('this is the post route', id, req.user);
 	helpers
 		.getPost(id)
 		.then(post => {
@@ -28,7 +27,6 @@ router.get('/', (req, res, next) => {
 });
 
 router.get('/:postId', ({ post }, res, next) => {
-	console.log(post);
 	res.status(200).json(post);
 });
 

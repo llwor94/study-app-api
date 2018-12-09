@@ -14,14 +14,7 @@ module.exports = {
 		});
 	},
 	errorHandler(err, req, res, next) {
-		console.log('err', err);
 		switch (err.code) {
-			case 404:
-				return res.status(404).json({
-					error: true,
-					message: 'The requested content does not exist.',
-				});
-
 			case 400:
 				return res.status(400).json({
 					error: true,
@@ -32,6 +25,12 @@ module.exports = {
 				return res.status(401).json({
 					error: true,
 					message: 'You are unathorized to view the content.',
+				});
+
+			case 404:
+				return res.status(404).json({
+					error: true,
+					message: 'The requested content does not exist.',
 				});
 
 			default:
