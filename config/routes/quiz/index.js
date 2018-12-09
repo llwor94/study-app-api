@@ -1,7 +1,7 @@
 const express = require('express');
 const router = express.Router();
 const questionRouter = require('./questionRoutes');
-const { invalidQuiz } = require('../../schema');
+const { invalidQuiz, invalidUserQuizUpdate } = require('../../schema');
 const helpers = require('../../../db/helpers/quizHelpers');
 
 router.param('quizId', (req, res, next, id) => {
@@ -56,6 +56,14 @@ router.patch('/:quizId/edit', ({ quiz, body, user }, res, next) => {
 
 router.patch('/:quizId', ({ quiz, body, user }, res, next) => {
 	if (!user.id) return next({ code: 401 });
+	if (invalidUserQuizUpdate(body)) return next({ code: 400 });
+	helpers
+		.userQuizUpdate(body, user.id, quiz.id)
+		.then(response => {
+			if (!response) return next({ code: 400 });
+			res.json(response);
+		})
+		.catch(next);
 });
 
 router.post('/', ({ body, user }, res, next) => {

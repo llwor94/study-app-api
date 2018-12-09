@@ -1,4 +1,5 @@
 const db = require('../dbConfig');
+const _ = require('lodash');
 
 module.exports = {
 	getQuizzes(topic) {
@@ -62,6 +63,35 @@ module.exports = {
 		return db('quizzes').where({ id }).update({ topic_id, title, time_limit_seconds });
 	},
 	deleteQuiz(id) {
-		return db('questions').where({ id }).del();
+		return db('quizzes').where({ id }).del();
+	},
+	async userQuizUpdate(
+		{ vote = undefined, score = undefined, favorite = undefined },
+		user_id,
+		quiz_id,
+	) {
+		let entry = await db('users_quizzes').where({ user_id, quiz_id }).first();
+		console.log(entry);
+		if (!entry) {
+			let body = { ..._.omitBy({ vote, score, favorite }, _.isUndefined), user_id, quiz_id };
+			if (vote) {
+				if (vote === 1) await db('quizzes').where('id', quiz_id).increment('votes', 1);
+				if (vote === -1) await db('quizzes').where('id', quiz_id).decrement('votes', 1);
+			}
+			return db('users_quizzes').insert(body);
+		}
+		if (score) {
+			let questions = await db('questions').where({ quiz_id });
+			if (score > questions.length) return;
+		}
+		if (vote !== entry.vote) {
+			let difference = Math.abs(vote - entry.vote);
+			console.log(difference);
+			if (vote < entry.vote)
+				await db('quizzes').where('id', quiz_id).decrement('votes', difference);
+			else await db('quizzes').where('id', quiz_id).increment('votes', difference);
+		}
+
+		return db('users_quizzes').update({ vote, score, favorite });
 	},
 };

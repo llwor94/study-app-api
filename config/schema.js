@@ -27,6 +27,14 @@ const updateQuizSchema = Joi.object()
 	})
 	.or('title', 'time_limit_seconds', 'topic');
 
+const UserQuizSchema = Joi.object()
+	.keys({
+		vote: Joi.number().integer().min(-1).max(1),
+		favorite: Joi.boolean(),
+		score: Joi.number().integer(),
+	})
+	.or('vote', 'favorite', 'score');
+
 const questionSchema = {
 	question: Joi.string().required(),
 	option1: Joi.string().required(),
@@ -73,6 +81,10 @@ module.exports = {
 			return error;
 		}
 		const { error } = Joi.validate(question, questionSchema);
+		return error;
+	},
+	invalidUserQuizUpdate(input) {
+		const { error } = Joi.validate(input, UserQuizSchema);
 		return error;
 	},
 };
