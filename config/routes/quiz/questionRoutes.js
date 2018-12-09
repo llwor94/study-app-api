@@ -55,6 +55,10 @@ router.patch('/:questionId', ({ question, body, user }, res, next) => {
 		.catch(next);
 });
 
+router.patch('/:questionId/play', ({ question, body, user }, res, next) => {
+	console.log(user);
+});
+
 router.delete('/:questionId', ({ question, user }, res, next) => {
 	if (!user.authorized) return next({ code: 401 });
 	deleteQuestion(question.id)
