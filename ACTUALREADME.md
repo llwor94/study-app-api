@@ -87,7 +87,7 @@ If the user IS logged in
   topic: "Topic",
   score: 123,
   user_vote: -1, //Will be either -1, 0, or 1
-  favorite: false //Will always start at false
+  favorite: false //Default false
 }, ...]
 ```
 
@@ -157,7 +157,7 @@ HEADER -
 ```[1268] //This integer is the ID of the edited quiz```
 
 ## **ADD NEW QUIZ**
-### Adds a new
+### Adds a new quiz
 
 *Method Url:* `/api/quizzes`
 
@@ -167,7 +167,7 @@ HEADER -
 HEADER - 
 ```{Authoriation: JSON Web Token}```
 
-*Argment:*
+*Argument:*
 
 ```
 {
@@ -178,4 +178,31 @@ HEADER -
 *Response:*
 
 ```[1269] //This Integer is the ID of the newly added quiz```
+
+# QUESTION ROUTES
+
+## **ADD NEW QUESTION**
+### Adds a new question
+
+*Method Url:* `/api/quesions`
+
+*HTTP method:* **[POST]**
+
+*Request Reqiurements:*
+HEADER - 
+```{Authoriation: JSON Web Token}```
+
+*Argument:*
+
+```
+{
+  question: "What is the question?",
+  answer: "The answer."
+}
+```
+
+*Response:*
+
+```[5678] //This Integer is the ID of the newly added question```
+
 
