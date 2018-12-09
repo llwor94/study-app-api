@@ -7,22 +7,39 @@
 
 *HTTP method:* **[POST]**
 
-*Argument:*
+#### Headers
 
+| name           | type   | required | description              |
+| -------------- | ------ | -------- | ------------------------ |
+| `Content-Type` | String | Yes      | Must be application/json |
+
+#### Body
+
+| name           | type   | required | description              |
+| -------------- | ------ | -------- | ------------------------ |
+| `username`     | String | Yes      | Must be unique           |
+| `email`        | String | Yes      | Must be unique           |
+| `password`     | String | Yes      |                          |
+| `img_url`      | String | No       | Must be unique           |
+
+*example:*
 
 ```
 {
-  username: "exampleUsername",
-  password: "examplePasword",
-  email: "exampleEmail@email.com",
-  img_url: "www.yourprofileimage.com" //This key is optional.
+  username: "lauren",
+  password: "password123",
+  email: "lauren@email.com",
+  img_url: "www.yourprofileimage.com" 
 }
 ```
 
-*Response:*
+#### Response:
 ```
-{token: JSON Web Token}
+{
+  token: JSON Web Token
+}
 ```
+____
 
 ## **LOGIN**
 ### **Logs a user in**

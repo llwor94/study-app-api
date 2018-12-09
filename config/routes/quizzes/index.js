@@ -23,7 +23,7 @@ router.get('/', ({ query }, res, next) => {
 	helpers
 		.getQuizzes(query.topic)
 		.then(response => {
-			res.json(response);
+			res.status(200).json(response);
 		})
 		.catch(next);
 });
@@ -32,14 +32,14 @@ router.get('/topics', (req, res, next) => {
 	helpers
 		.getTopics()
 		.then(response => {
-			res.json(response);
+			res.status(200).json(response);
 		})
 		.catch(next);
 });
 
 router.get('/:quizId', ({ quiz }, res, next) => {
 	console.log('quizzes/:id', quiz);
-	res.json(quiz);
+	res.status(200).json(quiz);
 });
 
 router.patch('/:quizId/edit', ({ quiz, body, user }, res, next) => {
@@ -49,7 +49,7 @@ router.patch('/:quizId/edit', ({ quiz, body, user }, res, next) => {
 		.updateQuiz(body, quiz.id)
 		.then(response => {
 			if (!response) return next({ code: 404 });
-			res.json(response);
+			res.status(200).json(response);
 		})
 		.catch(next);
 });
@@ -61,7 +61,7 @@ router.patch('/:quizId', ({ quiz, body, user }, res, next) => {
 		.userQuizUpdate(body, user.id, quiz.id)
 		.then(response => {
 			if (!response) return next({ code: 400 });
-			res.json(response);
+			res.status(200).json(response);
 		})
 		.catch(next);
 });
@@ -73,7 +73,7 @@ router.post('/', ({ body, user }, res, next) => {
 		.createQuiz(body)
 		.then(response => {
 			if (!response) return next({ code: 404 });
-			res.json(response);
+			res.status(200).json(response);
 		})
 		.catch(next);
 });

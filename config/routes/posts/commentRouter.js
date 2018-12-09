@@ -22,13 +22,13 @@ router.get('/', ({ post }, res, next) => {
 		.getComments(post.id)
 		.then(response => {
 			console.log(response);
-			res.json(response);
+			res.status(200).json(response);
 		})
 		.catch(next);
 });
 
 router.get('/:commentId', ({ comment }, res, next) => {
-	res.json(comment);
+	res.status(200).json(comment);
 });
 
 router.post('/', ({ post, user, body }, res, next) => {
@@ -40,7 +40,7 @@ router.post('/', ({ post, user, body }, res, next) => {
 		.then(response => {
 			console.log(response);
 			if (!response) return next({ code: 404 });
-			res.json(response);
+			res.status(200).json(response);
 		})
 		.catch(next);
 });
@@ -52,7 +52,7 @@ router.patch('/:commentId', ({ comment, user, body }, res, next) => {
 	helpers
 		.editComment(comment.id, body.text)
 		.then(response => {
-			res.json(response);
+			res.status(200).json(response);
 		})
 		.catch(next);
 });
@@ -63,7 +63,7 @@ router.delete('/:commentId', ({ comment, user }, res, next) => {
 	helpers
 		.deleteComment(comment.id)
 		.then(response => {
-			res.json(response);
+			res.status(200).json(response);
 		})
 		.catch(next);
 });

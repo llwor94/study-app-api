@@ -22,14 +22,14 @@ router.get('/', (req, res, next) => {
 	helpers
 		.getPosts()
 		.then(response => {
-			res.json(response);
+			res.status(200).json(response);
 		})
 		.catch(next);
 });
 
 router.get('/:postId', ({ post }, res, next) => {
 	console.log(post);
-	res.json(post);
+	res.status(200).json(post);
 });
 
 router.post('/', ({ body, user }, res, next) => {
@@ -40,7 +40,7 @@ router.post('/', ({ body, user }, res, next) => {
 		.createPost(body)
 		.then(response => {
 			if (!response) return next({ code: 400 });
-			res.json(response);
+			res.status(200).json(response);
 		})
 		.catch(next);
 });
@@ -52,7 +52,7 @@ router.patch('/:postId', ({ post, body, user }, res, next) => {
 		.updatePost(body, post.id)
 		.then(response => {
 			if (!response) return next({ code: 400 });
-			res.json(response);
+			res.status(200).json(response);
 		})
 		.catch(next);
 });
@@ -63,7 +63,7 @@ router.delete('/:postId', ({ post, user }, res, next) => {
 		.deletePost(post.id)
 		.then(response => {
 			if (!response) return next({ code: 400 });
-			res.json(response);
+			res.status(200).json(response);
 		})
 		.catch(next);
 });

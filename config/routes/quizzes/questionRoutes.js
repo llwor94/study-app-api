@@ -18,13 +18,13 @@ router.get('/', ({ quiz }, res, next) => {
 	helpers
 		.getQuestions(quiz.id)
 		.then(response => {
-			res.json(response);
+			res.status(200).json(response);
 		})
 		.catch(next);
 });
 
 router.get('/:questionId', ({ question }, res, next) => {
-	res.json(_.pick(question, [ 'question', 'options', 'quiz_id' ]));
+	res.status(200).json(_.pick(question, [ 'question', 'options', 'quiz_id' ]));
 });
 
 router.post('/', ({ quiz, body, user }, res, next) => {
@@ -36,7 +36,7 @@ router.post('/', ({ quiz, body, user }, res, next) => {
 		.createQuestion(question)
 		.then(response => {
 			if (!response) return next({ code: 404 });
-			res.json(response);
+			res.status(200).json(response);
 		})
 		.catch(next);
 });
@@ -48,7 +48,7 @@ router.patch('/:questionId', ({ question, body, user }, res, next) => {
 		.updateQuestion(body, question.id)
 		.then(response => {
 			if (!response) return next({ code: 404 });
-			res.json(response);
+			res.status(200).json(response);
 		})
 		.catch(next);
 });
@@ -57,8 +57,8 @@ router.patch('/:questionId/play', ({ question, body, user }, res, next) => {
 	if (!body.option) return next({ code: 400 });
 	let correct = body.option === question.answer;
 	if (!user.id) {
-		if (correct) return res.json({ question: question.id, correct });
-		return res.json({ question: question.id, correct });
+		if (correct) return res.status(200).json({ question: question.id, correct });
+		return res.status(200).json({ question: question.id, correct });
 	}
 });
 
@@ -68,7 +68,7 @@ router.delete('/:questionId', ({ question, user }, res, next) => {
 		.deleteQuestion(question.id)
 		.then(response => {
 			if (!response) return next({ code: 404 });
-			res.json(response);
+			res.status(200).json(response);
 		})
 		.catch(next);
 });
