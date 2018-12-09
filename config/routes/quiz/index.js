@@ -2,19 +2,12 @@ const express = require('express');
 const router = express.Router();
 const questionRouter = require('./questionRoutes');
 const { invalidQuiz } = require('../../schema');
-const {
-	getQuizzes,
-	getQuiz,
-	getTopics,
-	createQuiz,
-	updateQuiz,
-} = require('../../../db/helpers/quizHelpers');
-
-router.use('/:quizId/questions', questionRouter);
+const helpers = require('../../../db/helpers/quizHelpers');
 
 router.param('quizId', (req, res, next, id) => {
 	console.log('this is the quiz route', id, req.user);
-	getQuiz(id)
+	helpers
+		.getQuiz(id)
 		.then(quiz => {
 			if (!quiz) return next({ code: 404 });
 			if (quiz.author.id === req.user.id) req.user.authorized = true;
@@ -26,16 +19,18 @@ router.param('quizId', (req, res, next, id) => {
 
 router.get('/', ({ query }, res, next) => {
 	console.log('quizzes/', query.topic);
-	getQuizzes(query.topic)
-		.then(quizzes => {
-			res.json(quizzes);
+	helpers
+		.getQuizzes(query.topic)
+		.then(response => {
+			console.log('response', response);
+			res.json(response);
 		})
 		.catch(next);
 });
 
-router.get('/topics', ({ query }, res, next) => {
-	console.log('query', query.name);
-	getTopics(query.name)
+router.get('/topics', (req, res, next) => {
+	helpers
+		.getTopics()
 		.then(topics => {
 			res.json(topics);
 		})
@@ -50,7 +45,8 @@ router.get('/:quizId', ({ quiz }, res, next) => {
 router.patch('/:quizId', ({ quiz, body, user }, res, next) => {
 	if (!user.authorized) return next({ code: 401 });
 	if (invalidQuiz(body, true)) return next({ code: 400 });
-	updateQuiz(body, quiz.id)
+	helpers
+		.updateQuiz(body, quiz.id)
 		.then(quiz => {
 			if (!quiz) return next({ code: 404 });
 			res.json(quiz);
@@ -61,8 +57,10 @@ router.patch('/:quizId', ({ quiz, body, user }, res, next) => {
 router.post('/', ({ body, user }, res, next) => {
 	if (invalidQuiz(body)) return next({ code: 400 });
 	body.author = user.id;
-	createQuiz(body)
+	helpers
+		.createQuiz(body)
 		.then(quiz => {
+			console.log(quiz);
 			if (!quiz) return next({ code: 404 });
 			res.json(quiz);
 		})
@@ -72,5 +70,7 @@ router.post('/', ({ body, user }, res, next) => {
 router.delete('/:quizId', ({ quiz, body, user }, res, next) => {
 	if (!user.authorized) return next({ code: 401 });
 });
+
+router.use('/:quizId/questions', questionRouter);
 
 module.exports = router;

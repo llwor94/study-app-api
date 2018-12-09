@@ -15,7 +15,7 @@ const loginUserSchema = {
 const quizSchema = {
 	title: Joi.string().alphanum().required(),
 	time_limit_seconds: Joi.number().integer(),
-	topic: Joi.string().alphanum().max(20).required(),
+	topic: Joi.string().max(20).required(),
 	votes: Joi.number().integer(),
 };
 
@@ -23,7 +23,7 @@ const updateQuizSchema = Joi.object()
 	.keys({
 		title: Joi.string().alphanum(),
 		time_limit_seconds: Joi.number().integer(),
-		topic: Joi.string().alphanum().max(20),
+		topic: Joi.string().max(20),
 	})
 	.or('title', 'time_limit_seconds', 'topic');
 
@@ -62,6 +62,7 @@ module.exports = {
 			return error;
 		}
 		const { error } = Joi.validate(quiz, quizSchema);
+		console.log(error);
 		return error;
 	},
 	invalidQuestion(question, update) {
