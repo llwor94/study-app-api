@@ -20,6 +20,7 @@ router.post('/register', ({ body }, res, next) => {
 	body.password = bcrypt.hashSync(body.password, 8);
 	db('users')
 		.insert(body)
+		.returning('id')
 		.then(([ id ]) => {
 			let token = generateToken({ id });
 			return res.status(200).json({ token });
