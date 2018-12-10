@@ -5,7 +5,6 @@ const { invalidQuiz, invalidUserQuizUpdate } = require('../../schema');
 const helpers = require('../../../db/helpers/quizHelpers');
 
 router.param('quizId', (req, res, next, id) => {
-	console.log('param', id, req.user);
 	helpers
 		.getQuiz(id, req.user)
 		.then(quiz => {
