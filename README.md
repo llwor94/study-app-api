@@ -1,8 +1,8 @@
 # Table schemas
 
 ## Users
-POST `/api/auth/register`
-POST `/api/auth/login`
+POST `/api/auth/register`  
+POST `/api/auth/login`  
 
 | Field    | Data Type                     |
 | -------- | ----------------------------- |
@@ -14,12 +14,12 @@ POST `/api/auth/login`
 
 ## Questions
 
-GET `/api/quizzes/:quizId/questions`
-GET `/api/quizzes/:quizId/questions/:questionId`
-POST `/api/quizzes/:quizId/questions` REQUIRES AUTH
-PATCH `/api/quizzes/:quizId/questions/:questionId/edit` REQUIRES AUTH
-PATCH `/api/quizzes/:quizId/questions/:questionId` (receives whether answer is correct or not)
-DELETE `/api/quizzes/:quizId/questions/:questionId` REQUIRES AUTH
+GET `/api/quizzes/:quizId/questions`  
+GET `/api/quizzes/:quizId/questions/:questionId`  
+POST `/api/quizzes/:quizId/questions` REQUIRES AUTH  
+PATCH `/api/quizzes/:quizId/questions/:questionId/edit` REQUIRES AUTH  
+PATCH `/api/quizzes/:quizId/questions/:questionId` (receives whether answer is correct or not)  
+DELETE `/api/quizzes/:quizId/questions/:questionId` REQUIRES AUTH  
 
 | Field    | Data Type                     |
 | -------- | ----------------------------- |
@@ -35,12 +35,12 @@ DELETE `/api/quizzes/:quizId/questions/:questionId` REQUIRES AUTH
 
 ## Quizzes
 
-GET `/api/quizzes`
-GET `/api/quizzes/:quizId`
-POST `/api/quizzes/` REQUIRES AUTH
-PATCH `/api/quizzes/:quizId/edit` REQUIRES AUTH
-PATCH `/api/quizzes/:quizId` REQUIRES AUTH (but can be any user, updates quiz/user relationship)
-DELETE `/api/quizzes/:quizId` REQUIRES AUTH 
+GET `/api/quizzes`  
+GET `/api/quizzes/:quizId`  
+POST `/api/quizzes/` REQUIRES AUTH  
+PATCH `/api/quizzes/:quizId/edit` REQUIRES AUTH  
+PATCH `/api/quizzes/:quizId` REQUIRES AUTH (but can be any user, updates quiz/user relationship)  
+DELETE `/api/quizzes/:quizId` REQUIRES AUTH   
 
 
 | Field              | Data Type                     |
@@ -54,7 +54,7 @@ DELETE `/api/quizzes/:quizId` REQUIRES AUTH
 
 ## Topics
 
-GET `/api/quizzes/topics`
+GET `/api/quizzes/topics`  
 
 | Field       | Data Type                     |
 | ----------- | ----------------------------- |
@@ -75,11 +75,11 @@ GET `/api/quizzes/topics`
 
 ## Posts
 
-GET `/api/posts` 
-GET `/api/posts/:postId`
-POST `/api/posts` REQUIRES AUTH
-PATCH `/api/posts/:postId` REQUIRES AUTH
-DELETE `/api/posts/:postId` REQUIRES AUTH
+GET `/api/posts`   
+GET `/api/posts/:postId`  
+POST `/api/posts` REQUIRES AUTH  
+PATCH `/api/posts/:postId` REQUIRES AUTH  
+DELETE `/api/posts/:postId` REQUIRES AUTH  
 
 | Field      | Data Type                     |
 | ---------- | ----------------------------- |
@@ -91,11 +91,11 @@ DELETE `/api/posts/:postId` REQUIRES AUTH
 
 ## Comments
 
-GET `/api/posts/:postId/comments` 
-GET `/api/posts/:postId/comments/:commentId`
-POST `/api/posts/:postId/comments` REQUIRES AUTH
-PATCH `/api/posts/:postId/comments/:commentId` REQUIRES AUTH
-DELETE `/api/posts/:postId/comments/:commentId` REQUIRES AUTH
+GET `/api/posts/:postId/comments`   
+GET `/api/posts/:postId/comments/:commentId`  
+POST `/api/posts/:postId/comments` REQUIRES AUTH  
+PATCH `/api/posts/:postId/comments/:commentId` REQUIRES AUTH  
+DELETE `/api/posts/:postId/comments/:commentId` REQUIRES AUTH  
 
 | Field        | Data Type                     |
 | ------------ | ----------------------------- |
