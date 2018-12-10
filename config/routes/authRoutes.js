@@ -23,6 +23,7 @@ router.post('/register', ({ body }, res, next) => {
 		.returning('id')
 		.then(response => {
 			console.log(response);
+			res.send(response);
 			// let token = generateToken({ id });
 			// return res.status(200).json({ token });
 		})
