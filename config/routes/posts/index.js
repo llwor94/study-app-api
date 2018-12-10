@@ -32,7 +32,7 @@ router.get('/:postId', ({ post }, res, next) => {
 
 router.post('/', ({ body, user }, res, next) => {
 	if (invalidPost(body)) return next({ code: 400 });
-	if (!user.id) return next({ code: 404 });
+	if (!user.id) return next({ code: 401 });
 	body.author = user.id;
 	helpers
 		.createPost(body)

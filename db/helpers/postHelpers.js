@@ -4,11 +4,15 @@ module.exports = {
 	getPosts() {
 		return db('posts as p')
 			.join('users as u', 'u.id', 'p.author')
-			.select('p.title', 'p.body', 'p.created_at', 'u.username as author');
+			.select('p.id', 'p.title', 'p.body', 'p.created_at', 'u.username as author');
 	},
 	async getPost(id) {
-		let post = await db('posts').where({ id });
-		let author = await db('users').where('id', post.author).select('id', 'username', 'img_url');
+		let post = await db('posts').where({ id }).first();
+		if (!post) return null;
+		let author = await db('users')
+			.where('id', post.author)
+			.select('id', 'username', 'img_url')
+			.first();
 		post.author = author;
 		return post;
 	},
