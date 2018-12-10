@@ -2,8 +2,8 @@ exports.up = function(knex, Promise) {
 	return knex.schema.createTable('direct_messages', table => {
 		table.increments();
 		table.text('message').notNullable();
-		table.int('from').unsigned().references('users.id').onDelete('CASCADE');
-		table.int('to').unsigned().references('users.id').onDelete('CASCADE');
+		table.integer('from').unsigned().references('users.id').onDelete('CASCADE');
+		table.integer('to').unsigned().references('users.id').onDelete('CASCADE');
 		table.timestamp('created_at').defaultTo(knex.fn.now());
 	});
 };
