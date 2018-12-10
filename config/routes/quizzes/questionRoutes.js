@@ -40,7 +40,7 @@ router.post('/', ({ quiz, body, user }, res, next) => {
 		.catch(next);
 });
 
-router.patch('/:questionId', ({ question, body, user }, res, next) => {
+router.patch('/:questionId/edit', ({ question, body, user }, res, next) => {
 	if (!user.authorized) return next({ code: 401 });
 	if (invalidQuestion(body, true)) return next({ code: 400 });
 	helpers
@@ -52,13 +52,11 @@ router.patch('/:questionId', ({ question, body, user }, res, next) => {
 		.catch(next);
 });
 
-router.patch('/:questionId/play', ({ question, body, user }, res, next) => {
+router.patch('/:questionId', ({ question, body, user }, res, next) => {
 	if (!body.option) return next({ code: 400 });
 	let correct = body.option === question.answer;
-	if (!user.id) {
-		if (correct) return res.status(200).json({ question: question.id, correct });
-		return res.status(200).json({ question: question.id, correct });
-	}
+
+	return res.status(200).json({ question: question.id, correct });
 });
 
 router.delete('/:questionId', ({ question, user }, res, next) => {

@@ -56,7 +56,6 @@ module.exports = {
 				(currentQuestion.answer === 3 || answer === 3)) ||
 			(!currentQuestion.option4 && !option4 && (currentQuestion.answer === 4 || answer === 4))
 		) {
-			console.log('somethin happened here');
 			return null;
 		}
 
