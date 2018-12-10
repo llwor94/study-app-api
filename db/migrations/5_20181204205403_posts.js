@@ -3,7 +3,7 @@ exports.up = function(knex, Promise) {
 		table.increments();
 		table.string('title').notNullable();
 		table.text('body').notNullable();
-		table.int('author').unsigned().references('users.id').onDelete('CASCADE');
+		table.integer('author').unsigned().references('users.id').onDelete('CASCADE');
 		table.timestamp('created_at').defaultTo(knex.fn.now());
 	});
 };
