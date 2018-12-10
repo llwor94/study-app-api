@@ -8,11 +8,12 @@ module.exports = {
 			.select('c.id', 'c.text', 'u.username as author', 'c.post_id', 'c.created_at');
 	},
 	async getComment(id) {
-		let comment = await db('comments').where({ id });
+		let comment = await db('comments').where({ id }).first();
 		if (!comment) return;
 		let author = await db('users')
 			.where('id', comment.author)
-			.select('id', 'username', 'img_url');
+			.select('id', 'username', 'img_url')
+			.first();
 		comment.author = author;
 		return comment;
 	},
