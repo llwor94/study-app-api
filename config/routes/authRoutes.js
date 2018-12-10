@@ -9,7 +9,7 @@ const { invalidLogin, invalidRegister } = require('../schema');
 const router = express.Router();
 
 function generateToken(payload) {
-	return jwt.sign(payload, process.env.SECRET, {
+	return jwt.sign(payload, 'secret', {
 		expiresIn: '1y',
 	});
 }
@@ -17,7 +17,7 @@ function generateToken(payload) {
 router.post('/register', ({ body }, res, next) => {
 	if (invalidRegister(body)) return next({ code: 400 });
 
-	body.password = bcrypt.hashSync(body.password, process.env.SALT_ROUNDS);
+	body.password = bcrypt.hashSync(body.password, 8);
 	db('users')
 		.insert(body)
 		.then(([ id ]) => {
