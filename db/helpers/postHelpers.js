@@ -20,7 +20,7 @@ module.exports = {
 		return db('posts').returning('id').insert(post);
 	},
 	updatePost({ title = undefined, body = undefined }, id) {
-		return db('posts').where({ id }).update({ title, body });
+		return db('posts').where({ id }).returning('id').update({ title, body });
 	},
 	deletePost(id) {
 		return db('posts').where({ id }).del();

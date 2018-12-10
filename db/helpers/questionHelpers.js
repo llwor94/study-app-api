@@ -61,6 +61,7 @@ module.exports = {
 
 		return db('questions')
 			.where({ id })
+			.returning('id')
 			.update({ question, option1, option2, option3, option4, answer });
 	},
 	deleteQuestion(id) {

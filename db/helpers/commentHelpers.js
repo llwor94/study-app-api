@@ -18,10 +18,10 @@ module.exports = {
 		return comment;
 	},
 	createComment({ text, author }, post_id) {
-		return db('comments').insert({ text, author, post_id });
+		return db('comments').returning('id').insert({ text, author, post_id });
 	},
 	editComment(id, text) {
-		return db('comments').where({ id }).update({ text });
+		return db('comments').returning('id').where({ id }).update({ text });
 	},
 	deleteComment(id) {
 		return db('comments').where({ id }).del();

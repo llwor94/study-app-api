@@ -74,7 +74,10 @@ module.exports = {
 		if (topic) {
 			topic_id = await this.getTopicId(topic);
 		}
-		return db('quizzes').where({ id }).update({ topic_id, title, time_limit_seconds });
+		return db('quizzes')
+			.where({ id })
+			.returning('id')
+			.update({ topic_id, title, time_limit_seconds });
 	},
 	deleteQuiz(id) {
 		return db('quizzes').where({ id }).del();
@@ -91,7 +94,7 @@ module.exports = {
 				if (vote === 1) await db('quizzes').where('id', quiz_id).increment('votes', 1);
 				if (vote === -1) await db('quizzes').where('id', quiz_id).decrement('votes', 1);
 			}
-			return db('users_quizzes').insert(body);
+			return db('users_quizzes').returning('id').insert(body);
 		}
 		if (score) {
 			let questions = await db('questions').where({ quiz_id });
@@ -104,6 +107,6 @@ module.exports = {
 			else await db('quizzes').where('id', quiz_id).increment('votes', difference);
 		}
 
-		return db('users_quizzes').update({ vote, score, favorite });
+		return db('users_quizzes').returning('id').update({ vote, score, favorite });
 	},
 };
