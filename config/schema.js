@@ -79,17 +79,14 @@ module.exports = {
 	invalidQuiz(quiz, update) {
 		if (update) {
 			const { error } = Joi.validate(quiz, updateQuizSchema);
-			console.log(error);
 			return error;
 		}
 		const { error } = Joi.validate(quiz, quizSchema);
-		console.log(error);
 		return error;
 	},
 	invalidQuestion(question, update) {
 		if (update) {
 			const { error } = Joi.validate(question, updateQuestionSchema);
-			console.log(error);
 			return error;
 		}
 		const { error } = Joi.validate(question, questionSchema);
