@@ -1,7 +1,8 @@
 const express = require('express');
 const morgan = require('morgan');
 const cors = require('cors');
-const path = require('path');
+const showdown = require('showdown');
+const md = require('./');
 
 const configureRoutes = require('./config');
 const app = express();
