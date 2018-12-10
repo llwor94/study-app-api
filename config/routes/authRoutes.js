@@ -33,11 +33,11 @@ router.post('/login', ({ body }, res, next) => {
 	db('users')
 		.where({ email: body.email })
 		.first()
-		.then(({ password, id }) => {
-			if (!id) return next({ code: 404 });
-			if (bcrypt.compareSync(password, body.password)) return next({ code: 400 });
+		.then(response => {
+			if (!response) return next({ code: 404 });
+			if (!bcrypt.compareSync(body.password, response.password)) return next({ code: 400 });
 
-			const token = generateToken({ id });
+			const token = generateToken({ id: response.id });
 			return res.status(200).json({ token });
 		})
 		.catch(next);
