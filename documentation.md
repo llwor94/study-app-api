@@ -5,6 +5,7 @@
 
 *Method Url:* `/api/auth/register`
 
+
 *HTTP method:* **[POST]**
 
 #### Headers
