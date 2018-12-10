@@ -1,6 +1,8 @@
 # Table schemas
 
 ## Users
+POST `/api/auth/register`
+POST `/api/auth/login`
 
 | Field    | Data Type                     |
 | -------- | ----------------------------- |
@@ -11,6 +13,13 @@
 | img_url  | String                        |
 
 ## Questions
+
+GET `/api/quizzes/:quizId/questions`
+GET `/api/quizzes/:quizId/questions/:questionId`
+POST `/api/quizzes/:quizId/questions` REQUIRES AUTH
+PATCH `/api/quizzes/:quizId/questions/:questionId/edit` REQUIRES AUTH
+PATCH `/api/quizzes/:quizId/questions/:questionId` (receives whether answer is correct or not)
+DELETE `/api/quizzes/:quizId/questions/:questionId` REQUIRES AUTH
 
 | Field    | Data Type                     |
 | -------- | ----------------------------- |
@@ -26,6 +35,14 @@
 
 ## Quizzes
 
+GET `/api/quizzes`
+GET `/api/quizzes/:quizId`
+POST `/api/quizzes/` REQUIRES AUTH
+PATCH `/api/quizzes/:quizId/edit` REQUIRES AUTH
+PATCH `/api/quizzes/:quizId` REQUIRES AUTH (but can be any user, updates quiz/user relationship)
+DELETE `/api/quizzes/:quizId` REQUIRES AUTH 
+
+
 | Field              | Data Type                     |
 | ------------------ | ----------------------------- |
 | id                 | Unsigned Int (auto increment) |
@@ -35,7 +52,9 @@
 | votes              | Int (default: 0)              |
 | topic_id              | Unsigned Int (ref to topics)  |
 
-## Topics 
+## Topics
+
+GET `/api/quizzes/topics`
 
 | Field       | Data Type                     |
 | ----------- | ----------------------------- |
@@ -56,6 +75,12 @@
 
 ## Posts
 
+GET `/api/posts` 
+GET `/api/posts/:postId`
+POST `/api/posts` REQUIRES AUTH
+PATCH `/api/posts/:postId` REQUIRES AUTH
+DELETE `/api/posts/:postId` REQUIRES AUTH
+
 | Field      | Data Type                     |
 | ---------- | ----------------------------- |
 | id         | Unsigned Int (auto increment) |
@@ -65,6 +90,12 @@
 | created_at | Timestamp (default: Date.now) |
 
 ## Comments
+
+GET `/api/posts/:postId/comments` 
+GET `/api/posts/:postId/comments/:commentId`
+POST `/api/posts/:postId/comments` REQUIRES AUTH
+PATCH `/api/posts/:postId/comments/:commentId` REQUIRES AUTH
+DELETE `/api/posts/:postId/comments/:commentId` REQUIRES AUTH
 
 | Field        | Data Type                     |
 | ------------ | ----------------------------- |

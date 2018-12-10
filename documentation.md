@@ -293,7 +293,7 @@ ___
 ## **ADD NEW QUESTION**
 ### Adds a new question
 
-*Method Url:* `/api/quesions`
+*Method Url:* `/api/quizzes/:quizId/questions`
 
 *HTTP method:* **[POST]**
 
