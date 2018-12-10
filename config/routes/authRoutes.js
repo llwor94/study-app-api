@@ -21,9 +21,10 @@ router.post('/register', ({ body }, res, next) => {
 	db('users')
 		.insert(body)
 		.returning('id')
-		.then(([ id ]) => {
-			let token = generateToken({ id });
-			return res.status(200).json({ token });
+		.then(response => {
+			console.log(response);
+			// let token = generateToken({ id });
+			// return res.status(200).json({ token });
 		})
 		.catch(next);
 });
