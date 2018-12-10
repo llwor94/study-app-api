@@ -29,7 +29,6 @@ module.exports = {
 		if (!quiz) return;
 		if (user.id) {
 			let user_quiz = await db('users_quizzes').where({ user_id: user.id, quiz_id }).first();
-			console.log(user_quiz);
 			if (user_quiz) {
 				quiz = {
 					...quiz,
