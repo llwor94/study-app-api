@@ -174,7 +174,7 @@ ___
 
 ##### 200 (OK)
 
-If the user is NOT logged in
+>If you send a valid quiz id with no authorization token, the endpoint will return an HTTP response with a status code `200` and a body as below.
 
 ```
 {
@@ -190,21 +190,72 @@ If the user is NOT logged in
 }
 ```
 
-If the user IS logged in
+>If you send a valid quiz id with a valid authorization token, the endpoint will return an HTTP response with a status code `200` and a body as below.
 
 ```
 {
-  id: 12345,
-  title: "Title",
-  author: "Author",
-  votes: 123,
-  topic: "Topic",
-  score: 123,
-  user_vote: -1, //Will be either -1, 0, or 1
-  favorite: false //Will always start at false
+  "id": 2,
+  "title": "Array Methods",
+  "votes": 123,
+  "author": {
+    "id": 1,
+    "username": "lauren",
+    "img_url": "https://i.ytimg.com/vi/YCaGYUIfdy4/maxresdefault.jpg"
+  },
+  "topic": "JavaScript",
+  "score": 123,
+  "user_vote": -1, 
+  "favorite": false 
 }
 ```
 
+##### 404 (Not Found)
+>If you pass in an id that does not match one in the database, the endpoint will return an HTTP response with a status code `404` and a body as below.
+```
+{
+  "error": true,
+  "message": "The requested content does not exist."
+}
+```
+---
+## **ADD NEW QUIZ**
+### Adds a new quiz
+
+*Method Url:* `/api/quizzes`
+
+*HTTP method:* **[POST]**
+
+#### Headers
+
+| name           | type   | required | description                    |
+| -------------- | ------ | -------- | ------------------------------ |
+| `Content-Type` | String | Yes      | Must be application/json       |
+| `Authorization`| String | Yes      | Bearer JWT authorization token |
+
+#### Body
+
+| name     | type   | required | description              |
+| ---------| ------ | -------- | ------------------------ |
+| `title`  | String | No       | Must match an email in the database |
+| `topic`  | String | No       |  |
+
+*example:*
+```
+{
+  title: "Array Methods",
+  topic: "JavaScript"
+}
+```
+#### Response 
+
+##### 200 (OK)
+
+```
+[
+  1269
+]
+```
+---
 ## **EDIT SPECIFIC QUIZ**
 ### Edits one or more details of a specific quiz created by the current user.
 
@@ -212,10 +263,14 @@ If the user IS logged in
 
 *HTTP method:* **[PATCH]**
 
-*Request Reqiurements:*
-HEADER - 
-```{Authoriation: JSON Web Token}```
 
+
+#### Body
+
+| name     | type   | required | description              |
+| ---------| ------ | -------- | ------------------------ |
+| `title`  | String | No       | Must match an email in the database |
+| `topic`  | String | No       | Must match a password in the database corresponding to above email |
 *Argument:*
 
 ```
@@ -230,28 +285,7 @@ HEADER -
 
 ```[1268] //This integer is the ID of the edited quiz```
 
-## **ADD NEW QUIZ**
-### Adds a new quiz
 
-*Method Url:* `/api/quizzes`
-
-*HTTP method:* **[POST]**
-
-*Request Reqiurements:*
-HEADER - 
-```{Authoriation: JSON Web Token}```
-
-*Argument:*
-
-```
-{
-  title: "Some New Title",
-  topic: "Some New Topic"
-}
-```
-*Response:*
-
-```[1269] //This Integer is the ID of the newly added quiz```
 
 # QUESTION ROUTES
 

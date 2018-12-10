@@ -1,0 +1,157 @@
+<h1 id="auth-routes">AUTH ROUTES</h1>
+<h2 id="-register-"><strong>REGISTER</strong></h2>
+<h3 id="-registers-a-user-"><strong>Registers a user</strong></h3>
+<p><em>Method Url:</em> <code>/api/auth/register</code></p>
+<p><em>HTTP method:</em> <strong>[POST]</strong></p>
+<h4 id="headers">Headers</h4>
+<table>
+<thead>
+<tr>
+<th>name</th>
+<th>type</th>
+<th>required</th>
+<th>description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>Content-Type</code></td>
+<td>String</td>
+<td>Yes</td>
+<td>Must be application/json</td>
+</tr>
+</tbody>
+</table>
+<h4 id="body">Body</h4>
+<table>
+<thead>
+<tr>
+<th>name</th>
+<th>type</th>
+<th>required</th>
+<th>description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>username</code></td>
+<td>String</td>
+<td>Yes</td>
+<td>Must be unique</td>
+</tr>
+<tr>
+<td><code>email</code></td>
+<td>String</td>
+<td>Yes</td>
+<td>Must be unique</td>
+</tr>
+<tr>
+<td><code>password</code></td>
+<td>String</td>
+<td>Yes</td>
+<td></td>
+</tr>
+<tr>
+<td><code>img_url</code></td>
+<td>String</td>
+<td>No</td>
+<td>Must be unique</td>
+</tr>
+</tbody>
+</table>
+<p><em>example:</em></p>
+<pre><code>{
+  <span class="hljs-attribute">username</span>: <span class="hljs-string">"lauren"</span>,
+  password: <span class="hljs-string">"password123"</span>,
+  email: <span class="hljs-string">"lauren@email.com"</span>,
+  img_url: <span class="hljs-string">"https://i.ytimg.com/vi/YCaGYUIfdy4/maxresdefault.jpg"</span> 
+}
+</code></pre><h4 id="response">Response</h4>
+<h5 id="200-ok-">200 (OK)</h5>
+<blockquote>
+<p>If you successfully register, the endpoint will return an HTTP response with a status code <code>200</code> and a body as below.</p>
+<pre><code>{
+  <span class="hljs-attr">"token"</span>: <span class="hljs-string">"eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MSwiaWF0IjoxNTQ0MzM1NjUxLCJleHAiOjE1NzU4OTMyNTF9.uqd2OHBYkGQpwjLTPPiPWYkYOKlG7whQDFkk46xGXoE"</span>
+}
+</code></pre><h5 id="400-bad-request-">400 (Bad Request)</h5>
+<p>If you send in invalid fields, the endpoint will return an HTTP response with a status code <code>400</code> and a body as below.</p>
+<pre><code>{
+  <span class="hljs-attr">"error"</span>: <span class="hljs-literal">true</span>,
+  <span class="hljs-attr">"message"</span>: <span class="hljs-string">"There was a problem with your request."</span>
+}
+</code></pre></blockquote>
+<hr>
+<h2 id="-login-"><strong>LOGIN</strong></h2>
+<h3 id="-logs-a-user-in-"><strong>Logs a user in</strong></h3>
+<p><em>Method Url:</em> <code>/api/auth/login</code></p>
+<p><em>HTTP method:</em> <strong>[POST]</strong></p>
+<h4 id="headers">Headers</h4>
+<table>
+<thead>
+<tr>
+<th>name</th>
+<th>type</th>
+<th>required</th>
+<th>description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>Content-Type</code></td>
+<td>String</td>
+<td>Yes</td>
+<td>Must be application/json</td>
+</tr>
+</tbody>
+</table>
+<h4 id="body">Body</h4>
+<table>
+<thead>
+<tr>
+<th>name</th>
+<th>type</th>
+<th>required</th>
+<th>description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>email</code></td>
+<td>String</td>
+<td>Yes</td>
+<td>Must match an email in the database</td>
+</tr>
+<tr>
+<td><code>password</code></td>
+<td>String</td>
+<td>Yes</td>
+<td>Must match a password in the database corresponding to above email</td>
+</tr>
+</tbody>
+</table>
+<p><em>example:</em></p>
+<pre><code>{
+  <span class="hljs-attribute">email</span>: <span class="hljs-string">"lauren@email.com"</span>,
+  password: <span class="hljs-string">"password123"</span>
+}
+</code></pre><h4 id="response">Response</h4>
+<h5 id="200-ok-">200 (OK)</h5>
+<blockquote>
+<p>If you successfully login, the endpoint will return an HTTP response with a status code <code>200</code> and a body as below.</p>
+<pre><code>{
+  <span class="hljs-attr">"token"</span>: <span class="hljs-string">"eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MSwiaWF0IjoxNTQ0MzM1NjUxLCJleHAiOjE1NzU4OTMyNTF9.uqd2OHBYkGQpwjLTPPiPWYkYOKlG7whQDFkk46xGXoE"</span>
+}
+</code></pre><h5 id="400-bad-request-">400 (Bad Request)</h5>
+<p>If you send in invalid fields or the passwords do not match, the endpoint will return an HTTP response with a status code <code>400</code> and a body as below.</p>
+<pre><code>{
+  <span class="hljs-attr">"error"</span>: <span class="hljs-literal">true</span>,
+  <span class="hljs-attr">"message"</span>: <span class="hljs-string">"There was a problem with your request."</span>
+}
+</code></pre><h5 id="404-not-found-">404 (Not Found)</h5>
+<p>If you send in an email address that does not match one in the database, the endpoint will return an HTTP response with a status code <code>404</code> and a body as below.</p>
+<pre><code>{
+  <span class="hljs-attr">"error"</span>: <span class="hljs-literal">true</span>,
+  <span class="hljs-attr">"message"</span>: <span class="hljs-string">"The requested content does not exist."</span>
+}
+</code></pre></blockquote>
+<hr>

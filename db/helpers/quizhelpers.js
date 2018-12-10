@@ -12,37 +12,37 @@ module.exports = {
 			.join('users as u', 'q.author', 'u.id')
 			.select('q.id', 'q.title', 'q.votes', 'u.username as author', 't.name as topic');
 	},
-	async getQuiz(id, user_id) {
-		let quiz = undefined;
-		if (user_id) {
-			quiz = await db('quizzes as q')
-				.where('q.id', id)
-				.join('topics as t', 'q.topic_id', 't.id')
-				.select(
-					'q.id',
-					'q.title',
-					'q.votes',
-					'q.time_limit_seconds',
-					'q.author',
-					't.name as topic',
-				)
-				.first();
-		} else {
-			quiz = await db('quizzes as q')
-				.where('q.id', id)
-				.join('topics as t', 'q.topic_id', 't.id')
-				.select(
-					'q.id',
-					'q.title',
-					'q.votes',
-					'q.time_limit_seconds',
-					'q.author',
-					't.name as topic',
-				)
-				.first();
-		}
-		if (!quiz) return;
+	async getQuiz(quiz_id, user) {
+		console.log('helper', quiz_id, user);
+		let quiz = await db('quizzes as q')
+			.where('q.id', quiz_id)
+			.join('topics as t', 'q.topic_id', 't.id')
+			.select(
+				'q.id',
+				'q.title',
+				'q.votes',
+				'q.time_limit_seconds',
+				'q.author',
+				't.name as topic',
+			)
+			.first();
 
+		if (!quiz) return;
+		if (user.id) {
+			let user_quiz = await db('users_quizzes').where({ user_id: user.id, quiz_id }).first();
+			console.log(user_quiz);
+			if (user_quiz) {
+				quiz = {
+					...quiz,
+					user_vote: user_quiz.vote,
+					favorite: user_quiz.favorite,
+					score: user_quiz.score,
+				};
+			} else {
+				quiz = { ...quiz, user_vote: 0, favorite: false, score: 0 };
+			}
+		}
+		console.log(quiz);
 		let author = await db('users')
 			.where('id', quiz.author)
 			.select('id', 'username', 'img_url')

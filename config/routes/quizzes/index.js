@@ -5,8 +5,9 @@ const { invalidQuiz, invalidUserQuizUpdate } = require('../../schema');
 const helpers = require('../../../db/helpers/quizHelpers');
 
 router.param('quizId', (req, res, next, id) => {
+	console.log(id, req.user);
 	helpers
-		.getQuiz(id, user.id)
+		.getQuiz(id, req.user)
 		.then(quiz => {
 			if (!quiz) return next({ code: 404 });
 			if (quiz.author.id === req.user.id) req.user.authorized = true;
