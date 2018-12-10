@@ -1,9 +1,6 @@
 const express = require('express');
 const morgan = require('morgan');
 const cors = require('cors');
-const fs = require('fs');
-const showdown = require('showdown');
-const md = fs.readFileSync('./documentation.md');
 const path = require('path');
 
 const configureRoutes = require('./config');
