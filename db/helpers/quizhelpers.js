@@ -13,7 +13,6 @@ module.exports = {
 			.select('q.id', 'q.title', 'q.votes', 'u.username as author', 't.name as topic');
 	},
 	async getQuiz(quiz_id, user) {
-		console.log('helper', quiz_id, user);
 		let quiz = await db('quizzes as q')
 			.where('q.id', quiz_id)
 			.join('topics as t', 'q.topic_id', 't.id')
@@ -35,14 +34,13 @@ module.exports = {
 				quiz = {
 					...quiz,
 					user_vote: user_quiz.vote,
-					favorite: user_quiz.favorite,
+					favorite: user_quiz.favorite ? true : false,
 					score: user_quiz.score,
 				};
 			} else {
 				quiz = { ...quiz, user_vote: 0, favorite: false, score: 0 };
 			}
 		}
-		console.log(quiz);
 		let author = await db('users')
 			.where('id', quiz.author)
 			.select('id', 'username', 'img_url')
@@ -88,7 +86,6 @@ module.exports = {
 		quiz_id,
 	) {
 		let entry = await db('users_quizzes').where({ user_id, quiz_id }).first();
-		console.log(entry);
 		if (!entry) {
 			let body = { ..._.omitBy({ vote, score, favorite }, _.isUndefined), user_id, quiz_id };
 			if (vote) {
@@ -103,7 +100,6 @@ module.exports = {
 		}
 		if (vote !== entry.vote) {
 			let difference = Math.abs(vote - entry.vote);
-			console.log(difference);
 			if (vote < entry.vote)
 				await db('quizzes').where('id', quiz_id).decrement('votes', difference);
 			else await db('quizzes').where('id', quiz_id).increment('votes', difference);
