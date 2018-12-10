@@ -77,6 +77,10 @@ router.post('/', ({ body, user }, res, next) => {
 
 router.delete('/:quizId', ({ quiz, body, user }, res, next) => {
 	if (!user.authorized) return next({ code: 401 });
+	helpers.deleteQuiz(quiz.id).then(response => {
+		if (!response) return next({ code: 404 });
+		res.status(200).json(response);
+	});
 });
 
 router.use('/:quizId/questions', questionRouter);
