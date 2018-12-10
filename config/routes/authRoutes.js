@@ -6,10 +6,9 @@ const db = require('../../db/dbConfig');
 const { invalidLogin, invalidRegister } = require('../schema');
 
 const router = express.Router();
-const SALT_ROUNDS = 8;
 
 function generateToken(payload) {
-	return jwt.sign(payload, process.env.SECRET || 'secret', {
+	return jwt.sign(payload, process.env.SECRET, {
 		expiresIn: '1y',
 	});
 }
@@ -17,7 +16,7 @@ function generateToken(payload) {
 router.post('/register', ({ body }, res, next) => {
 	if (invalidRegister(body)) return next({ code: 400 });
 
-	body.password = bcrypt.hashSync(body.password, SALT_ROUNDS);
+	body.password = bcrypt.hashSync(body.password, process.env.SALT_ROUNDS);
 	db('users')
 		.insert(body)
 		.then(([ id ]) => {
