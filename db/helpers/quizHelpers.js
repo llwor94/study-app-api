@@ -7,10 +7,13 @@ module.exports = {
 			let topic = db('topics').where('id', topic).orWhere('name', topic).select('id');
 			return db('quizzes').where('topic_id', topic);
 		}
-		return db('quizzes as q')
+		let questions = db('questions').count('id as questions').groupBy('quiz_id');
+		let quizzes = db('quizzes as q')
 			.join('topics as t', 'q.topic_id', 't.id')
 			.join('users as u', 'q.author', 'u.id')
 			.select('q.id', 'q.title', 'q.votes', 'u.username as author', 't.name as topic');
+		quizzes.questionCount = questions;
+		return quizzes;
 	},
 
 	async getQuiz(quiz_id, user) {
