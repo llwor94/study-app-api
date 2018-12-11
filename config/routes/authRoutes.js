@@ -23,7 +23,7 @@ router.post('/register', ({ body }, res, next) => {
 		.returning('id')
 		.then(([ id ]) => {
 			let token = generateToken({ id });
-			return res.status(200).json({ token });
+			return res.status(200).json({ token, user: { id, username: body.username } });
 		})
 		.catch(next);
 });
@@ -39,7 +39,9 @@ router.post('/login', ({ body }, res, next) => {
 			if (!bcrypt.compareSync(body.password, response.password)) return next({ code: 400 });
 
 			const token = generateToken({ id: response.id });
-			return res.status(200).json({ token });
+			return res
+				.status(200)
+				.json({ token, user: { id: response.id, username: response.username } });
 		})
 		.catch(next);
 });
