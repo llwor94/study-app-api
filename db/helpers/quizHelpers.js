@@ -7,6 +7,7 @@ module.exports = {
 			let topic = db('topics').where('id', topic).orWhere('name', topic).select('id');
 			return db('quizzes').where('topic_id', topic);
 		}
+
 		return db('quizzes as q')
 			.join('topics as t', 'q.topic_id', 't.id')
 			.join('users as u', 'q.author', 'u.id')
