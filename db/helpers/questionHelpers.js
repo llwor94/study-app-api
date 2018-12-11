@@ -22,7 +22,7 @@ module.exports = {
 				question.option3,
 				question.option4,
 			]);
-			return _.pick(question, [ 'question', 'options', 'quiz' ]);
+			return _.pick(question, [ 'id', 'question', 'options', 'quiz' ]);
 		});
 	},
 	async getQuestion(id) {
