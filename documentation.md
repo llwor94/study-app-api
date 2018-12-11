@@ -37,7 +37,7 @@
 #### Response
 
 ##### 200 (OK)
->If you successfully register, the endpoint will return an HTTP response with a status code `200` and a body as below.
+>If you successfully register the endpoint will return an HTTP response with a status code `200` and a body as below.
 ```
 {
   "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MSwiaWF0IjoxNTQ0MzM1NjUxLCJleHAiOjE1NzU4OTMyNTF9.uqd2OHBYkGQpwjLTPPiPWYkYOKlG7whQDFkk46xGXoE"
@@ -153,7 +153,7 @@ ___
 ## **GET ONE QUIZ**
 ### Gets a quiz with a specified ID
 
-*Method Url:* `/api/quizzes/:id`
+*Method Url:* `/api/quizzes/:quizId`
 
 *HTTP method:* **[GET]**
 
@@ -260,7 +260,7 @@ ___
 ## **EDIT SPECIFIC QUIZ**
 ### Edits one or more details of a specific quiz created by the current user.
 
-*Method Url:* `/api/quizzes/:id`
+*Method Url:* `/api/quizzes/:quizId`
 
 *HTTP method:* **[PATCH]**
 
@@ -290,6 +290,101 @@ ___
 
 # QUESTION ROUTES
 
+## **GET QUESTIONS**
+### Gets all the questions in a quiz
+
+*Method Url:* `/api/quizzes/:quizId`
+
+*HTTP method:* **[GET]**
+
+#### Headers
+
+| name           | type   | required | description                    |
+| -------------- | ------ | -------- | ------------------------------ |
+| `Content-Type` | String | Yes      | Must be application/json       |
+| `Authorization`| String | No      | Bearer JWT authorization token |
+
+
+#### Parameters
+
+| name    | type   | required | description              |
+| --------| ------ | -------- | ------------------------ |
+| `quizId`| Int    | Yes      | Id of specific quiz |
+
+
+#### Response 
+
+##### 200 (OK)
+
+```
+[
+    {   "id": 12345,
+        "question": "Here's a sample question 2",
+        "options": [
+            "sample option",
+            "another 1",
+            "This one is the answer shh don't tell",
+            "yayyy"
+        ]
+    }
+]
+```
+
+##### 404 (Not Found)
+>If you pass in an id that does not match one in the database, the endpoint will return an HTTP response with a status code `404` and a body as below.
+```
+{
+  "error": true,
+  "message": "The requested content does not exist."
+}
+```
+
+## **GET SPECIFIC QUESTION**
+### Gets a question by its ID.
+
+*Method Url:* `/api/quizzes/:quizId/questions/:questionId`
+
+*HTTP Method:* **[GET]**
+
+#### Headers
+
+| name           | type   | required | description                    |
+| -------------- | ------ | -------- | ------------------------------ |
+| `Content-Type` | String | Yes      | Must be application/json       |
+| `Authorization`| String | No      | Bearer JWT authorization token |
+
+#### Parameters
+
+| name    | type   | required | description              |
+| --------| ------ | -------- | ------------------------ |
+| `quizId`| Int    | Yes      | Id of specific quiz |
+| `questionId`| Int    | Yes      | Id of specific question |
+
+
+##### 200 (OK)
+
+```
+{   "id": 12345,
+    "question": "Here's a sample question 2",
+    "options": [
+        "sample option",
+        "another 1",
+        "This one is the answer shh don't tell",
+        "yayyy"
+    ]
+}
+```
+
+##### 404 (Not Found)
+>If you pass in a quizId that does not match a quiz in the database, or a questionId that does not match a question associated with the passed in quizId, the endpoint will return an HTTP response with a status code `404` and a body as below.
+```
+{
+  "error": true,
+  "message": "The requested content does not exist."
+}
+```
+
+
 ## **ADD NEW QUESTION**
 ### Adds a new question
 
@@ -297,9 +392,19 @@ ___
 
 *HTTP method:* **[POST]**
 
-*Request Reqiurements:*
-HEADER - 
-```{Authoriation: JSON Web Token}```
+#### Headers
+
+| name           | type   | required | description                    |
+| -------------- | ------ | -------- | ------------------------------ |
+| `Content-Type` | String | Yes      | Must be application/json       |
+| `Authorization`| String | Yes      | Bearer JWT authorization token |
+
+#### Body
+
+| name     | type   | required | description              |
+| ---------| ------ | -------- | ------------------------ |
+| `question`  | String | No       |  |
+| `answer`  | String | No       |  |
 
 *Argument:*
 
