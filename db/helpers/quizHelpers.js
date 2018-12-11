@@ -10,8 +10,6 @@ module.exports = {
 		return db('quizzes as q')
 			.join('topics as t', 'q.topic_id', 't.id')
 			.join('users as u', 'q.author', 'u.id')
-			.leftJoin('questions as qs', 'q.id', 'qs.quiz_id')
-			.count({ questions: 'qs.id' })
 			.select('q.id', 'q.title', 'q.votes', 'u.username as author', 't.name as topic');
 	},
 
