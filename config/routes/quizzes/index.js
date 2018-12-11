@@ -64,6 +64,7 @@ router.patch('/:quizId', ({ quiz, body, user }, res, next) => {
 
 router.post('/', ({ body, user }, res, next) => {
 	if (invalidQuiz(body)) return next({ code: 400 });
+	if (!user.id) next({ code: 401 });
 	body.author = user.id;
 	helpers
 		.createQuiz(body)
