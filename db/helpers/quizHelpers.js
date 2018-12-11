@@ -10,7 +10,7 @@ module.exports = {
 		return db('quizzes as q')
 			.join('topics as t', 'q.topic_id', 't.id')
 			.join('users as u', 'q.author', 'u.id')
-			.join('questions as qs', 'q.id', 'qs.quiz_id')
+			.fullOuterJoin('questions as qs', 'q.id', 'qs.quiz_id')
 			.select(
 				'q.id',
 				'q.title',
