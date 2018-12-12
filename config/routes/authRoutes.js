@@ -41,7 +41,14 @@ router.post('/login', ({ body }, res, next) => {
 			const token = generateToken({ id: response.id });
 			return res
 				.status(200)
-				.json({ token, user: { id: response.id, username: response.username } });
+				.json({
+					token,
+					user: {
+						id: response.id,
+						username: response.username,
+						img_url: response.img_url,
+					},
+				});
 		})
 		.catch(next);
 });
