@@ -5,7 +5,7 @@ const path = require('path');
 const fs = require('fs');
 
 const showdown = require('showdown');
-const md = fs.readFileSync('./documentation.md', 'utf8');
+const md = fs.readFileSync('./README.md', 'utf8');
 const converter = new showdown.Converter({ tables: true });
 const text = md;
 const html = converter.makeHtml(text);
