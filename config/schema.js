@@ -16,6 +16,7 @@ const quizSchema = {
 	title: Joi.string().required(),
 	time_limit_seconds: Joi.number().integer(),
 	topic: Joi.string().max(20).required(),
+	description: Joi.string(),
 	votes: Joi.number().integer(),
 };
 
@@ -24,8 +25,9 @@ const updateQuizSchema = Joi.object()
 		title: Joi.string(),
 		time_limit_seconds: Joi.number().integer(),
 		topic: Joi.string().max(20),
+		description: Joi.string(),
 	})
-	.or('title', 'time_limit_seconds', 'topic');
+	.or('title', 'time_limit_seconds', 'topic', 'description');
 
 const UserQuizSchema = Joi.object()
 	.keys({

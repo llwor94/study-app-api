@@ -11,7 +11,14 @@ module.exports = {
 		return db('quizzes as q')
 			.join('topics as t', 'q.topic_id', 't.id')
 			.join('users as u', 'q.author', 'u.id')
-			.select('q.id', 'q.title', 'q.votes', 'u.username as author', 't.name as topic');
+			.select(
+				'q.id',
+				'q.title',
+				'q.votes',
+				'q.description',
+				'u.username as author',
+				't.name as topic',
+			);
 	},
 
 	async getQuiz(quiz_id, user) {
@@ -22,6 +29,7 @@ module.exports = {
 				'q.id',
 				'q.title',
 				'q.votes',
+				'q.description',
 				'q.time_limit_seconds',
 				'q.author',
 				't.name as topic',
@@ -64,14 +72,22 @@ module.exports = {
 			return topic.id;
 		}
 	},
-	async createQuiz({ title, author, time_limit_seconds, topic }) {
+	async createQuiz({ title, author, time_limit_seconds, topic, description }) {
 		let topic_id = await this.getTopicId(topic);
 
 		return db('quizzes')
 			.returning('id')
-			.insert({ title, author, time_limit_seconds, topic_id });
+			.insert({ title, author, time_limit_seconds, topic_id, description });
 	},
-	async updateQuiz({ topic = undefined, title = undefined, time_limit_seconds = undefined }, id) {
+	async updateQuiz(
+		{
+			topic = undefined,
+			title = undefined,
+			time_limit_seconds = undefined,
+			description = undefined,
+		},
+		id,
+	) {
 		let topic_id = undefined;
 		if (topic) {
 			topic_id = await this.getTopicId(topic);
@@ -79,7 +95,7 @@ module.exports = {
 		return db('quizzes')
 			.where({ id })
 			.returning('id')
-			.update({ topic_id, title, time_limit_seconds });
+			.update({ topic_id, title, time_limit_seconds, description });
 	},
 	deleteQuiz(id) {
 		return db('quizzes').where({ id }).del();
