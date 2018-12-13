@@ -37,7 +37,7 @@
 #### Response
 
 ##### 200 (OK)
->If you successfully register the endpoint will return an HTTP response with a status code `200` and a body as below.
+>If you successfully register a user the endpoint will return an HTTP response with a status code `200` and a body as below.
 ```
 {
   "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MSwiaWF0IjoxNTQ0MzM1NjUxLCJleHAiOjE1NzU4OTMyNTF9.uqd2OHBYkGQpwjLTPPiPWYkYOKlG7whQDFkk46xGXoE",
@@ -96,7 +96,8 @@ ____
   "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MSwiaWF0IjoxNTQ0MzM1NjUxLCJleHAiOjE1NzU4OTMyNTF9.uqd2OHBYkGQpwjLTPPiPWYkYOKlG7whQDFkk46xGXoE",
   "user": {
     "id": 1,
-    "username": "lauren"
+    "username": "lauren",
+    "img_url": "https://i.ytimg.com/vi/YCaGYUIfdy4/maxresdefault.jpg"
   }
 }
 ```
@@ -286,7 +287,7 @@ ___
 #### Response 
 
 ##### 200 (OK)
->Returns the id of the new quiz
+>If you successfully create a new quiz the endpoint will return an HTTP response with a status code `200` and a body as below.
 
 ```
 [
@@ -352,7 +353,7 @@ ___
 
 #### Response
 ##### 200 (OK)
->If the request if successful, the server will respond with the id of the updated quiz quiz.
+>If the request if successful, the server will return an HTTP response with a status code `200` and the id of the updated quiz quiz.
 
 ```
 [
@@ -427,7 +428,7 @@ ___
 
 #### Response
 ##### 200 (OK)
->If the request if successful, the server will respond with the id of the updated quiz user relationship.
+>If the request if successful, the server will return an HTTP response with a status code `200` and the id of the updated quiz user relationship.
 
 ```
 [
@@ -483,7 +484,7 @@ _____
 
 #### Response
 ##### 200 (OK)
->If the request if successful, the server will respond with the id of the deleted quiz user relationship.
+>If the request if successful, the server will return an HTTP response with a status code `200` and the id of the deleted quiz user relationship.
 
 ```
 [
@@ -536,6 +537,7 @@ ___
 #### Response 
 
 ##### 200 (OK)
+>If the request if successful, the server will return an HTTP response with a status code `200` and array of quizzes that have a quiz_id that matches the quizId passed in.
 
 ```
 [
@@ -586,6 +588,8 @@ ___
 #### Response 
 ##### 200 (OK)
 
+>If the request if successful, the server will return an HTTP response with a status code `200` and the quiz object that matches the questionId and corresponding quizId passed in.
+
 ```
 {
   "id": 12345,
@@ -597,6 +601,59 @@ ___
     "yayyy"
   ],
   "quiz_id": 1
+}
+```
+
+##### 404 (Not Found)
+>If you pass in a quizId that does not match a quiz in the database, or a questionId that does not match a question associated with the passed in quizId, the endpoint will return an HTTP response with a status code `404` and a body as below.
+```
+{
+  "error": true,
+  "message": "The requested content does not exist."
+}
+```
+___
+
+## **GET SPECIFIC QUESTION ANSWER**
+### Gets a response of whether the passed in option to a specific question by its ID is correct or not.
+
+*Method Url:* `/api/quizzes/:quizId/questions/:questionId/response`
+
+*HTTP Method:* **[GET]**
+
+#### Headers
+
+| name           | type   | required | description                    |
+| -------------- | ------ | -------- | ------------------------------ |
+| `Content-Type` | String | Yes      | Must be application/json       |
+
+
+#### Parameters
+
+| name    | type   | required | description              |
+| --------| ------ | -------- | ------------------------ |
+| `quizId`| Int    | Yes      | Id of specific quiz |
+| `questionId`| Int    | Yes      | Id of specific question |
+| `option` | Int | Yes       | Query parameter that matches an option # field on the specified question |
+
+#### Response 
+##### 200 (OK)
+
+>If the request if successful, the server will return an HTTP response with a status code `200` and the question id and boolean reflecting whether the option was correct or not.
+
+```
+{
+    "question": 3,
+    "correct": false
+}
+```
+
+##### 400 (Bad Request)
+>If you do not send in a required field, the endpoint will return an HTTP response with a status code `400` and a body as below.
+```
+{
+  "error": true,
+  "message": "There was a problem with your request."
 }
 ```
 
@@ -651,13 +708,13 @@ ___
 	"option2": "another 1",
 	"option3": "This one is the answer shh don't tell",	
 	"option4": "yayyy",
-	"answer": 4
+	"answer": 3
 }
 ```
 
 #### Response 
 ##### 200 (OK)
->If the request if successful, the server will respond with the id of the new question.
+>If the request if successful, the server will return an HTTP response with a status code `200` and the id of the new question as below.
 ```
 [
   5
@@ -691,10 +748,10 @@ ___
 ```
 ___
 
-## **Edit A QUESTION**
+## **EDIT A QUESTION**
 ### Edits a question of the specified id
 
-*Method Url:* `/api/quizzes/:quizId/questions/:questionId/edit`
+*Method Url:* `/api/quizzes/:quizId/questions/:questionId`
 
 *HTTP method:* **[PATCH]**
 
@@ -739,7 +796,7 @@ ___
 
 #### Response 
 ##### 200 (OK)
->If the request if successful, the server will respond with the id of the new question.
+>If the request if successful, the server will return an HTTP response with a status code `200` and the id of the edited question.
 ```
 [
   5
@@ -772,5 +829,57 @@ ___
 }
 ```
 ___
+
+## **DELETE QUESTION**
+### Deletes question with specific id.
+
+*Method Url:* `/api/quizzes/:quizId/questions/:questionId`
+
+*HTTP method:* **[DELETE]**
+
+#### Headers
+
+| name           | type   | required | description                    |
+| -------------- | ------ | -------- | ------------------------------ |
+| `Content-Type` | String | Yes      | Must be application/json       |
+| `Authorization`| String | Yes      | Bearer JWT authorization token |
+
+#### Parameters
+
+| name    | type   | required | description              |
+| --------| ------ | -------- | ------------------------ |
+| `quizId`| Int    | Yes      | Id of specific quiz |
+| `questionId`| Int    | Yes      | Id of specific question |
+
+
+#### Response
+##### 200 (OK)
+>If the request if successful, the server will return an HTTP response with a status code `200` and the id of the deleted question.
+
+```
+[
+  8
+]
+  ```
+
+##### 401 (Unauthorized)
+>If you are not logged in, or if the id of the logged in user does not match the author id of the quiz, the endpoint will return an HTTP response with a status code `401` and a body as below.
+```
+{
+  "error": true,
+  "message": "You are unathorized to view the content."
+}
+```
+
+##### 404 (Not Found)
+>If the questionId or quizId passed in does not match one in the database, the endpoint will return an HTTP response with a status code `404` and a body as below.
+```
+{
+  "error": true,
+  "message": "The requested content does not exist."
+}
+```
+___
+
 
 

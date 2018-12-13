@@ -27,6 +27,14 @@ router.get('/:questionId', ({ question }, res, next) => {
 	res.status(200).json(_.pick(question, [ 'question', 'options', 'quiz_id' ]));
 });
 
+router.get('/:questionId/response', ({ question, query }, res, next) => {
+	if (!query.option) return next({ code: 400 });
+
+	let correct = query.option == question.answer;
+
+	return res.status(200).json({ question: question.id, correct });
+});
+
 router.post('/', ({ quiz, body, user }, res, next) => {
 	if (invalidQuestion(body)) return next({ code: 400 });
 	if (!user.authorized) return next({ code: 401 });
@@ -40,7 +48,7 @@ router.post('/', ({ quiz, body, user }, res, next) => {
 		.catch(next);
 });
 
-router.patch('/:questionId/edit', ({ question, body, user }, res, next) => {
+router.patch('/:questionId', ({ question, body, user }, res, next) => {
 	if (!user.authorized) return next({ code: 401 });
 	if (invalidQuestion(body, true)) return next({ code: 400 });
 	helpers
@@ -50,13 +58,6 @@ router.patch('/:questionId/edit', ({ question, body, user }, res, next) => {
 			res.status(200).json(response);
 		})
 		.catch(next);
-});
-
-router.patch('/:questionId', ({ question, body, user }, res, next) => {
-	if (!body.option) return next({ code: 400 });
-	let correct = body.option === question.answer;
-
-	return res.status(200).json({ question: question.id, correct });
 });
 
 router.delete('/:questionId', ({ question, user }, res, next) => {
