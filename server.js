@@ -19,7 +19,7 @@ app.use(cors());
 app.use(express.static('public'));
 
 app.get('/', (req, res) => {
-	res.sendFile(path.join(__dirname + '/public/documentation.html'));
+	res.sendFile(path.join(__dirname + '/public/README.html'));
 });
 app.get('/api', (req, res) => {
 	res.send(html);

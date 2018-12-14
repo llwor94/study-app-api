@@ -22,6 +22,6 @@
   },
   "scripts": {
     "start": "node index.js",
-    "dev": "nodemon index.js"
+    "dev": "nodemon -e js,html --watch public index.js"
   }
 }
