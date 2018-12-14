@@ -1,0 +1,2095 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>API</title>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link type="text/css" rel="stylesheet" href="assets/style.css" />
+    <link type="text/css" rel="stylesheet" href="assets/pilcrow.css" />
+    <link type="text/css" rel="stylesheet" href="assets/hljs-github.min.css"/>
+  </head>
+<body>
+<div class="sidenav">
+<ul>
+<li><a class="header-link" href="#auth-routes">Auth Routes</a>
+<ul>
+<li><a class="header-link sub" href="#register">/POST register</a></li>
+<li><a class="header-link sub" href="#login">/POST login</a></li>
+</ul>
+</li>
+<li><a class="header-link" href="#quiz-routes">Quiz Routes</a>
+<ul>
+<li><a class="header-link sub" href="#get-quizzes">/GET quizzes</a></li>
+<li><a class="header-link sub" href="#get-one-quiz">/GET quizzes/:id</a></li>
+<li><a class="header-link sub" href="#get-topics">/GET quizzes/topics</a></li>
+<li><a class="header-link sub" href="#add-new-quiz">/POST quizzes</a></li>
+<li><a class="header-link sub" href="#edit-quiz">/PATCH quizzes/:id/edit</a></li>
+<li><a class="header-link sub" href="#edit-user-quiz">/PATCH quizzes/:id</a></li>
+<li><a class="header-link sub" href="#delete-quiz">/DELETE quizzes/:id</a></li>
+</ul>
+</li>
+<li><a class="header-link" href="#question-routes">Question Routes</a>
+<ul>
+<li><a class="header-link sub" href="#get-questions">/GET questions</a></li>
+<li><a class="header-link sub" href="#get-one-question">/GET questions/:id</a></li>
+<li><a class="header-link sub" href="#get-question-response">/GET questions/:id/response</a></li>
+<li><a class="header-link sub" href="#add-new-question">/POST questions</a></li>
+<li><a class="header-link sub" href="#edit-question">/PATCH questions/:id</a></li>
+<li><a class="header-link sub" href="#delete-question">/DELETE questions/:id</a></li>
+</ul>
+</li>
+<li><a class="header-link" href="#post-routes">Post Routes</a>
+<ul>
+  <li><a class="header-link sub" href="#get-posts">/GET posts</a></li>
+  <li><a class="header-link sub" href="#get-one-post">/GET posts/:id</a></li>
+  <li><a class="header-link sub" href="#add-new-post">/POST posts</a></li>
+  <li><a class="header-link sub" href="#edit-post">/PATCH posts/:id</a></li>
+  <li><a class="header-link sub" href="#delete-post">/DELETE posts/:id</a></li>
+</ul>
+</li>
+<li><a class="header-link" href="#comment-routes">Comment Routes</a>
+<ul>
+  <li><a class="header-link sub" href="#get-comments">/GET comments</a></li>
+  <li><a class="header-link sub" href="#get-one-comment">/GET comments/:id</a></li>
+  <li><a class="header-link sub" href="#add-new-comment">/POST comments</a></li>
+  <li><a class="header-link sub" href="#edit-comment">/PATCH comments/:id</a></li>
+  <li><a class="header-link sub" href="#delete-comment">/DELETE comments/:id</a></li>
+</ul>
+</li>
+</ul>
+</div>
+
+<div class="main">
+<h1 id="auth-routes">AUTH ROUTES</h1>
+
+<h2 id="register"><strong>REGISTER</strong></h2>
+<h3>Registers a user</h3>
+<p><em>Method Url:</em> <code>/api/auth/register</code></p>
+<p><em>HTTP method:</em> <strong>[POST]</strong></p>
+<h4>Headers</h4>
+<table>
+<thead>
+<tr>
+<th>name</th>
+<th>type</th>
+<th>required</th>
+<th>description</th>
+</tr>
+</thead>
+<tbody> 
+<tr>
+<td><code>Content-Type</code>
+</td>
+<td>String</td><td>Yes</td><td>Must be application/json</td>
+</tr>
+</tbody>
+</table>
+<h4>Body</h4>
+<table>
+<thead>
+<tr>
+<th>name</th>
+<th>type</th>
+<th>required</th>
+<th>description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>username</code></td>
+<td>String</td>
+<td>Yes</td>
+<td>Must be unique</td>
+</tr>
+<tr>
+<td><code>email</code></td>
+<td>String</td>
+<td>Yes</td>
+<td>Must be unique</td>
+</tr>
+<tr>
+<td><code>password</code></td>
+<td>String</td>
+<td>Yes</td>
+<td></td>
+</tr>
+<tr>
+<td><code>img_url</code></td>
+<td>String</td>
+<td>No</td>
+<td>Must be unique</td>
+</tr>
+</tbody>
+</table>
+<p><em>example:</em></p>
+<pre class="hljs"><code>{
+  <span class="hljs-attribute">username</span>: <span class="hljs-string">"lauren"</span>,
+  <span class="hljs-attribute">password</span>: <span class="hljs-string">"password123"</span>,
+  <span class="hljs-attribute">email</span>: <span class="hljs-string">"lauren@email.com"</span>,
+  <span class="hljs-attribute">img_url</span>: <span class="hljs-string">"https://i.ytimg.com/vi/YCaGYUIfdy4/maxresdefault.jpg"</span> 
+}</code>
+</pre>
+<h4>Response</h4>
+<h5>200 (OK)</h5>
+<blockquote>
+  <p>If you successfully register a user the endpoint will return an HTTP response with a status code <code>200</code> and a body as below.</p>
+</blockquote>
+<pre class="hljs"><code>{
+  <span class="hljs-attr">"token"</span>: <span class="hljs-string">"eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MSwiaWF0IjoxNTQ0MzM1NjUxLCJleHAiOjE1NzU4OTMyNTF9.uqd2OHBYkGQpwjLTPPiPWYkYOKlG7whQDFkk46xGXoE"</span>,
+  <span class="hljs-attr">"user"</span>: {
+    <span class="hljs-attr">"id"</span>: <span class="hljs-number">1</span>,
+    <span class="hljs-attr">"username"</span>: <span class="hljs-string">"lauren"</span>
+  }
+}</code></pre>
+<h5>400 (Bad Request)</h5>
+<blockquote>
+  <p>If you send in invalid fields, the endpoint will return an HTTP response with a status code <code>400</code> and a body as below.</p>
+</blockquote>
+<pre class="hljs"><code>{
+  <span class="hljs-attr">"error"</span>: <span class="hljs-literal">true</span>,
+  <span class="hljs-attr">"message"</span>: <span class="hljs-string">"There was a problem with your request."</span>
+}</code></pre>
+ 
+<hr>
+<h2 id="login"><strong>LOGIN</strong></h2>
+<h3>Logs a user in</h3>
+<p><em>Method Url:</em> <code>/api/auth/login</code></p>
+<p><em>HTTP method:</em> <strong>[POST]</strong></p>
+<h4>Headers</h4>
+<table>
+<thead>
+<tr>
+<th>name</th>
+<th>type</th>
+<th>required</th>
+<th>description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>Content-Type</code></td>
+<td>String</td>
+<td>Yes</td>
+<td>Must be application/json</td>
+</tr>
+</tbody>
+</table>
+<h4>Body</h4>
+<table>
+<thead>
+<tr>
+<th>name</th>
+<th>type</th>
+<th>required</th>
+<th>description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>email</code></td>
+<td>String</td>
+<td>Yes</td>
+<td>Must match an email in the database</td>
+</tr>
+<tr>
+<td><code>password</code></td>
+<td>String</td>
+<td>Yes</td>
+<td>Must match a password in the database corresponding to above email</td>
+</tr>
+</tbody>
+</table>
+<p><em>example:</em></p>
+<pre class="hljs"><code>{
+  <span class="hljs-attribute">email</span>: <span class="hljs-string">"lauren@email.com"</span>,
+  <span class="hljs-attribute">password</span>: <span class="hljs-string">"password123"</span>
+}</code></pre>
+<h4>Response</h4>
+<h5>200 (OK)</h5>
+<blockquote>
+<p>If you successfully login, the endpoint will return an HTTP response with a status code <code>200</code> and a body as below.</p>
+</blockquote>
+<pre class="hljs"><code>{
+  <span class="hljs-attr">"token"</span>: <span class="hljs-string">"eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MSwiaWF0IjoxNTQ0MzM1NjUxLCJleHAiOjE1NzU4OTMyNTF9.uqd2OHBYkGQpwjLTPPiPWYkYOKlG7whQDFkk46xGXoE"</span>,
+  <span class="hljs-attr">"user"</span>: {
+    <span class="hljs-attr">"id"</span>: <span class="hljs-number">1</span>,
+    <span class="hljs-attr">"username"</span>: <span class="hljs-string">"lauren"</span>,
+    <span class="hljs-attr">"img_url"</span>: <span class="hljs-string">"https://i.ytimg.com/vi/YCaGYUIfdy4/maxresdefault.jpg"</span>
+  }
+}</code></pre>
+<h5>400 (Bad Request)</h5>
+<blockquote>
+<p>If you send in invalid fields or the passwords do not match, the endpoint will return an HTTP response with a status code <code>400</code> and a body as below.</p>
+</blockquote>
+<pre class="hljs"><code>{
+  <span class="hljs-attr">"error"</span>: <span class="hljs-literal">true</span>,
+  <span class="hljs-attr">"message"</span>: <span class="hljs-string">"There was a problem with your request."</span>
+}</code></pre>
+<h5>404 (Not Found)</h5>
+<blockquote>
+<p>If you send in an email address that does not match one in the database, the endpoint will return an HTTP response with a status code <code>404</code> and a body as below.</p>
+</blockquote>
+<pre class="hljs"><code>{
+  <span class="hljs-attr">"error"</span>: <span class="hljs-literal">true</span>,
+  <span class="hljs-attr">"message"</span>: <span class="hljs-string">"The requested content does not exist."</span>
+}</code></pre>
+<hr>
+<h1 id="quiz-routes">QUIZ ROUTES</h1>
+<h2 id="get-quizzes"><strong>GET QUIZZES</strong></h2>
+<h3>Gets an array of quiz objects</h3>
+<p><em>Method Url:</em> <code>/api/quizzes</code></p>
+<p><em>HTTP method:</em> <strong>[GET]</strong></p>
+<h4>Parameters</h4>
+<table>
+<thead>
+<tr>
+<th>name</th>
+<th>type</th>
+<th>required</th>
+<th>description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>topic</code></td>
+<td>String</td>
+<td>No</td>
+<td>Query parameters in order to receive quizzes of specific topic</td>
+</tr>
+</tbody>
+</table>
+<h4>Response</h4>
+<h5>200 (OK)</h5>
+<pre class="hljs"><code>[
+  {
+    <span class="hljs-attr">"id"</span>: <span class="hljs-number">2</span>,
+    <span class="hljs-attr">"title"</span>: <span class="hljs-string">"Array Methods"</span>,
+    <span class="hljs-attr">"votes"</span>: <span class="hljs-number">123</span>,
+    <span class="hljs-attr">"author"</span>: <span class="hljs-string">"lauren"</span>
+    <span class="hljs-attr">"topic"</span>: <span class="hljs-string">"JavaScript"</span>
+  }
+]</code></pre><hr>
+<h2 id="get-one-quiz"><strong>GET ONE QUIZ</strong></h2>
+<h3>Gets a quiz with a specified ID</h3>
+<p><em>Method Url:</em> <code>/api/quizzes/:quizId</code></p>
+<p><em>HTTP method:</em> <strong>[GET]</strong></p>
+<h4>Headers</h4>
+<table>
+<thead>
+<tr>
+<th>name</th>
+<th>type</th>
+<th>required</th>
+<th>description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>Authorization</code></td>
+<td>String</td>
+<td>No</td>
+<td>Bearer JWT authorization token</td>
+</tr>
+</tbody>
+</table>
+<h4>Parameters</h4>
+<table>
+<thead>
+<tr>
+<th>name</th>
+<th>type</th>
+<th>required</th>
+<th>description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>quizId</code></td>
+<td>Int</td>
+<td>Yes</td>
+<td>Id of specific quiz</td>
+</tr>
+</tbody>
+</table>
+<h4>Response</h4>
+<h5>200 (OK)</h5>
+<blockquote>
+<p>If you send a valid quiz id with no authorization token, the endpoint will return an HTTP response with a status code <code>200</code> and a body as below.</p>
+</blockquote>
+<pre class="hljs"><code>{
+  <span class="hljs-attr">"id"</span>: <span class="hljs-number">2</span>,
+  <span class="hljs-attr">"title"</span>: <span class="hljs-string">"Array Methods"</span>,
+  <span class="hljs-attr">"votes"</span>: <span class="hljs-number">123</span>,
+  <span class="hljs-attr">"author"</span>: {
+    <span class="hljs-attr">"id"</span>: <span class="hljs-number">1</span>,
+    <span class="hljs-attr">"username"</span>: <span class="hljs-string">"lauren"</span>,
+    <span class="hljs-attr">"img_url"</span>: <span class="hljs-string">"https://i.ytimg.com/vi/YCaGYUIfdy4/maxresdefault.jpg"</span>
+  },
+  <span class="hljs-attr">"topic"</span>: <span class="hljs-string">"JavaScript"</span>
+}</code></pre><blockquote>
+<p>If you send a valid quiz id with a valid authorization token, the endpoint will return an HTTP response with a status code <code>200</code> and a body as below.</p>
+</blockquote>
+<pre class="hljs"><code>{
+  <span class="hljs-attr">"id"</span>: <span class="hljs-number">2</span>,
+  <span class="hljs-attr">"title"</span>: <span class="hljs-string">"Array Methods"</span>,
+  <span class="hljs-attr">"votes"</span>: <span class="hljs-number">123</span>,
+  <span class="hljs-attr">"author"</span>: {
+    <span class="hljs-attr">"id"</span>: <span class="hljs-number">1</span>,
+    <span class="hljs-attr">"username"</span>: <span class="hljs-string">"lauren"</span>,
+    <span class="hljs-attr">"img_url"</span>: <span class="hljs-string">"https://i.ytimg.com/vi/YCaGYUIfdy4/maxresdefault.jpg"</span>
+  },
+  <span class="hljs-attr">"topic"</span>: <span class="hljs-string">"JavaScript"</span>,
+  <span class="hljs-attr">"score"</span>: <span class="hljs-number">123</span>,
+  <span class="hljs-attr">"user_vote"</span>: <span class="hljs-number">-1</span>, 
+  <span class="hljs-attr">"favorite"</span>: <span class="hljs-literal">false</span> 
+}</code></pre><h5 id="404-(not-found)-1"><a class="header-link" href="#404-(not-found)-1"></a>404 (Not Found)</h5>
+<blockquote>
+<p>If you pass in an id that does not match one in the database, the endpoint will return an HTTP response with a status code <code>404</code> and a body as below.</p>
+</blockquote>
+<pre class="hljs"><code>{
+  <span class="hljs-attr">"error"</span>: <span class="hljs-literal">true</span>,
+  <span class="hljs-attr">"message"</span>: <span class="hljs-string">"The requested content does not exist."</span>
+}
+</code></pre>
+<hr>
+<h2 id="get-topics"><strong>GET TOPICS</strong></h2>
+<h3>Gets an array of quiz topics</h3>
+
+<p><em>Method Url</em>: <code>/api/quizzes/topics</code></p>
+<p><em>HTTP method:</em> <strong>[GET]</strong></p>
+<h4>Headers</h4>
+<table>
+    <thead>
+    <tr>
+    <th>name</th>
+    <th>type</th>
+    <th>required</th>
+    <th>description</th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr>
+    <td><code>Content-Type</code></td>
+    <td>String</td>
+    <td>Yes</td>
+    <td>Must be application/json</td>
+    </tr>
+    </tbody>
+    </table>
+
+<h4>Response</h4>
+<h5>200 (OK)</h5>
+<pre class="hljs"><code>[
+  {
+    <span class="hljs-attr">"id"</span>: <span class="hljs-number">2</span>,
+    <span class="hljs-attr">"name"</span>: <span class="hljs-string">"JavaScript"</span>
+  }
+]
+</code></pre>
+<hr>
+<h2 id="add-new-quiz"><strong>ADD NEW QUIZ</strong></h2>
+<h3>Adds a new quiz</h3>
+<p><em>Method Url:</em> <code>/api/quizzes</code></p>
+<p><em>HTTP method:</em> <strong>[POST]</strong></p>
+<h4>Headers</h4>
+<table>
+    <thead>
+    <tr>
+    <th>name</th>
+    <th>type</th>
+    <th>required</th>
+    <th>description</th>
+    </tr>
+    </thead>
+    <tbody>
+    
+    <tr>
+        <td><code>Authorization</code></td>
+        <td>String</td>
+        <td>Yes</td>
+        <td>Bearer JWT authorization token</td>
+        </tr>
+    </tbody>
+    </table>
+
+    <h4>Body</h4>
+    <table>
+    <thead>
+    <tr>
+    <th>name</th>
+    <th>type</th>
+    <th>required</th>
+    <th>description</th>
+    </tr>
+    </thead>
+    <tbody>
+        <tr>
+            <td><code>title</code></td>
+            <td>String</td>
+            <td>Yes</td>
+            <td></td>
+            </tr>
+    <tr>
+    <td><code>topic</code></td>
+    <td>String</td>
+    <td>Yes</td>
+    <td>Can be an existing or new topic</td>
+    </tr>
+    </tbody>
+    </table>
+
+    <p><em>example:</em></p>
+<pre class="hljs"><code>{
+  <span class="hljs-attribute">title</span>: <span class="hljs-string">"Array Methods"</span>,
+  <span class="hljs-attribute">topic</span>: <span class="hljs-string">"JavaScript"</span>
+}</code></pre>
+<h4>Response</h4>
+<h5>200 (OK)</h5>
+<blockquote>
+<p>If you successfully create a new quiz the endpoint will return an HTTP response with a status code <code>200</code> and a body as below.</p>
+</blockquote>
+<pre class="hljs"><code>[
+  12
+]</code></pre>
+<h5>400 (Bad Request)</h5>
+<blockquote>
+<p>If you send in invalid fields, the endpoint will return an HTTP response with a status code <code>400</code> and a body as below.</p>
+</blockquote>
+<pre class="hljs"><code>{
+  <span class="hljs-attr">"error"</span>: <span class="hljs-literal">true</span>,
+  <span class="hljs-attr">"message"</span>: <span class="hljs-string">"There was a problem with your request."</span>
+}</code></pre>
+<h5>401 (Unauthorized)</h5>
+<blockquote>
+  <p>If you are not logged in, then endpoint will return an HTTP response with a status code <code>401</code> and a body as below.</p>
+</blockquote>
+<pre class="hljs"><code>{
+  <span class="hljs-attr">"error"</span>: <span class="hljs-literal">true</span>,
+  <span class="hljs-attr">"message"</span>: <span class="hljs-string">"You are unathorized to view the content."</span>
+}</code></pre>
+<hr>
+<h2 id="edit-quiz"><strong>EDIT SPECIFIC QUIZ</strong></h2>
+<h3>Edits one or more details of a specific quiz created by the current user.</h3>
+<p><em>Method Url:</em> <code>/api/quizzes/:quizId/edit</code></p>
+<p><em>HTTP method:</em> <strong>[PATCH]</strong></p>
+<h4>Headers</h4>
+<table>
+<thead>
+<tr>
+<th>name</th>
+<th>type</th>
+<th>required</th>
+<th>description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>Content-Type</code></td>
+<td>String</td>
+<td>Yes</td>
+<td>Must be application/json</td>
+</tr>
+<tr>
+<td><code>Authorization</code></td>
+<td>String</td>
+<td>Yes</td>
+<td>Bearer JWT authorization token</td>
+</tr>
+</tbody>
+</table>
+<h4>Parameters</h4>
+<table>
+<thead>
+<tr>
+<th>name</th>
+<th>type</th>
+<th>required</th>
+<th>description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>quizId</code></td>
+<td>Int</td>
+<td>Yes</td>
+<td>Id of specific quiz</td>
+</tr>
+</tbody>
+</table>
+<h4>Body</h4>
+<table>
+<thead>
+<tr>
+<th>name</th>
+<th>type</th>
+<th>required</th>
+<th>description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>title</code></td>
+<td>String</td>
+<td>No</td>
+<td>New title of quiz</td>
+</tr>
+<tr>
+<td><code>topic</code></td>
+<td>String</td>
+<td>No</td>
+<td>Can be an existing or new topic</td>
+</tr>
+</tbody>
+</table>
+
+
+<p><em>example:</em></p>
+<pre class="hljs"><code>{
+  <span class="hljs-attribute">title</span>: <span class="hljs-string">"Object Methods"</span>,
+  <span class="hljs-attribute">topic</span>: <span class="hljs-string">"JavaScript II"</span>
+}</code></pre>
+
+<h4>Response</h4>
+<h5>200 (OK)</h5>
+<blockquote>
+<p>If the request is successful, the server will return an HTTP response with a status code <code>200</code> and the id of the updated quiz.</p>
+</blockquote>
+<pre class="hljs"><code>[
+  12
+]</code></pre>
+<h5>400 (Bad Request)</h5>
+<blockquote>
+    <p>If you send in invalid fields, the endpoint will return an HTTP response with a status code <code>400</code> and a body as below.</p>
+    </blockquote>
+<pre class="hljs"><code>{
+  <span class="hljs-attr">"error"</span>: <span class="hljs-literal">true</span>,
+  <span class="hljs-attr">"message"</span>: <span class="hljs-string">"There was a problem with your request."</span>
+}</code></pre>
+<h5>401 (Unauthorized)</h5>
+  <blockquote>
+    <p>If you are not logged in or you do not send in a token that matches the author of the quiz the endpoint will return an HTTP response with a status code <code>401</code> and a body as below.</p>
+  </blockquote>
+<pre class="hljs"><code>{
+  <span class="hljs-attr">"error"</span>: <span class="hljs-literal">true</span>,
+  <span class="hljs-attr">"message"</span>: <span class="hljs-string">"You are unathorized to view the content."</span>
+}</code></pre>
+<h5>404 (Not Found)</h5>
+<blockquote>
+  <p>If you pass in an id that does not match one in the database, the endpoint will return an HTTP response with a status code <code>404</code> and a body as below.</p>
+</blockquote>
+<pre class="hljs"><code>{
+  <span class="hljs-attr">"error"</span>: <span class="hljs-literal">true</span>,
+  <span class="hljs-attr">"message"</span>: <span class="hljs-string">"The requested content does not exist."</span>
+}</code></pre>
+<hr>
+<h2 id="edit-user-quiz"><strong>UPDATE QUIZ AND USER RELATIONSHIP</strong></h2>
+<h3>Edits the user specific information for a quiz, allowng users to favorite, vote for, and score.</h3>
+<p><em>Method Url:</em> <code>/api/quizzes/:quizId</code></p>
+<p><em>HTTP method:</em> <strong>[PATCH]</strong></p>
+<h4 id="headers-3"><a class="header-link" href="#headers-3"></a>Headers</h4>
+<table>
+<thead>
+<tr>
+<th>name</th>
+<th>type</th>
+<th>required</th>
+<th>description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>Content-Type</code></td>
+<td>String</td>
+<td>Yes</td>
+<td>Must be application/json</td>
+</tr>
+<tr>
+<td><code>Authorization</code></td>
+<td>String</td>
+<td>Yes</td>
+<td>Bearer JWT authorization token</td>
+</tr>
+</tbody>
+</table>
+<h4>Parameters</h4>
+<table>
+<thead>
+<tr>
+<th>name</th>
+<th>type</th>
+<th>required</th>
+<th>description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>quizId</code></td>
+<td>Int</td>
+<td>Yes</td>
+<td>Id of specific quiz</td>
+</tr>
+</tbody>
+</table>
+<h4>Body</h4>
+<table>
+<thead>
+<tr>
+<th>name</th>
+<th>type</th>
+<th>required</th>
+<th>description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>vote</code></td>
+<td>Int</td>
+<td>No</td>
+<td>Default: 0. Must be -1, 0, 1</td>
+</tr>
+<tr>
+    <td><code>favorite</code></td>
+    <td>Boolean</td>
+    <td>No</td>
+    <td>Default: false.</td>
+</tr>
+<tr>
+    <td><code>score</code></td>
+    <td>Int</td>
+    <td>No</td>
+    <td>Default: 0. Cannot be larger than the amount of questions for the specified quiz.</td>
+    </tr>
+</tbody>
+</table>
+<p><em>example:</em></p>
+<pre class="hljs"><code>{
+  <span class="hljs-attribute">vote</span>: <span class="hljs-number">-1</span>,
+  <span class="hljs-attribute">topic</span>: <span class="hljs-literal">true</span>,
+  <span class="hljs-attribute">score</span>: <span class="hljs-number">3</span>
+}</code></pre>
+
+
+<h4>Response</h4>
+<h5>200 (OK)</h5>
+<blockquote>
+  <p>If the request is successful, the server will return an HTTP response with a status code <code>200</code> and the id of the updated quiz user relationship.</p>
+</blockquote>
+<pre class="hljs"><code>[
+  8
+]</code></pre>
+<h5>400 (Bad Request)</h5>
+<blockquote>
+  <p>If you send in invalid fields, the endpoint will return an HTTP response with a status code <code>400</code> and a body as below.</p>
+</blockquote>
+<pre class="hljs"><code>{
+  <span class="hljs-attr">"error"</span>: <span class="hljs-literal">true</span>,
+  <span class="hljs-attr">"message"</span>: <span class="hljs-string">"There was a problem with your request."</span>
+}</code></pre>
+<h5>401 (Unauthorized)</h5>
+<blockquote>
+  <p>If you are not logged in, then endpoint will return an HTTP response with a status code <code>401</code> and a body as below.</p>
+</blockquote>
+<pre class="hljs"><code>{
+  <span class="hljs-attr">"error"</span>: <span class="hljs-literal">true</span>,
+  <span class="hljs-attr">"message"</span>: <span class="hljs-string">"You are unathorized to view the content."</span>
+}</code></pre>
+<h5>404 (Not Found)</h5>
+<blockquote>
+  <p>If you pass in an id that does not match one in the database, the endpoint will return an HTTP response with a status code <code>404</code> and a body as below.</p>
+</blockquote>
+<pre class="hljs"><code>{
+  <span class="hljs-attr">"error"</span>: <span class="hljs-literal">true</span>,
+  <span class="hljs-attr">"message"</span>: <span class="hljs-string">"The requested content does not exist."</span>
+}</code></pre>
+<hr>
+<h2 id="delete-quiz"><strong>DELETE QUIZ</strong></h2>
+<h3>Deletes quiz with specific id.</h3>
+<p><em>Method Url:</em> <code>/api/quizzes/:quizId</code></p>
+<p><em>HTTP method:</em> <strong>[DELETE]</strong></p>
+
+<h4>Headers</h4>
+<table>
+<thead>
+<tr>
+<th>name</th>
+<th>type</th>
+<th>required</th>
+<th>description</th>
+</tr>
+</thead>
+<tbody>
+
+<tr>
+<td><code>Authorization</code></td>
+<td>String</td>
+<td>Yes</td>
+<td>Bearer JWT authorization token</td>
+</tr>
+</tbody>
+</table>
+
+<h4>Parameters</h4>
+<table>
+<thead>
+<tr>
+<th>name</th>
+<th>type</th>
+<th>required</th>
+<th>description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>quizId</code></td>
+<td>Int</td>
+<td>Yes</td>
+<td>Id of specific quiz</td>
+</tr>
+</tbody>
+</table>
+
+
+<h4>Response</h4>
+<h5>200 (OK)</h5>
+<blockquote>
+  <p>If the request is successful, the server will return an HTTP response with a status code <code>200</code> and the id of the deleted quiz.</p>
+</blockquote>
+<pre class="hljs"><code>[
+  12
+]</code></pre>
+
+<h5>401 (Unauthorized)</h5>
+<blockquote>
+  <p>If you are not logged in or you do not send in a token that matches the author of the quiz the endpoint will return an HTTP response with a status code <code>401</code> and a body as below.</p>
+</blockquote>
+<pre class="hljs"><code>{
+  <span class="hljs-attr">"error"</span>: <span class="hljs-literal">true</span>,
+  <span class="hljs-attr">"message"</span>: <span class="hljs-string">"You are unathorized to view the content."</span>
+}</code></pre>
+
+<h5>404 (Not Found)</h5>
+<blockquote>
+  <p>If you pass in an id that does not match one in the database, the endpoint will return an HTTP response with a status code <code>404</code> and a body as below.</p>
+</blockquote>
+<pre class="hljs"><code>{
+  <span class="hljs-attr">"error"</span>: <span class="hljs-literal">true</span>,
+  <span class="hljs-attr">"message"</span>: <span class="hljs-string">"The requested content does not exist."</span>
+}</code></pre>
+<hr>
+<h1 id="question-routes">QUESTION ROUTES</h1>
+<h2 id="get-questions"><strong>GET QUESTIONS</strong></h2>
+<h3>Gets all the questions in a quiz</h3>
+<p><em>Method Url:</em> <code>/api/quizzes/:quizId/questions</code></p>
+<p><em>HTTP method:</em> <strong>[GET]</strong></p>
+
+
+<h4>Parameters</h4>
+<table>
+    <thead>
+    <tr>
+    <th>name</th>
+    <th>type</th>
+    <th>required</th>
+    <th>description</th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr>
+    <td><code>quizId</code></td>
+    <td>Int</td>
+    <td>Yes</td>
+    <td>Id of specific quiz</td>
+    </tr>
+    </tbody>
+    </table>
+<h4>Response</h4>
+<h5>200 (OK)</h5>
+<blockquote>
+  <p>If the request is successful, the server will return an HTTP response with a status code <code>200</code> and an array of questions.</p>
+</blockquote>
+<pre class="hljs"><code>[
+  {
+    <span class="hljs-attr">"id"</span>: <span class="hljs-number">12</span>,
+    <span class="hljs-attr">"question"</span>: <span class="hljs-string">"Here's a sample question 2"</span>,
+    <span class="hljs-attr">"options"</span>: [
+      <span class="hljs-string">"sample option"</span>,
+      <span class="hljs-string">"another 1"</span>,
+      <span class="hljs-string">"This one is the answer shh don't tell"</span>,
+      <span class="hljs-string">"yayyy"</span>
+    ]
+  }
+]</code></pre>
+<h5>404 (Not Found)</h5>
+<blockquote>
+  <p>If you pass in an id that does not match one in the database, the endpoint will return an HTTP response with a status code <code>404</code> and a body as below.</p>
+</blockquote>
+<pre class="hljs"><code>{
+  <span class="hljs-attr">"error"</span>: <span class="hljs-literal">true</span>,
+  <span class="hljs-attr">"message"</span>: <span class="hljs-string">"The requested content does not exist."</span>
+}</code></pre>
+<hr>
+<h2 id="get-one-question"><strong>GET SPECIFIC QUESTION</strong></h2>
+<h3>Gets a question by its ID</h3>
+<p><em>Method Url:</em> <code>/api/quizzes/:quizId/questions/:questionId</code></p>
+<p><em>HTTP method:</em> <strong>[GET]</strong></p>
+
+
+<h4>Parameters</h4>
+<table>
+<thead>
+<tr>
+<th>name</th>
+<th>type</th>
+<th>required</th>
+<th>description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>quizId</code></td>
+<td>Int</td>
+<td>Yes</td>
+<td>Id of specific quiz</td>
+</tr>
+<tr>
+<td><code>questionId</code></td>
+<td>Int</td>
+<td>Yes</td>
+<td>Id of specific question</td>
+</tr>
+</tbody>
+</table>
+
+<h4>Response</h4>
+<h5>200 (OK)</h5>
+<blockquote>
+  <p>If the request is successful, the server will return an HTTP response with a status code <code>200</code> and the id of the updated quiz.</p>
+</blockquote>
+<pre class="hljs"><code>{
+  <span class="hljs-attr">"id"</span>: <span class="hljs-number">12</span>,
+  <span class="hljs-attr">"question"</span>: <span class="hljs-string">"Here's a sample question 2"</span>,
+  <span class="hljs-attr">"options"</span>: [
+    <span class="hljs-string">"sample option"</span>,
+    <span class="hljs-string">"another 1"</span>,
+    <span class="hljs-string">"This one is the answer shh don't tell"</span>,
+    <span class="hljs-string">"yayyy"</span>,
+  ],
+  <span class="hljs-attr">"quiz_id"</span>: <span class="hljs-number">1</span>,
+}</code></pre>
+<h5>404 (Not Found)</h5>
+<blockquote>
+  <p>If you pass in an id that does not match one in the database, the endpoint will return an HTTP response with a status code <code>404</code> and a body as below.</p>
+</blockquote>
+<pre class="hljs"><code>{
+  <span class="hljs-attr">"error"</span>: <span class="hljs-literal">true</span>,
+  <span class="hljs-attr">"message"</span>: <span class="hljs-string">"The requested content does not exist."</span>
+}</code></pre>
+<hr>
+<h2 id="get-question-response"><strong>GET SPECIFIC QUESTION ANSWER</strong></h2>
+<h3>Gets a response of whether the passed in option to a specific question by its ID is correct or not.</h3>
+<p><em>Method Url:</em> <code>/api/quizzes/:quizId/questions/:questionId/response?option=:</code></p>
+<p><em>HTTP method:</em> <strong>[GET]</strong></p>
+<h4>Headers</h4>
+<table>
+    <thead>
+    <tr>
+    <th>name</th>
+    <th>type</th>
+    <th>required</th>
+    <th>description</th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr>
+    <td><code>Content-Type</code></td>
+    <td>String</td>
+    <td>Yes</td>
+    <td>Must be application/json</td>
+    </tr>
+    </tbody>
+    </table>
+
+    <h4>Parameters</h4>
+    <table>
+    <thead>
+    <tr>
+    <th>name</th>
+    <th>type</th>
+    <th>required</th>
+    <th>description</th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr>
+    <td><code>quizId</code></td>
+    <td>Int</td>
+    <td>Yes</td>
+    <td>Id of specific quiz</td>
+    </tr>
+    <tr>
+    <td><code>questionId</code></td>
+    <td>Int</td>
+    <td>Yes</td>
+    <td>Id of specific question</td>
+    </tr>
+    <tr>
+        <td><code>option</code></td>
+        <td>Int</td>
+        <td>Yes</td>
+        <td>Query parameter that matches an option # field on the specified question</td>
+        </tr>
+    </tbody>
+    </table>
+
+
+<h4>Response</h4>
+<h5>200 (OK)</h5>
+<blockquote>
+  <p>If the request is successful, the server will return an HTTP response with a status code <code>200</code> and the id of the updated quiz.</p>
+</blockquote>
+<pre class="hljs"><code>{
+  <span class="hljs-attr">"question"</span>: <span class="hljs-number">12</span>,
+  <span class="hljs-attr">"correct"</span>: <span class="hljs-literal">false</span>
+}</code></pre>
+<h5>400 (Bad Request)</h5>
+<blockquote>
+  <p>If you send in invalid fields, the endpoint will return an HTTP response with a status code <code>400</code> and a body as below.</p>
+</blockquote>
+<pre class="hljs"><code>{
+  <span class="hljs-attr">"error"</span>: <span class="hljs-literal">true</span>,
+  <span class="hljs-attr">"message"</span>: <span class="hljs-string">"There was a problem with your request."</span>
+}</code></pre>
+<h5>404 (Not Found)</h5>
+<blockquote>
+  <p>If you pass in an id that does not match one in the database, the endpoint will return an HTTP response with a status code <code>404</code> and a body as below.</p>
+</blockquote>
+<pre class="hljs"><code>{
+  <span class="hljs-attr">"error"</span>: <span class="hljs-literal">true</span>,
+  <span class="hljs-attr">"message"</span>: <span class="hljs-string">"The requested content does not exist."</span>
+}</code></pre>
+<hr>
+
+<h2 id="add-new-question"><strong>ADD NEW QUESTION</strong></h2>
+<h3>Adds a new question</h3>
+<p><em>Method Url:</em> <code>/api/quizzes/:quizId/questions</code></p>
+<p><em>HTTP method:</em> <strong>[POST]</strong></p>
+
+<h4>Headers</h4>
+<table>
+<thead>
+<tr>
+<th>name</th>
+<th>type</th>
+<th>required</th>
+<th>description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>Content-Type</code></td>
+<td>String</td>
+<td>Yes</td>
+<td>Must be application/json</td>
+</tr>
+<tr>
+<td><code>Authorization</code></td>
+<td>String</td>
+<td>Yes</td>
+<td>Bearer JWT authorization token</td>
+</tr>
+</tbody>
+</table>
+<h4>Parameters</h4>
+<table>
+<thead>
+<tr>
+<th>name</th>
+<th>type</th>
+<th>required</th>
+<th>description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>quizId</code></td>
+<td>Int</td>
+<td>Yes</td>
+<td>Id of specific quiz</td>
+</tr>
+</tbody>
+</table>
+<h4>Body</h4>
+<table>
+<thead>
+<tr>
+<th>name</th>
+<th>type</th>
+<th>required</th>
+<th>description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>question</code></td>
+<td>Strong</td>
+<td>Yes</td>
+<td>Title of the question</td>
+</tr>
+<tr>
+<td><code>option1</code></td>
+<td>String</td>
+<td>Yes</td>
+<td></td>
+</tr>
+<tr>
+<td><code>option2</code></td>
+<td>String</td>
+<td>Yes</td>
+<td></td>
+</tr>
+<tr>
+<td><code>option3</code></td>
+<td>String</td>
+<td>No</td>
+<td></td>
+</tr>
+<tr>
+<td><code>option4</code></td>
+<td>String</td>
+<td>No</td>
+<td></td>
+</tr>
+<tr>
+<td><code>answer</code></td>
+<td>Int</td>
+<td>Yes</td>
+<td>Must be an integer that corresponds to an existing option number.</td>
+</tr>
+</tbody>
+</table>
+<p><em>example:</em></p>
+<pre class="hljs"><code>{
+  <span class="hljs-attribute">question</span>: <span class="hljs-string">"Here's a sample question 2"</span>,
+  <span class="hljs-attribute">options1</span>: <span class="hljs-string">"sample option"</span>,
+  <span class="hljs-attribute">options2</span>: <span class="hljs-string">"another 1"</span>,
+  <span class="hljs-attribute">options3</span>: <span class="hljs-string">"This one is the answer shh don't tell"</span>,
+  <span class="hljs-attribute">options4</span>: <span class="hljs-string">"yayyy"</span>, 
+  <span class="hljs-attribute">answer</span>: <span class="hljs-number">3</span>
+}</code></pre>
+
+<h4>Response</h4>
+<h5>200 (OK)</h5>
+<blockquote>
+  <p>If the request is successful, the server will return an HTTP response with a status code <code>200</code> and the id of the new question.</p>
+</blockquote>
+<pre class="hljs"><code>[
+  8
+]</code></pre>
+<h5>400 (Bad Request)</h5>
+<blockquote>
+  <p>If you send in invalid fields, the endpoint will return an HTTP response with a status code <code>400</code> and a body as below.</p>
+</blockquote>
+<pre class="hljs"><code>{
+  <span class="hljs-attr">"error"</span>: <span class="hljs-literal">true</span>,
+  <span class="hljs-attr">"message"</span>: <span class="hljs-string">"There was a problem with your request."</span>
+}</code></pre>
+<h5>401 (Unauthorized)</h5>
+<blockquote>
+  <p>If you are not logged in, then endpoint will return an HTTP response with a status code <code>401</code> and a body as below.</p>
+</blockquote>
+<pre class="hljs"><code>{
+  <span class="hljs-attr">"error"</span>: <span class="hljs-literal">true</span>,
+  <span class="hljs-attr">"message"</span>: <span class="hljs-string">"You are unathorized to view the content."</span>
+}</code></pre>
+<h5>404 (Not Found)</h5>
+<blockquote>
+  <p>If you pass in an id that does not match one in the database, the endpoint will return an HTTP response with a status code <code>404</code> and a body as below.</p>
+</blockquote>
+<pre class="hljs"><code>{
+  <span class="hljs-attr">"error"</span>: <span class="hljs-literal">true</span>,
+  <span class="hljs-attr">"message"</span>: <span class="hljs-string">"The requested content does not exist."</span>
+}</code></pre>
+<hr>
+
+<h2 id="edit-question"><strong>EDIT A QUESTION</strong></h2>
+<h3>Edits a question of the specified id</h3>
+<p><em>Method Url:</em> <code>/api/quizzes/:quizId/questions/:questionId</code></p>
+<p><em>HTTP method:</em> <strong>[PATCH]</strong></p>
+
+<h4>Headers</h4>
+<table>
+<thead>
+<tr>
+<th>name</th>
+<th>type</th>
+<th>required</th>
+<th>description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>Content-Type</code></td>
+<td>String</td>
+<td>Yes</td>
+<td>Must be application/json</td>
+</tr>
+<tr>
+<td><code>Authorization</code></td>
+<td>String</td>
+<td>Yes</td>
+<td>Bearer JWT authorization token</td>
+</tr>
+</tbody>
+</table>
+<h4>Parameters</h4>
+<table>
+<thead>
+<tr>
+<th>name</th>
+<th>type</th>
+<th>required</th>
+<th>description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>quizId</code></td>
+<td>Int</td>
+<td>Yes</td>
+<td>Id of specific quiz</td>
+</tr>
+<tr>
+<td><code>questionId</code></td>
+<td>Int</td>
+<td>Yes</td>
+<td>Id of specific question</td>
+</tr>
+</tbody>
+</table>
+<h4>Body</h4>
+<table>
+<thead>
+<tr>
+<th>name</th>
+<th>type</th>
+<th>required</th>
+<th>description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>question</code></td>
+<td>Strong</td>
+<td>No</td>
+<td>Title of the question</td>
+</tr>
+<tr>
+<td><code>option1</code></td>
+<td>String</td>
+<td>No</td>
+<td></td>
+</tr>
+<tr>
+<td><code>option2</code></td>
+<td>String</td>
+<td>No</td>
+<td></td>
+</tr>
+<tr>
+<td><code>option3</code></td>
+<td>String</td>
+<td>No</td>
+<td></td>
+</tr>
+<tr>
+<td><code>option4</code></td>
+<td>String</td>
+<td>No</td>
+<td></td>
+</tr>
+<tr>
+<td><code>answer</code></td>
+<td>Int</td>
+<td>No</td>
+<td>Must be an integer that corresponds to an existing option number.</td>
+</tr>
+</tbody>
+</table>
+<p><em>example:</em></p>
+<pre class="hljs"><code>{
+  <span class="hljs-attribute">question</span>: <span class="hljs-string">"Here's a sample question 2"</span>,
+  <span class="hljs-attribute">options1</span>: <span class="hljs-string">"sample option"</span>,
+  <span class="hljs-attribute">options2</span>: <span class="hljs-string">"another 1"</span>,
+  <span class="hljs-attribute">options3</span>: <span class="hljs-string">"This one is the answer shh don't tell"</span>,
+  <span class="hljs-attribute">options4</span>: <span class="hljs-string">"yayyy"</span>, 
+  <span class="hljs-attribute">answer</span>: <span class="hljs-number">4</span>
+}</code></pre>
+<h4>Response</h4>
+<h5>200 (OK)</h5>
+<blockquote>
+  <p>If the request is successful, the server will return an HTTP response with a status code <code>200</code> and the id of the updated question.</p>
+</blockquote>
+<pre class="hljs"><code>[
+  8
+]</code></pre>
+<h5>400 (Bad Request)</h5>
+<blockquote>
+  <p>If you send in invalid fields, the endpoint will return an HTTP response with a status code <code>400</code> and a body as below.</p>
+</blockquote>
+<pre class="hljs"><code>{
+  <span class="hljs-attr">"error"</span>: <span class="hljs-literal">true</span>,
+  <span class="hljs-attr">"message"</span>: <span class="hljs-string">"There was a problem with your request."</span>
+}</code></pre>
+<h5>401 (Unauthorized)</h5>
+<blockquote>
+  <p>If you are not logged in, then endpoint will return an HTTP response with a status code <code>401</code> and a body as below.</p>
+</blockquote>
+<pre class="hljs"><code>{
+  <span class="hljs-attr">"error"</span>: <span class="hljs-literal">true</span>,
+  <span class="hljs-attr">"message"</span>: <span class="hljs-string">"You are unathorized to view the content."</span>
+}</code></pre>
+<h5>404 (Not Found)</h5>
+<blockquote>
+  <p>If you pass in an id that does not match one in the database, the endpoint will return an HTTP response with a status code <code>404</code> and a body as below.</p>
+</blockquote>
+<pre class="hljs"><code>{
+  <span class="hljs-attr">"error"</span>: <span class="hljs-literal">true</span>,
+  <span class="hljs-attr">"message"</span>: <span class="hljs-string">"The requested content does not exist."</span>
+}</code></pre>
+<hr>
+
+<h2 id="delete-quesiton"><strong>DELETE QUESTION</strong></h2>
+<h3>Deletes question with specific id.</h3>
+<p><em>Method Url:</em> <code>/api/quizzes/:quizId/questions/:questionId</code></p>
+<p><em>HTTP method:</em> <strong>[DELETE]</strong></p>
+<h4>Headers</h4>
+<table>
+<thead>
+<tr>
+<th>name</th>
+<th>type</th>
+<th>required</th>
+<th>description</th>
+</tr>
+</thead>
+<tbody>
+
+<tr>
+<td><code>Authorization</code></td>
+<td>String</td>
+<td>Yes</td>
+<td>Bearer JWT authorization token</td>
+</tr>
+</tbody>
+</table>
+<h4>Parameters</h4>
+<table>
+<thead>
+<tr>
+<th>name</th>
+<th>type</th>
+<th>required</th>
+<th>description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>quizId</code></td>
+<td>Int</td>
+<td>Yes</td>
+<td>Id of specific quiz</td>
+</tr>
+<tr>
+<td><code>questionId</code></td>
+<td>Int</td>
+<td>Yes</td>
+<td>Id of specific question</td>
+</tr>
+</tbody>
+</table>
+<h4>Response</h4>
+<h5>200 (OK)</h5>
+<blockquote>
+  <p>If the request is successful, the server will return an HTTP response with a status code <code>200</code> and the id of the deleted question.</p>
+</blockquote>
+<pre class="hljs"><code>[
+  8
+]</code></pre>
+<h5>401 (Unauthorized)</h5>
+<blockquote>
+  <p>If you are not logged in, then endpoint will return an HTTP response with a status code <code>401</code> and a body as below.</p>
+</blockquote>
+<pre class="hljs"><code>{
+  <span class="hljs-attr">"error"</span>: <span class="hljs-literal">true</span>,
+  <span class="hljs-attr">"message"</span>: <span class="hljs-string">"You are unathorized to view the content."</span>
+}</code></pre>
+<h5>404 (Not Found)</h5>
+<blockquote>
+  <p>If you pass in an id that does not match one in the database, the endpoint will return an HTTP response with a status code <code>404</code> and a body as below.</p>
+</blockquote>
+<pre class="hljs"><code>{
+  <span class="hljs-attr">"error"</span>: <span class="hljs-literal">true</span>,
+  <span class="hljs-attr">"message"</span>: <span class="hljs-string">"The requested content does not exist."</span>
+}</code></pre>
+<hr>
+
+<h1 id="post-routes">POST ROUTES</h1>
+
+<h2 id="get-posts"><strong>GET ALL POSTS</strong></h2>
+<h3>Gets an array of post objects</h3>
+<p><em>Method Url:</em> <code>/api/posts</code></p>
+<p><em>HTTP method:</em> <strong>[GET]</strong></p>
+<h4>Headers</h4>
+<table>
+<thead>
+<tr>
+<th>name</th>
+<th>type</th>
+<th>required</th>
+<th>description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>Content-Type</code></td>
+<td>String</td>
+<td>Yes</td>
+<td>Must be application/json</td>
+</tr>
+</tbody>
+</table>
+
+<h4>Response</h4>
+<h5>200 (OK)</h5>
+
+<pre class="hljs"><code>[
+  {
+    <span class="hljs-attr">"id"</span>: <span class="hljs-number">2</span>,
+    <span class="hljs-attr">"title"</span>: <span class="hljs-string">"JavaScript n Things"</span>,
+    <span class="hljs-attr">"body"</span>: <span class="hljs-string">"Here's lots of stuff about JavaScript. So much about JavaScript. So many JavaScript things. All things JavaScript."</span>,
+    <span class="hljs-attr">"created_at"</span>: <span class="hljs-string">"2018-12-11T04:47:28.998Z"</span>,
+    <span class="hljs-attr">"author"</span>: <span class="hljs-string">dinolaur</span>
+  }
+]</code></pre>
+<hr>
+<h2 id="get-one-post"><strong>GET ONE POST</strong></h2>
+<h3>Gets a post with the specified id</h3>
+<p><em>Method Url:</em> <code>/api/posts/:postId</code></p>
+<p><em>HTTP method:</em> <strong>[GET]</strong></p>
+
+
+<h4>Parameters</h4>
+<table>
+<thead>
+<tr>
+<th>name</th>
+<th>type</th>
+<th>required</th>
+<th>description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>postId</code></td>
+<td>Int</td>
+<td>Yes</td>
+<td>Id of specific post</td>
+</tr>
+</tbody>
+</table>
+<h4>Response</h4>
+<h5>200 (OK)</h5>
+<blockquote>
+  <p>If you send a valid post id the endpoint will return an HTTP response with a status code <code>200</code> and a body as below.</p>
+</blockquote>
+<pre class="hljs"><code>{
+  <span class="hljs-attr">"id"</span>: <span class="hljs-number">2</span>,
+  <span class="hljs-attr">"title"</span>: <span class="hljs-string">"JavaScript n Things"</span>,
+  <span class="hljs-attr">"body"</span>: <span class="hljs-string">"Here's lots of stuff about JavaScript. So much about JavaScript. So many JavaScript things. All things JavaScript."</span>,
+  <span class="hljs-attr">"author"</span>: {
+    <span class="hljs-attr">"id"</span>: <span class="hljs-number">10</span>,
+    <span class="hljs-attr">"username"</span>: <span class="hljs-string">"dinolaur"</span>,
+    <span class="hljs-attr">"img_url"</span>:<span class="hljs-string">"https://i.ytimg.com/vi/YCaGYUIfdy4/maxresdefault.jpg"</span>,
+  }
+  <span class="hljs-attr">"created_at"</span>: <span class="hljs-string">"2018-12-11T04:47:28.998Z"</span>,
+}</code></pre>
+<h5>404 (Not Found)</h5>
+<blockquote>
+<p>If you pass in an id that does not match one in the database, the endpoint will return an HTTP response with a status code <code>404</code> and a body as below.</p>
+</blockquote>
+<pre class="hljs"><code>{
+  <span class="hljs-attr">"error"</span>: <span class="hljs-literal">true</span>,
+  <span class="hljs-attr">"message"</span>: <span class="hljs-string">"The requested content does not exist."</span>
+}
+</code></pre>
+<hr>
+<h2 id="add-new-post"><strong>ADD NEW POST</strong></h2>
+<h3>Adds a new post</h3>
+<p><em>Method Url:</em> <code>/api/posts</code></p>
+<p><em>HTTP method:</em> <strong>[POST]</strong></p>
+<h4>Headers</h4>
+<table>
+<thead>
+<tr>
+<th>name</th>
+<th>type</th>
+<th>required</th>
+<th>description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>Content-Type</code></td>
+<td>String</td>
+<td>Yes</td>
+<td>Must be application/json</td>
+</tr>
+<tr>
+<td><code>Authorization</code></td>
+<td>String</td>
+<td>Yes</td>
+<td>Bearer JWT ization token</td>
+</tr>
+</tbody>
+</table>
+<h4>Body</h4>
+<table>
+<thead>
+<tr>
+<th>name</th>
+<th>type</th>
+<th>required</th>
+<th>description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>title</code></td>
+<td>String</td>
+<td>Yes</td>
+<td></td>
+</tr>
+<tr>
+<td><code>body</code></td>
+<td>String</td>
+<td>Yes</td>
+<td></td>
+</tr>
+</tbody>
+</table>
+<p><em>example:</em></p>
+<pre class="hljs"><code>{
+  <span class="hljs-attribute">title</span>: <span class="hljs-string">"JavaScript n Things"</span>,
+  <span class="hljs-attribute">body</span>: <span class="hljs-string">"Here's lots of stuff about JavaScript. So much about JavaScript. So many JavaScript things. All things JavaScript."</span>
+}</code></pre>
+<h4>Response</h4>
+<h5>200 (OK)</h5>
+<blockquote>
+<p>If you successfully create a new post the endpoint will return an HTTP response with a status code <code>200</code> and a body as below.</p>
+</blockquote>
+<pre class="hljs"><code>[
+  12
+]</code></pre>
+<h5>400 (Bad Request)</h5>
+<blockquote>
+<p>If you send in invalid fields, the endpoint will return an HTTP response with a status code <code>400</code> and a body as below.</p>
+</blockquote>
+<pre class="hljs"><code>{
+  <span class="hljs-attr">"error"</span>: <span class="hljs-literal">true</span>,
+  <span class="hljs-attr">"message"</span>: <span class="hljs-string">"There was a problem with your request."</span>
+}</code></pre>
+<h5>401 (Unauthorized)</h5>
+<blockquote>
+  <p>If you are not logged in, then endpoint will return an HTTP response with a status code <code>401</code> and a body as below.</p>
+</blockquote>
+<pre class="hljs"><code>{
+  <span class="hljs-attr">"error"</span>: <span class="hljs-literal">true</span>,
+  <span class="hljs-attr">"message"</span>: <span class="hljs-string">"You are unathorized to view the content."</span>
+}</code></pre>
+<hr>
+<h2 id="edit-post"><strong>EDIT SPECIFIC POST</strong></h2>
+<h3>Edits one or more details of a specific post created by the current user</h3>
+<p><em>Method Url:</em> <code>/api/posts/:postId</code></p>
+<p><em>HTTP method:</em> <strong>[PATCH]</strong></p>
+<h4>Headers</h4>
+<table>
+<thead>
+<tr>
+<th>name</th>
+<th>type</th>
+<th>required</th>
+<th>description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>Content-Type</code></td>
+<td>String</td>
+<td>Yes</td>
+<td>Must be application/json</td>
+</tr>
+<tr>
+<td><code>Authorization</code></td>
+<td>String</td>
+<td>Yes</td>
+<td>Bearer JWT authorization token</td>
+</tr>
+</tbody>
+</table>
+<h4>Parameters</h4>
+<table>
+<thead>
+<tr>
+<th>name</th>
+<th>type</th>
+<th>required</th>
+<th>description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>postId</code></td>
+<td>Int</td>
+<td>Yes</td>
+<td>Id of specific post</td>
+</tr>
+</tbody>
+</table>
+<h4>Body</h4>
+<table>
+<thead>
+<tr>
+<th>name</th>
+<th>type</th>
+<th>required</th>
+<th>description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>title</code></td>
+<td>String</td>
+<td>No</td>
+<td>New title of post</td>
+</tr>
+<tr>
+<td><code>body</code></td>
+<td>String</td>
+<td>No</td>
+<td>New body of post</td>
+</tr>
+</tbody>
+</table>
+<p><em>example:</em></p>
+<pre class="hljs"><code>{
+  <span class="hljs-attribute">title</span>: <span class="hljs-string">"JavaScript n Stuff"</span>,
+  <span class="hljs-attribute">topic</span>: <span class="hljs-string">"Some different things about JavaScript instead"</span>
+}</code></pre>
+
+<h4>Response</h4>
+<h5>200 (OK)</h5>
+<blockquote>
+<p>If the request is successful, the server will return an HTTP response with a status code <code>200</code> and the id of the updated post.</p>
+</blockquote>
+<pre class="hljs"><code>[
+  1
+]</code></pre>
+<h5>400 (Bad Request)</h5>
+<blockquote>
+    <p>If you send in invalid fields, the endpoint will return an HTTP response with a status code <code>400</code> and a body as below.</p>
+    </blockquote>
+<pre class="hljs"><code>{
+  <span class="hljs-attr">"error"</span>: <span class="hljs-literal">true</span>,
+  <span class="hljs-attr">"message"</span>: <span class="hljs-string">"There was a problem with your request."</span>
+}</code></pre>
+<h5>401 (Unauthorized)</h5>
+  <blockquote>
+    <p>If you are not logged in or you do not send in a token that matches the author of the post the endpoint will return an HTTP response with a status code <code>401</code> and a body as below.</p>
+  </blockquote>
+<pre class="hljs"><code>{
+  <span class="hljs-attr">"error"</span>: <span class="hljs-literal">true</span>,
+  <span class="hljs-attr">"message"</span>: <span class="hljs-string">"You are unathorized to view the content."</span>
+}</code></pre>
+<h5>404 (Not Found)</h5>
+<blockquote>
+  <p>If you pass in an id that does not match one in the database, the endpoint will return an HTTP response with a status code <code>404</code> and a body as below.</p>
+</blockquote>
+<pre class="hljs"><code>{
+  <span class="hljs-attr">"error"</span>: <span class="hljs-literal">true</span>,
+  <span class="hljs-attr">"message"</span>: <span class="hljs-string">"The requested content does not exist."</span>
+}</code></pre>
+<hr>
+<h2 id="delete-post"><strong>DELETE POST</strong></h2>
+<h3>Deletes post with specific id.</h3>
+<p><em>Method Url:</em> <code>/api/posts/:quizId</code></p>
+<p><em>HTTP method:</em> <strong>[DELETE]</strong></p>
+
+<h4>Headers</h4>
+<table>
+<thead>
+<tr>
+<th>name</th>
+<th>type</th>
+<th>required</th>
+<th>description</th>
+</tr>
+</thead>
+<tbody>
+
+<tr>
+<td><code>Authorization</code></td>
+<td>String</td>
+<td>Yes</td>
+<td>Bearer JWT authorization token</td>
+</tr>
+</tbody>
+</table>
+<h4>Parameters</h4>
+<table>
+<thead>
+<tr>
+<th>name</th>
+<th>type</th>
+<th>required</th>
+<th>description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>postId</code></td>
+<td>Int</td>
+<td>Yes</td>
+<td>Id of specific post</td>
+</tr>
+</tbody>
+</table>
+<h4>Response</h4>
+<h5>200 (OK)</h5>
+<blockquote>
+  <p>If the request is successful, the server will return an HTTP response with a status code <code>200</code> and the id of the deleted post.</p>
+</blockquote>
+<pre class="hljs"><code>[
+  12
+]</code></pre>
+
+<h5>401 (Unauthorized)</h5>
+<blockquote>
+  <p>If you are not logged in or you do not send in a token that matches the author of the post the endpoint will return an HTTP response with a status code <code>401</code> and a body as below.</p>
+</blockquote>
+<pre class="hljs"><code>{
+  <span class="hljs-attr">"error"</span>: <span class="hljs-literal">true</span>,
+  <span class="hljs-attr">"message"</span>: <span class="hljs-string">"You are unathorized to view the content."</span>
+}</code></pre>
+
+<h5>404 (Not Found)</h5>
+<blockquote>
+  <p>If you pass in an id that does not match one in the database, the endpoint will return an HTTP response with a status code <code>404</code> and a body as below.</p>
+</blockquote>
+<pre class="hljs"><code>{
+  <span class="hljs-attr">"error"</span>: <span class="hljs-literal">true</span>,
+  <span class="hljs-attr">"message"</span>: <span class="hljs-string">"The requested content does not exist."</span>
+}</code></pre>
+<hr>
+<h1 id="comment-routes">COMMENT ROUTES</h1>
+<h2 id="get-comments"><strong>GET COMMENTS</strong></h2>
+<h3>Gets all the questions in a comments</h3>
+<p><em>Method Url:</em> <code>/api/posts/:postId/comments</code></p>
+<p><em>HTTP method:</em> <strong>[GET]</strong></p>
+
+    <h4>Parameters</h4>
+    <table>
+        <thead>
+        <tr>
+        <th>name</th>
+        <th>type</th>
+        <th>required</th>
+        <th>description</th>
+        </tr>
+</thead>
+ <tbody>
+ <tr>
+ <td><code>postId</code></td>
+ <td>Int</td>
+ <td>Yes</td>
+ <td>Id of specific post</td>
+ </tr>
+ </tbody>
+ </table>
+ <h4>Response</h4>
+ <h5>200 (OK)</h5>
+ <blockquote>
+   <p>If the request is successful, the server will return an HTTP response with a status code <code>200</code> and an array of comments.</p>
+ </blockquote>
+<pre class="hljs"><code>[
+  {
+    <span class="hljs-attr">"id"</span>: <span class="hljs-number">4</span>,
+    <span class="hljs-attr">"text"</span>: <span class="hljs-string">"sup family"</span>,
+    <span class="hljs-attr">"author"</span>: <span class="hljs-string">"dinolaur"</span>,
+    <span class="hljs-attr">"post_id"</span>: <span class="hljs-number">2</span>,
+    <span class="hljs-attr">"created_at"</span>: <span class="hljs-string">"2018-12-13T03:24:27.215Z"</span>,
+  }
+]</code></pre>
+<h5>404 (Not Found)</h5>
+<blockquote>
+  <p>If you pass in an id that does not match one in the database, the endpoint will return an HTTP response with a status code <code>404</code> and a body as below.</p>
+</blockquote>
+<pre class="hljs"><code>{
+  <span class="hljs-attr">"error"</span>: <span class="hljs-literal">true</span>,
+  <span class="hljs-attr">"message"</span>: <span class="hljs-string">"The requested content does not exist."</span>
+}</code></pre>
+<hr>
+<h2 id="get-one-comment"><strong>GET SPECIFIC COMMENT</strong></h2>
+<h3>Gets a comment by its ID</h3>
+<p><em>Method Url:</em> <code>/api/posts/:postId/comments/:commentId</code></p>
+<p><em>HTTP method:</em> <strong>[GET]</strong></p>
+<h4>Parameters</h4>
+<table>
+<thead>
+<tr>
+<th>name</th>
+<th>type</th>
+<th>required</th>
+<th>description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>postId</code></td>
+<td>Int</td>
+<td>Yes</td>
+<td>Id of specific post</td>
+</tr>
+<tr>
+<td><code>commentId</code></td>
+<td>Int</td>
+<td>Yes</td>
+<td>Id of specific comment</td>
+</tr>
+</tbody>
+</table>
+<h4>Response</h4>
+<h5>200 (OK)</h5>
+<blockquote>
+  <p>If the request is successful, the server will return an HTTP response with a status code <code>200</code> and the body as below.</p>
+</blockquote>
+<pre class="hljs"><code>{
+  <span class="hljs-attr">"id"</span>: <span class="hljs-number">4</span>,
+  <span class="hljs-attr">"text"</span>: <span class="hljs-string">"sup family!"</span>,
+  <span class="hljs-attr">"author"</span>: {
+    <span class="hljs-attr">"id"</span>: <span class="hljs-number">6</span>,,
+    <span class="hljs-attr">"username"</span>: <span class="hljs-string">"dinolaur"</span>,
+    <span class="hljs-attr">"img_url"</span>: <span class="hljs-literal">null</span>,
+  },
+  <span class="hljs-attr">"post_id"</span>: <span class="hljs-number">2</span>,
+  <span class="hljs-attr">"created_at"</span>: <span class="hljs-string">"2018-12-13T03:24:27.215Z"</span>
+}</code></pre>
+<h5>404 (Not Found)</h5>
+<blockquote>
+  <p>If you pass in an id that does not match one in the database, the endpoint will return an HTTP response with a status code <code>404</code> and a body as below.</p>
+</blockquote>
+<pre class="hljs"><code>{
+  <span class="hljs-attr">"error"</span>: <span class="hljs-literal">true</span>,
+  <span class="hljs-attr">"message"</span>: <span class="hljs-string">"The requested content does not exist."</span>
+}</code></pre>
+<hr>
+<h2 id="add-new-comment"><strong>ADD NEW COMMENT</strong></h2>
+<h3>Adds a new comment to a specified post</h3>
+<p><em>Method Url:</em> <code>/api/posts/:postId/comments</code></p>
+<p><em>HTTP method:</em> <strong>[POST]</strong></p>
+
+<h4>Headers</h4>
+<table>
+<thead>
+<tr>
+<th>name</th>
+<th>type</th>
+<th>required</th>
+<th>description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>Content-Type</code></td>
+<td>String</td>
+<td>Yes</td>
+<td>Must be application/json</td>
+</tr>
+<tr>
+<td><code>Authorization</code></td>
+<td>String</td>
+<td>Yes</td>
+<td>Bearer JWT authorization token</td>
+</tr>
+</tbody>
+</table>
+<h4>Parameters</h4>
+<table>
+<thead>
+<tr>
+<th>name</th>
+<th>type</th>
+<th>required</th>
+<th>description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>postId</code></td>
+<td>Int</td>
+<td>Yes</td>
+<td>Id of specific post</td>
+</tr>
+</tbody>
+</table>
+<h4>Body</h4>
+<table>
+<thead>
+<tr>
+<th>name</th>
+<th>type</th>
+<th>required</th>
+<th>description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>text</code></td>
+<td>Strong</td>
+<td>Yes</td>
+<td>Text body of comment</td>
+</tr>
+</tbody>
+</table>
+
+<p><em>example:</em></p>
+<pre class="hljs"><code>{
+  <span class="hljs-attribute">text</span>: <span class="hljs-string">"Sup family!"</span>,
+}</code></pre>
+
+<h4>Response</h4>
+<h5>200 (OK)</h5>
+<blockquote>
+  <p>If the request is successful, the server will return an HTTP response with a status code <code>200</code> and the id of the new comment.</p>
+</blockquote>
+<pre class="hljs"><code>[
+  8
+]</code></pre>
+<h5>400 (Bad Request)</h5>
+<blockquote>
+  <p>If you send in invalid fields, the endpoint will return an HTTP response with a status code <code>400</code> and a body as below.</p>
+</blockquote>
+<pre class="hljs"><code>{
+  <span class="hljs-attr">"error"</span>: <span class="hljs-literal">true</span>,
+  <span class="hljs-attr">"message"</span>: <span class="hljs-string">"There was a problem with your request."</span>
+}</code></pre>
+<h5>401 (Unauthorized)</h5>
+<blockquote>
+  <p>If you are not logged in, then endpoint will return an HTTP response with a status code <code>401</code> and a body as below.</p>
+</blockquote>
+<pre class="hljs"><code>{
+  <span class="hljs-attr">"error"</span>: <span class="hljs-literal">true</span>,
+  <span class="hljs-attr">"message"</span>: <span class="hljs-string">"You are unathorized to view the content."</span>
+}</code></pre>
+<h5>404 (Not Found)</h5>
+<blockquote>
+  <p>If you pass in an id that does not match one in the database, the endpoint will return an HTTP response with a status code <code>404</code> and a body as below.</p>
+</blockquote>
+<pre class="hljs"><code>{
+  <span class="hljs-attr">"error"</span>: <span class="hljs-literal">true</span>,
+  <span class="hljs-attr">"message"</span>: <span class="hljs-string">"The requested content does not exist."</span>
+}</code></pre>
+<hr>
+<h2 id="edit-comment"><strong>EDIT A COMMENT</strong></h2>
+<h3>Edits a question of the specified id</h3>
+<p><em>Method Url:</em> <code>/api/posts/:postId/comments/:commentId</code></p>
+<p><em>HTTP method:</em> <strong>[PATCH]</strong></p>
+<h4>Headers</h4>
+<table>
+<thead>
+<tr>
+<th>name</th>
+<th>type</th>
+<th>required</th>
+<th>description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>Content-Type</code></td>
+<td>String</td>
+<td>Yes</td>
+<td>Must be application/json</td>
+</tr>
+<tr>
+<td><code>Authorization</code></td>
+<td>String</td>
+<td>Yes</td>
+<td>Bearer JWT authorization token</td>
+</tr>
+</tbody>
+</table>
+<h4>Parameters</h4>
+<table>
+<thead>
+<tr>
+<th>name</th>
+<th>type</th>
+<th>required</th>
+<th>description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>postId</code></td>
+<td>Int</td>
+<td>Yes</td>
+<td>Id of specific post</td>
+</tr>
+<tr>
+<td><code>commentId</code></td>
+<td>Int</td>
+<td>Yes</td>
+<td>Id of specific comment</td>
+</tr>
+</tbody>
+</table>
+<h4>Body</h4>
+<table>
+<thead>
+<tr>
+<th>name</th>
+<th>type</th>
+<th>required</th>
+<th>description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>text</code></td>
+<td>Strong</td>
+<td>Yes</td>
+<td>Text body of comment</td>
+</tr>
+</tbody>
+</table>
+
+<p><em>example:</em></p>
+<pre class="hljs"><code>{
+  <span class="hljs-attribute">text</span>: <span class="hljs-string">"Hellurrrr"</span>,
+}</code></pre>
+<h4>Response</h4>
+<h5>200 (OK)</h5>
+<blockquote>
+  <p>If the request is successful, the server will return an HTTP response with a status code <code>200</code> and the id of the updated comment.</p>
+</blockquote>
+<pre class="hljs"><code>[
+  8
+]</code></pre>
+<h5>400 (Bad Request)</h5>
+<blockquote>
+  <p>If you send in invalid fields, the endpoint will return an HTTP response with a status code <code>400</code> and a body as below.</p>
+</blockquote>
+<pre class="hljs"><code>{
+  <span class="hljs-attr">"error"</span>: <span class="hljs-literal">true</span>,
+  <span class="hljs-attr">"message"</span>: <span class="hljs-string">"There was a problem with your request."</span>
+}</code></pre>
+<h5>401 (Unauthorized)</h5>
+<blockquote>
+  <p>If you are not logged in, then endpoint will return an HTTP response with a status code <code>401</code> and a body as below.</p>
+</blockquote>
+<pre class="hljs"><code>{
+  <span class="hljs-attr">"error"</span>: <span class="hljs-literal">true</span>,
+  <span class="hljs-attr">"message"</span>: <span class="hljs-string">"You are unathorized to view the content."</span>
+}</code></pre>
+<h5>404 (Not Found)</h5>
+<blockquote>
+  <p>If you pass in an id that does not match one in the database, the endpoint will return an HTTP response with a status code <code>404</code> and a body as below.</p>
+</blockquote>
+<pre class="hljs"><code>{
+  <span class="hljs-attr">"error"</span>: <span class="hljs-literal">true</span>,
+  <span class="hljs-attr">"message"</span>: <span class="hljs-string">"The requested content does not exist."</span>
+}</code></pre>
+<hr>
+<h2 id="delete-comment"><strong>DELETE COMMENT</strong></h2>
+<h3>Deletes comment with specific id.</h3>
+<p><em>Method Url:</em> <code>/api/posts/:postId/comments/:commentId</code></p>
+<p><em>HTTP method:</em> <strong>[DELETE]</strong></p>
+<h4>Headers</h4>
+<table>
+<thead>
+<tr>
+<th>name</th>
+<th>type</th>
+<th>required</th>
+<th>description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>Content-Type</code></td>
+<td>String</td>
+<td>Yes</td>
+<td>Must be application/json</td>
+</tr>
+<tr>
+<td><code>Authorization</code></td>
+<td>String</td>
+<td>Yes</td>
+<td>Bearer JWT authorization token</td>
+</tr>
+</tbody>
+</table>
+<h4>Parameters</h4>
+<table>
+<thead>
+<tr>
+<th>name</th>
+<th>type</th>
+<th>required</th>
+<th>description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>postId</code></td>
+<td>Int</td>
+<td>Yes</td>
+<td>Id of specific post</td>
+</tr>
+<tr>
+<td><code>commentId</code></td>
+<td>Int</td>
+<td>Yes</td>
+<td>Id of specific comment</td>
+</tr>
+</tbody>
+</table>
+<h4>Response</h4>
+<h5>200 (OK)</h5>
+<blockquote>
+  <p>If the request is successful, the server will return an HTTP response with a status code <code>200</code> and the id of the deleted comment.</p>
+</blockquote>
+<pre class="hljs"><code>[
+  8
+]</code></pre>
+<h5>401 (Unauthorized)</h5>
+<blockquote>
+  <p>If you are not logged in, then endpoint will return an HTTP response with a status code <code>401</code> and a body as below.</p>
+</blockquote>
+<pre class="hljs"><code>{
+  <span class="hljs-attr">"error"</span>: <span class="hljs-literal">true</span>,
+  <span class="hljs-attr">"message"</span>: <span class="hljs-string">"You are unathorized to view the content."</span>
+}</code></pre>
+<h5>404 (Not Found)</h5>
+<blockquote>
+  <p>If you pass in an id that does not match one in the database, the endpoint will return an HTTP response with a status code <code>404</code> and a body as below.</p>
+</blockquote>
+<pre class="hljs"><code>{
+  <span class="hljs-attr">"error"</span>: <span class="hljs-literal">true</span>,
+  <span class="hljs-attr">"message"</span>: <span class="hljs-string">"The requested content does not exist."</span>
+}</code></pre>
+<hr>
+
+</div>
+</body>
+</html>

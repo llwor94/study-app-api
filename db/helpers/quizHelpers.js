@@ -125,6 +125,9 @@ module.exports = {
 			else await db('quizzes').where('id', quiz_id).increment('votes', difference);
 		}
 
-		return db('users_quizzes').returning('id').update({ vote, score, favorite });
+		return db('users_quizzes')
+			.returning('id')
+			.where({ quiz_id, user_id })
+			.update({ vote, score, favorite });
 	},
 };

@@ -18,7 +18,7 @@ h6:hover .header-link:before {
     font-size: smaller;
 }
 
-.header-link {
+/* .header-link {
   -webkit-user-select: none;
   -moz-user-select: none;
   -ms-user-select: none;
@@ -29,6 +29,27 @@ h6:hover .header-link:before {
   left: -0.7em;
   display: block;
   padding-right: 1em;
+} */
+
+.sidenav {
+  width: 300px;
+  position: fixed;
+  z-index: 1;
+  top: 50px;
+  left: 50px;
+  bottom: 50px;
+  color:#444;
+  text-decoration: none;
+  font-family:Georgia, Palatino, 'Palatino Linotype', Times, 'Times New Roman', serif;
+  font-size:1.2em;
+  line-height:1.5em;
+  background: #eee;
+  overflow-x: hidden;
+  overflow-y: scroll;
+  padding: 8px 0;
+}
+.sub {
+  font-size: .8em;
 }
 
 h1:hover .header-link,
