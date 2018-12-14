@@ -4,7 +4,7 @@ const registerUserSchema = {
 	username: Joi.string().alphanum().min(4).max(10).required(),
 	password: Joi.string().required(),
 	email: Joi.string().required(),
-	img_url: Joi.string(),
+	img_url: Joi.string().allow('', null),
 };
 
 const loginUserSchema = {
@@ -14,9 +14,9 @@ const loginUserSchema = {
 
 const quizSchema = {
 	title: Joi.string().required(),
-	time_limit_seconds: Joi.number().integer(),
+	time_limit_seconds: Joi.number().integer().allow('', null),
 	topic: Joi.string().max(20).required(),
-	description: Joi.string(),
+	description: Joi.string().allow('', null),
 	votes: Joi.number().integer(),
 };
 
@@ -41,8 +41,8 @@ const questionSchema = {
 	question: Joi.string().required(),
 	option1: Joi.string().required(),
 	option2: Joi.string().required(),
-	option3: Joi.string(),
-	option4: Joi.string(),
+	option3: Joi.string().allow('', null),
+	option4: Joi.string().allow('', null),
 	answer: Joi.number().integer().required().min(1).max(4),
 };
 
