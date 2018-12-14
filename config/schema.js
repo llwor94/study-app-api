@@ -92,6 +92,7 @@ module.exports = {
 			return error;
 		}
 		const { error } = Joi.validate(question, questionSchema);
+		console.log(error);
 		return error;
 	},
 	invalidUserQuizUpdate(input) {
