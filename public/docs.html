@@ -15,6 +15,7 @@
 <ul>
 <li><a class="header-link sub" href="#register">/POST register</a></li>
 <li><a class="header-link sub" href="#login">/POST login</a></li>
+<li><a class="header-link sub" href="#update-user">/PATCH update</a></li>
 </ul>
 </li>
 <li><a class="header-link" href="#quiz-routes">Quiz Routes</a>
@@ -234,6 +235,105 @@
   <span class="hljs-attr">"message"</span>: <span class="hljs-string">"The requested content does not exist."</span>
 }</code></pre>
 <hr>
+
+<h2 id="update-user"><strong>UPDATE USER</strong></h2>
+<h3>Updates the username and password for the logged in user</h3>
+<p><em>Method Url:</em> <code>/api/auth/update</code></p>
+<p><em>HTTP method:</em> <strong>[PATCH]</strong></p>
+<h4>Headers</h4>
+<table>
+<thead>
+<tr>
+<th>name</th>
+<th>type</th>
+<th>required</th>
+<th>description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>Authorization</code></td>
+<td>String</td>
+<td>No</td>
+<td>Bearer JWT authorization token</td>
+</tr>
+</tbody>
+</table>
+<h4>Body</h4>
+<table>
+<thead>
+<tr>
+<th>name</th>
+<th>type</th>
+<th>required</th>
+<th>description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>newUsername</code></td>
+<td>String</td>
+<td>No</td>
+<td>Only include if you would like to change the username of the user</td>
+</tr>
+<tr>
+<td><code>currentPassword</code></td>
+<td>String</td>
+<td>Yes</td>
+<td>Must match the password of the logged in user</td>
+</tr>
+<tr>
+  <td><code>newPassword</code></td>
+  <td>String</td>
+  <td>No</td>
+  <td>Only include if you would like to change the password of the user</td>
+  </tr>
+</tbody>
+</table>
+<p><em>example:</em></p>
+<pre class="hljs"><code>{
+  <span class="hljs-attribute">newUsername</span>: <span class="hljs-string">"dinolaur"</span>,
+  <span class="hljs-attribute">currentPassword</span>: <span class="hljs-string">"password123"</span>
+  <span class="hljs-attribute">newPassword</span>: <span class="hljs-string">"password1234"</span>
+}</code></pre>
+<h4>Response</h4>
+<h5>200 (OK)</h5>
+<blockquote>
+<p>If you successfully update the user information and change the password, the endpoint will return an HTTP response with a status code <code>200</code> and a body as below.</p>
+</blockquote>
+<pre class="hljs"><code>{
+  <span class="hljs-attr">"token"</span>: <span class="hljs-string">"eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MSwiaWF0IjoxNTQ0MzM1NjUxLCJleHAiOjE1NzU4OTMyNTF9.uqd2OHBYkGQpwjLTPPiPWYkYOKlG7whQDFkk46xGXoE"</span>,
+  <span class="hljs-attr">"user"</span>: {
+    <span class="hljs-attr">"id"</span>: <span class="hljs-number">1</span>,
+  }
+}</code></pre>
+<blockquote>
+  <p>If you successfully update the user information and change just the username, the endpoint will return an HTTP response with a status code <code>200</code> and a body as below.</p>
+</blockquote>
+<pre class="hljs"><code>{
+  <span class="hljs-attr">"user"</span>: {
+    <span class="hljs-attr">"id"</span>: <span class="hljs-number">1</span>,
+    <span class="hljs-attr">"username"</span>: <span class="hljs-string">"dinolaur"</span>,
+  }
+}</code></pre>
+<h5>404 (Not Found)</h5>
+<blockquote>
+<p>If you send in invalid fields or the password of the user corresponding to the token does not match the currentPassword field, the endpoint will return an HTTP response with a status code <code>400</code> and a body as below.</p>
+</blockquote>
+<pre class="hljs"><code>{
+  <span class="hljs-attr">"error"</span>: <span class="hljs-literal">true</span>,
+  <span class="hljs-attr">"message"</span>: <span class="hljs-string">"The requested content does not exist."</span>
+}</code></pre>
+<h5>401 (Unauthorized)</h5>
+<blockquote>
+  <p>If you are not logged in, then endpoint will return an HTTP response with a status code <code>401</code> and a body as below.</p>
+</blockquote>
+<pre class="hljs"><code>{
+  <span class="hljs-attr">"error"</span>: <span class="hljs-literal">true</span>,
+  <span class="hljs-attr">"message"</span>: <span class="hljs-string">"You are unathorized to view the content."</span>
+}</code></pre>
+<hr>
+
 <h1 id="quiz-routes">QUIZ ROUTES</h1>
 <h2 id="get-quizzes"><strong>GET QUIZZES</strong></h2>
 <h3>Gets an array of quiz objects</h3>
