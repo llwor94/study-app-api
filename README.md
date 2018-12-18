@@ -117,6 +117,78 @@ ____
   "message": "The requested content does not exist."
 }
 ```
+___
+
+## **UPDATE USER**
+### Updates the username or password of a user
+
+*Method Url:* `/api/auth/update`
+*HTTP method:* **[PATCH]**
+
+#### Headers
+
+| name | type   | required | description |
+| ----- | ------ | -------- | ----- |
+| `Content-Type` | String | Yes | Must be application/json |
+| `Authorization`| String | No | Bearer JWT authorization token |
+
+#### Body
+
+| name | type   | required | description|
+| ----| ------ | -------- | ---- |
+| `newUsername` | String | No | Only include if you would like to change the username of the user |
+| `currentPassword` | String | Yes  | Must match a password in the logged in user |
+| `newPassword` | String | No | Only include if you would like to change the password of the user |
+
+*example:*
+
+```
+{
+  newUsername: "dinolaur",
+  currentPassword: "password123",
+  newPassword: "password1234"
+}
+```
+
+
+#### Response
+
+##### 200 (OK)
+>If you successfully update the user information and change the password, the endpoint will return an HTTP response with a status code `200` and a body as below.
+```
+{
+  "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MiwiaWF0IjoxNTQ1MTEzMDMxLCJleHAiOjE1NzY2NzA2MzF9.C1oMA1D2qdLLaPSfvEWU5LaXCABVf2DBWomQ1tUQDgU",
+  "user": {
+    "id": 2
+  }
+}
+```
+>>If you successfully update the user information and change just the username, the endpoint will return an HTTP response with a status code `200` and a body as below.
+```
+{
+  "user": {
+    "id": 2,
+    "username": "dinolaur"
+  }
+}
+```
+##### 400 (Bad Request)
+>If you send in invalid fields or the password of the user corresponding to the token does not match the currentPassword field, the endpoint will return an HTTP response with a status code `400` and a body as below.
+```
+{
+  "error": true,
+  "message": "There was a problem with your request."
+}
+```
+
+##### 401 (Unauthorized)
+>If you are not logged in, then endpoint will return an HTTP response with a status code `401` and a body as below.
+```
+{
+  "error": true,
+  "message": "You are unathorized to view the content."
+}
+```
 
 ---
 

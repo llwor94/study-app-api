@@ -9,7 +9,6 @@ module.exports = {
 
 		jwt.verify(token, secret, (err, decodedToken) => {
 			if (err) return next(err);
-			console.log(decodedToken);
 			req.user.id = decodedToken.id;
 			next();
 		});

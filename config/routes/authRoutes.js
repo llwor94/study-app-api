@@ -39,16 +39,37 @@ router.post('/login', ({ body }, res, next) => {
 			if (!bcrypt.compareSync(body.password, response.password)) return next({ code: 400 });
 
 			const token = generateToken({ id: response.id });
-			return res
-				.status(200)
-				.json({
-					token,
-					user: {
-						id: response.id,
-						username: response.username,
-						img_url: response.img_url,
-					},
-				});
+			return res.status(200).json({
+				token,
+				user: {
+					id: response.id,
+					username: response.username,
+					img_url: response.img_url,
+				},
+			});
+		})
+		.catch(next);
+});
+
+router.patch('/update', async ({ body, user }, res, next) => {
+	if (!user.id) return next({ code: 401 });
+
+	let getUser = await db('users').where({ id: user.id }).first();
+	if (!bcrypt.compareSync(body.currentPassword, getUser.password)) return next({ code: 401 });
+
+	if (body.newPassword) body.newPassword = bcrypt.hashSync(body.newPassword, 8);
+
+	db('users')
+		.update({ username: body.newUsername, password: body.newPassword })
+		.where({ id: user.id })
+		.returning('id')
+		.then(([ id ]) => {
+			if (body.newPassword) {
+				let token = generateToken({ id });
+				return res.status(200).json({ token, user: { id } });
+			} else {
+				return res.status(200).json({ user: { id, username: body.newUsername } });
+			}
 		})
 		.catch(next);
 });
