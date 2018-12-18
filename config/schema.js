@@ -51,8 +51,8 @@ const updateQuestionSchema = Joi.object()
 		question: Joi.string(),
 		option1: Joi.string(),
 		option2: Joi.string(),
-		option3: Joi.string(),
-		option4: Joi.string(),
+		option3: Joi.string().allow('', null),
+		option4: Joi.string().allow('', null),
 		answer: Joi.number().integer().min(1).max(4),
 	})
 	.or('question', 'option1', 'option2', 'option3', 'option4', 'answer');
