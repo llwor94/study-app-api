@@ -5,7 +5,14 @@ module.exports = {
 		return db('comments as c')
 			.where({ post_id })
 			.join('users as u', 'u.id', 'c.author')
-			.select('c.id', 'c.text', 'u.username as author', 'c.post_id', 'c.created_at');
+			.select(
+				'c.id',
+				'c.text',
+				'u.username as author',
+				'u.img_url as author_img',
+				'c.post_id',
+				'c.created_at',
+			);
 	},
 	async getComment(id) {
 		let comment = await db('comments').where({ id }).first();
