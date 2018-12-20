@@ -10,6 +10,13 @@ router.get('/', ({ query }, res, next) => {
 			.first()
 			.then(user => res.status(200).json(user))
 			.catch(next);
+	} else if (query.email) {
+		db('users')
+			.where({ email: query.email })
+			.select('email', 'username', 'id', 'img_url')
+			.first()
+			.then(user => res.status(200).json(user))
+			.catch(next);
 	} else {
 		db('users')
 			.select('email', 'username', 'id', 'img_url')
