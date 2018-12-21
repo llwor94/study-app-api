@@ -71,40 +71,41 @@ const updatePostSchema = Joi.object()
 
 module.exports = {
 	invalidRegister(user) {
-		const { error } = Joi.validate(user, registerUserSchema);
+		const { error } = Joi.validate(user, registerUserSchema, { stripUnknown: true });
+		console.log(error);
 		return error;
 	},
 	invalidLogin(user) {
-		const { error } = Joi.validate(user, loginUserSchema);
+		const { error } = Joi.validate(user, loginUserSchema, { stripUnknown: true });
 		return error;
 	},
 	invalidQuiz(quiz, update) {
 		if (update) {
-			const { error } = Joi.validate(quiz, updateQuizSchema);
+			const { error } = Joi.validate(quiz, updateQuizSchema, { stripUnknown: true });
 			return error;
 		}
-		const { error } = Joi.validate(quiz, quizSchema);
+		const { error } = Joi.validate(quiz, quizSchema, { stripUnknown: true });
 		return error;
 	},
 	invalidQuestion(question, update) {
 		if (update) {
-			const { error } = Joi.validate(question, updateQuestionSchema);
+			const { error } = Joi.validate(question, updateQuestionSchema, { stripUnknown: true });
 			return error;
 		}
-		const { error } = Joi.validate(question, questionSchema);
+		const { error } = Joi.validate(question, questionSchema, { stripUnknown: true });
 		console.log(error);
 		return error;
 	},
 	invalidUserQuizUpdate(input) {
-		const { error } = Joi.validate(input, UserQuizSchema);
+		const { error } = Joi.validate(input, UserQuizSchema, { stripUnknown: true });
 		return error;
 	},
 	invalidPost(post, update) {
 		if (update) {
-			const { error } = Joi.validate(post, updatePostSchema);
+			const { error } = Joi.validate(post, updatePostSchema, { stripUnknown: true });
 			return error;
 		}
-		const { error } = Joi.validate(post, postSchema);
+		const { error } = Joi.validate(post, postSchema, { stripUnknown: true });
 		return error;
 	},
 };
