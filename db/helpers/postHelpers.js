@@ -20,7 +20,19 @@ module.exports = {
 			.where('id', post.author)
 			.select('id', 'username', 'img_url')
 			.first();
+		let comments = await db('comments as c')
+			.where('post_id', id)
+			.join('users as u', 'u.id', 'c.author')
+			.select(
+				'c.id',
+				'c.text',
+				'u.username as author',
+				'u.img_url as author_img',
+				'c.created_at',
+			);
 		post.author = author;
+		post.comments = comments;
+
 		return post;
 	},
 	createPost(post) {
