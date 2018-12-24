@@ -4,7 +4,14 @@ module.exports = {
 	getPosts() {
 		return db('posts as p')
 			.join('users as u', 'u.id', 'p.author')
-			.select('p.id', 'p.title', 'p.body', 'p.created_at', 'u.username as author');
+			.select(
+				'p.id',
+				'p.title',
+				'p.body',
+				'p.created_at',
+				'u.username as author',
+				'u.img_url as author_img',
+			);
 	},
 	async getPost(id) {
 		let post = await db('posts').where({ id }).first();
