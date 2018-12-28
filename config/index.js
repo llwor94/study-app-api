@@ -1,6 +1,6 @@
 const authRoutes = require('./routes/authRoutes');
 const quizRoutes = require('./routes/quizzes');
-const userRoutes = require('./routes/userRoutes');
+const userRoutes = require('./routes/users');
 const postRoutes = require('./routes/posts');
 
 const { errorHandler, getUser } = require('./middleware');

@@ -2,11 +2,17 @@ const db = require('../dbConfig');
 const _ = require('lodash');
 
 module.exports = {
-	getQuizzes(topic) {
+	async getQuizzes(topic) {
 		if (topic) {
 			let topic = db('topics').where('id', topic).orWhere('name', topic).select('id');
 			return db('quizzes').where('topic_id', topic);
 		}
+		let questions = await db('quizzes')
+			.leftJoin('questions', 'quizzes.id', 'questions.quiz_id')
+			.select('questions.quiz_id', db.raw('COUNT(questions.id) as questions_count'))
+			.groupBy('questions.quiz_id');
+		//let questions = await db('questions').select('question').groupBy('quiz_id');
+		console.log(questions);
 		//let questions = db('questions').count('id as questions').groupBy('quiz_id');
 		return db('quizzes as q')
 			.join('topics as t', 'q.topic_id', 't.id')
@@ -18,6 +24,7 @@ module.exports = {
 				'q.description',
 				'u.username as author',
 				't.name as topic',
+				db.raw('COUNT(questions.id) as questions_count'),
 			);
 	},
 
@@ -54,6 +61,12 @@ module.exports = {
 			.where('id', quiz.author)
 			.select('id', 'username', 'img_url')
 			.first();
+		let questions = await db('questions')
+			.count('*')
+			.groupBy('quiz_id')
+			.where({ quiz_id })
+			.first();
+		quiz.question_count = questions.count;
 		quiz.author = author;
 		return quiz;
 	},
