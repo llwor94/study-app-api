@@ -1,6 +1,6 @@
 # Table schemas
 
-## Users
+## Auth
 POST `/api/auth/register`  
 POST `/api/auth/login`  
 
@@ -11,6 +11,9 @@ POST `/api/auth/login`
 | username | String (unique) (required)    |
 | password | String (required)             |
 | img_url  | String                        |
+
+## Users
+GET `/api/users`
 
 ## Questions
 

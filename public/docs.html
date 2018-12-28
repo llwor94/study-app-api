@@ -18,6 +18,11 @@
 <li><a class="header-link sub" href="#update-user">/PATCH update</a></li>
 </ul>
 </li>
+<li><a class="header-link" href="#user-routes">User Routes</a>
+  <ul>
+  <li><a class="header-link sub" href="#get-users">/GET users</a></li>
+  </ul>
+  </li>
 <li><a class="header-link" href="#quiz-routes">Quiz Routes</a>
 <ul>
 <li><a class="header-link sub" href="#get-quizzes">/GET quizzes</a></li>
@@ -332,6 +337,48 @@
   <span class="hljs-attr">"error"</span>: <span class="hljs-literal">true</span>,
   <span class="hljs-attr">"message"</span>: <span class="hljs-string">"You are unathorized to view the content."</span>
 }</code></pre>
+<hr>
+
+<h1 id="user-routes">USER ROUTES</h1>
+<h2 id="get-users"><strong>GET USERS</strong></h2>
+<h3>Gets an array of quiz objects</h3>
+<p><em>Method Url:</em> <code>/api/users</code></p>
+<p><em>HTTP method:</em> <strong>[GET]</strong></p>
+<h4>Parameters</h4>
+<table>
+<thead>
+<tr>
+<th>name</th>
+<th>type</th>
+<th>required</th>
+<th>description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>username</code></td>
+<td>String</td>
+<td>No</td>
+<td>Query parameters in order to receive user of specific username</td>
+</tr>
+<tr>
+  <td><code>email</code></td>
+  <td>String</td>
+  <td>No</td>
+  <td>Query parameters in order to receive user of specific email</td>
+  </tr>
+</tbody>
+</table>
+<h4>Response</h4>
+<h5>200 (OK)</h5>
+<pre class="hljs"><code>[
+  {
+    <span class="hljs-attr">"email"</span>: <span class="hljs-string">"lauren@cooltable.io"</span>,
+    <span class="hljs-attr">"username"</span>: <span class="hljs-string">"lauren"</span>,
+    <span class="hljs-attr">"id"</span>: <span class="hljs-number">2</span>,
+    <span class="hljs-attr">"img_url"</span>: <span class="hljs-string">"https://i.ytimg.com/vi/YCaGYUIfdy4/maxresdefault.jpg"</span>
+  }
+]</code></pre>
 <hr>
 
 <h1 id="quiz-routes">QUIZ ROUTES</h1>
