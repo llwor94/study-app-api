@@ -1,5 +1,6 @@
 const express = require('express');
 const router = express.Router();
+const friendRouter = require('./friendRoutes');
 const helpers = require('../../../db/helpers/userHelpers');
 
 router.get('/', ({ query }, res, next) => {
@@ -21,5 +22,7 @@ router.get('/', ({ query }, res, next) => {
 			.catch(next);
 	}
 });
+
+router.use('/friends', friendRouter);
 
 module.exports = router;
