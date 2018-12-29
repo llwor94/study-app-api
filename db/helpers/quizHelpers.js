@@ -65,7 +65,11 @@ module.exports = {
 			.groupBy('quiz_id')
 			.where({ quiz_id })
 			.first();
-		quiz.question_count = questions.count;
+		if (questions) {
+			quiz.question_count = questions.count;
+		} else {
+			quiz.question_count = 0;
+		}
 		quiz.author = author;
 		return quiz;
 	},
