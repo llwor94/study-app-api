@@ -18,6 +18,7 @@ router.param('quizId', (req, res, next, id) => {
 });
 
 router.get('/', ({ query, user }, res, next) => {
+	console.log(user);
 	helpers
 		.getQuizzes(query.topic, user)
 		.then(response => {
