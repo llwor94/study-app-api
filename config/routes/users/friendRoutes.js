@@ -7,11 +7,13 @@ router.use((req, res, next) => {
 		console.log(req.user);
 		next();
 	} else {
-		return next({ code: 404 });
+		return next({ code: 401 });
 	}
 });
 
-router.param('friendId', (req, res, next, id) => {
+router.param('friendId', async (req, res, next, id) => {
+	let friend = await helpers.checkUser(id);
+	if (!friend) return next({ code: 400 });
 	helpers
 		.checkFriendship(req.user.id, id)
 		.then(response => {
