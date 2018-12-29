@@ -8,7 +8,7 @@ module.exports = {
 			return db('quizzes').where('topic_id', topic);
 		}
 		let questions = db
-			.count('quiz_id')
+			.select(db.raw('count(quiz_id)::integer'))
 			.from('questions')
 			.whereRaw('quiz_id = q.id')
 			.as('question_count');

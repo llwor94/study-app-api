@@ -3,7 +3,7 @@ const db = require('../dbConfig');
 module.exports = {
 	getPosts() {
 		let comments = db
-			.count('post_id')
+			.select(db.raw('count(post_id)::integer'))
 			.from('comments')
 			.whereRaw('post_id = p.id')
 			.as('comment_count');
