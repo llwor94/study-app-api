@@ -67,7 +67,7 @@ router.delete('/:questionId', ({ question, user }, res, next) => {
 		.deleteQuestion(question.id)
 		.then(response => {
 			if (!response) return next({ code: 404 });
-			res.status(200).json(response);
+			res.status(200).json({ message: 'Question successfully deleted.' });
 		})
 		.catch(next);
 });

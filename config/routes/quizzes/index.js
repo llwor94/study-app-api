@@ -80,7 +80,7 @@ router.delete('/:quizId', ({ quiz, body, user }, res, next) => {
 	if (!user.authorized) return next({ code: 401 });
 	helpers.deleteQuiz(quiz.id).then(response => {
 		if (!response) return next({ code: 404 });
-		res.status(200).json(response);
+		res.status(200).json({ message: 'Quiz successfully deleted.' });
 	});
 });
 

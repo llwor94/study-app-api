@@ -1026,11 +1026,11 @@
 <h4>Response</h4>
 <h5>200 (OK)</h5>
 <blockquote>
-  <p>If the request is successful, the server will return an HTTP response with a status code <code>200</code> and the id of the deleted quiz.</p>
+  <p>If the request is successful, the server will return an HTTP response with a status code <code>200</code> and the following message.</p>
 </blockquote>
-<pre class="hljs"><code>[
-  12
-]</code></pre>
+<pre class="hljs"><code>{
+    <span class="hljs-attr">"message"</span>: <span class="hljs-string">"Quiz successfully deleted."</span>
+}</code></pre>
 
 <h5>401 (Unauthorized)</h5>
 <blockquote>
@@ -1584,11 +1584,11 @@
 <h4>Response</h4>
 <h5>200 (OK)</h5>
 <blockquote>
-  <p>If the request is successful, the server will return an HTTP response with a status code <code>200</code> and the id of the deleted question.</p>
+  <p>If the request is successful, the server will return an HTTP response with a status code <code>200</code> and the message below.</p>
 </blockquote>
-<pre class="hljs"><code>[
-  8
-]</code></pre>
+<pre class="hljs"><code>{
+  <span class="hljs-attr">"message"</span>: <span class="hljs-string">"Question successfully deleted."</span>
+}</code></pre>
 <h5>401 (Unauthorized)</h5>
 <blockquote>
   <p>If you are not logged in, then endpoint will return an HTTP response with a status code <code>401</code> and a body as below.</p>
