@@ -7,13 +7,11 @@ module.exports = {
 			let topic = db('topics').where('id', topic).orWhere('name', topic).select('id');
 			return db('quizzes').where('topic_id', topic);
 		}
-		let questions = await db('quizzes')
-			.leftJoin('questions', 'quizzes.id', 'questions.quiz_id')
-			.select('questions.quiz_id', db.raw('COUNT(questions.id) as questions_count'))
-			.groupBy('questions.quiz_id');
-		//let questions = await db('questions').select('question').groupBy('quiz_id');
-		console.log(questions);
-		//let questions = db('questions').count('id as questions').groupBy('quiz_id');
+		let questions = db
+			.count('quiz_id')
+			.from('questions')
+			.whereRaw('quiz_id = q.id')
+			.as('question_count');
 		return db('quizzes as q')
 			.join('topics as t', 'q.topic_id', 't.id')
 			.join('users as u', 'q.author', 'u.id')
@@ -24,6 +22,7 @@ module.exports = {
 				'q.description',
 				'u.username as author',
 				't.name as topic',
+				questions,
 			);
 	},
 
