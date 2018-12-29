@@ -24,7 +24,6 @@ module.exports = {
 				'q.description',
 				'u.username as author',
 				't.name as topic',
-				db.raw('COUNT(questions.id) as questions_count'),
 			);
 	},
 

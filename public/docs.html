@@ -19,10 +19,16 @@
 </ul>
 </li>
 <li><a class="header-link" href="#user-routes">User Routes</a>
-  <ul>
-  <li><a class="header-link sub" href="#get-users">/GET users</a></li>
-  </ul>
-  </li>
+<ul>
+<li><a class="header-link sub" href="#get-users">/GET users</a></li>
+</ul>
+</li>
+<li><a class="header-link" href="#friend-routes">Friend Routes</a>
+<ul>
+<li><a class="header-link sub" href="#get-friends">/GET friends</a></li>
+<li><a class="header-link sub" href="#put-friends">/PUT friends</a></li>
+</ul>
+</li>
 <li><a class="header-link" href="#quiz-routes">Quiz Routes</a>
 <ul>
 <li><a class="header-link sub" href="#get-quizzes">/GET quizzes</a></li>
@@ -380,6 +386,31 @@
   }
 ]</code></pre>
 <hr>
+
+<h1 id="friend-routes">FRIEND ROUTES</h1>
+<h2 id="get-friends"><strong>GET FRIENDS</strong></h2>
+<h3>Gets an array of quiz objects for a logged in user</h3>
+<p><em>Method Url:</em> <code>/api/users/friends</code></p>
+<p><em>HTTP method:</em> <strong>[GET]</strong></p>
+<h4>Headers</h4>
+<table>
+<thead>
+<tr>
+<th>name</th>
+<th>type</th>
+<th>required</th>
+<th>description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>Authorization</code></td>
+<td>String</td>
+<td>Yes</td>
+<td>Bearer JWT authorization token</td>
+</tr>
+</tbody>
+</table>
 
 <h1 id="quiz-routes">QUIZ ROUTES</h1>
 <h2 id="get-quizzes"><strong>GET QUIZZES</strong></h2>

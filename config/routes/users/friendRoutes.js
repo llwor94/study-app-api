@@ -37,7 +37,7 @@ router.put('/:friendId', (req, res, next) => {
 	helpers
 		.createFriendship(req.user.id, req.params.friendId)
 		.then(response => {
-			console.log(response);
+			res.status(200).json({ message: 'Request Successful' });
 		})
 		.catch(next);
 });
