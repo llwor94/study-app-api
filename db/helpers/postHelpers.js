@@ -2,6 +2,12 @@ const db = require('../dbConfig');
 
 module.exports = {
 	getPosts() {
+		let comments = db
+			.count('post_id')
+			.from('comments')
+			.whereRaw('post_id = p.id')
+			.as('comment_count');
+
 		return db('posts as p')
 			.join('users as u', 'u.id', 'p.author')
 			.select(
@@ -11,6 +17,7 @@ module.exports = {
 				'p.created_at',
 				'u.username as author',
 				'u.img_url as author_img',
+				comments,
 			);
 	},
 	async getPost(id) {
