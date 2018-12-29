@@ -288,6 +288,12 @@
 <td>Only include if you would like to change the username of the user</td>
 </tr>
 <tr>
+<td><code>newImg</code></td>
+<td>String</td>
+<td>No</td>
+<td>Only include if you would like to change the img_url of the user</td>
+</tr>
+<tr>
 <td><code>currentPassword</code></td>
 <td>String</td>
 <td>Yes</td>
@@ -304,6 +310,7 @@
 <p><em>example:</em></p>
 <pre class="hljs"><code>{
   <span class="hljs-attribute">newUsername</span>: <span class="hljs-string">"dinolaur"</span>,
+  <span class="hljs-attribute">newImg</span>: <span class="hljs-string">"https://cdn1.img.sputniknews.com/images/105240/54/1052405402.jpg"</span>,
   <span class="hljs-attribute">currentPassword</span>: <span class="hljs-string">"password123"</span>
   <span class="hljs-attribute">newPassword</span>: <span class="hljs-string">"password1234"</span>
 }</code></pre>
@@ -319,12 +326,13 @@
   }
 }</code></pre>
 <blockquote>
-  <p>If you successfully update the user information and change just the username, the endpoint will return an HTTP response with a status code <code>200</code> and a body as below.</p>
+  <p>If you successfully update the user information and change just the username or img_url, the endpoint will return an HTTP response with a status code <code>200</code> and a body as below.</p>
 </blockquote>
 <pre class="hljs"><code>{
   <span class="hljs-attr">"user"</span>: {
     <span class="hljs-attr">"id"</span>: <span class="hljs-number">1</span>,
     <span class="hljs-attr">"username"</span>: <span class="hljs-string">"dinolaur"</span>,
+    <span class="hljs-attr">"img_url"</span>: <span class="hljs-string">"https://cdn1.img.sputniknews.com/images/105240/54/1052405402.jpg"</span>,
   }
 }</code></pre>
 <h5>404 (Not Found)</h5>

@@ -60,7 +60,7 @@ router.patch('/update', async ({ body, user }, res, next) => {
 	if (body.newPassword) body.newPassword = bcrypt.hashSync(body.newPassword, 8);
 
 	db('users')
-		.update({ username: body.newUsername, password: body.newPassword })
+		.update({ username: body.newUsername, password: body.newPassword, img_url: body.newImg })
 		.where({ id: user.id })
 		.returning('id')
 		.then(([ id ]) => {
@@ -68,7 +68,9 @@ router.patch('/update', async ({ body, user }, res, next) => {
 				let token = generateToken({ id });
 				return res.status(200).json({ token, user: { id } });
 			} else {
-				return res.status(200).json({ user: { id, username: body.newUsername } });
+				return res
+					.status(200)
+					.json({ user: { id, username: body.newUsername, img_url: body.newImg } });
 			}
 		})
 		.catch(next);
