@@ -17,7 +17,7 @@ router.get('/', ({ query }, res, next) => {
 			.getUsers()
 			.then(users => {
 				console.log(users);
-				res.status.json(users);
+				res.status(200).json(users);
 			})
 			.catch(next);
 	}
