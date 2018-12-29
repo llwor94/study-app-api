@@ -34,7 +34,6 @@ router.get('/', (req, res, next) => {
 });
 
 router.put('/:friendId', (req, res, next) => {
-	console.log(req.user.id, req.params.friendId, req.friendshipExists);
 	if (req.friendshipExists) return next({ code: 400 });
 	helpers
 		.createFriendship(req.user.id, req.params.friendId)

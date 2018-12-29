@@ -8,7 +8,6 @@ router.param('quizId', (req, res, next, id) => {
 	helpers
 		.getQuiz(id, req.user)
 		.then(quiz => {
-			console.log(quiz);
 			if (!quiz) return next({ code: 404 });
 			if (quiz.author.id === req.user.id) req.user.authorized = true;
 			req.quiz = quiz;
@@ -18,7 +17,6 @@ router.param('quizId', (req, res, next, id) => {
 });
 
 router.get('/', ({ query, user }, res, next) => {
-	console.log(user);
 	helpers
 		.getQuizzes(query.topic, user)
 		.then(response => {

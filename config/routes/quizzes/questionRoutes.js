@@ -36,7 +36,6 @@ router.get('/:questionId/response', ({ question, query }, res, next) => {
 });
 
 router.post('/', ({ quiz, body, user }, res, next) => {
-	console.log('post', quiz, body, user);
 	if (invalidQuestion(body)) return next({ code: 400 });
 	if (!user.authorized) return next({ code: 401 });
 	let question = { ...body, author: user.id, quiz_id: quiz.id };

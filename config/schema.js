@@ -72,7 +72,6 @@ const updatePostSchema = Joi.object()
 module.exports = {
 	invalidRegister(user) {
 		const { error } = Joi.validate(user, registerUserSchema, { stripUnknown: true });
-		console.log(error);
 		return error;
 	},
 	invalidLogin(user) {
@@ -93,7 +92,6 @@ module.exports = {
 			return error;
 		}
 		const { error } = Joi.validate(question, questionSchema, { stripUnknown: true });
-		console.log(error);
 		return error;
 	},
 	invalidUserQuizUpdate(input) {
