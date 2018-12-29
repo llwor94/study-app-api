@@ -18,7 +18,8 @@ module.exports = {
 			let vote = db
 				.select('vote')
 				.from('users_quizzes')
-				.whereRaw('quiz_id = q.id')
+				.where('user_id', user.id)
+				.andWhereRaw('quiz_id = q.id')
 				.as('user_vote');
 
 			return db('quizzes as q')
