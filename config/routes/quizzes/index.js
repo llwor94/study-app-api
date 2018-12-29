@@ -17,9 +17,9 @@ router.param('quizId', (req, res, next, id) => {
 		.catch(next);
 });
 
-router.get('/', ({ query }, res, next) => {
+router.get('/', ({ query, user }, res, next) => {
 	helpers
-		.getQuizzes(query.topic)
+		.getQuizzes(query.topic, user)
 		.then(response => {
 			res.status(200).json(response);
 		})

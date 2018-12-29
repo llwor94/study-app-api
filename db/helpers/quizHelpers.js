@@ -2,28 +2,52 @@ const db = require('../dbConfig');
 const _ = require('lodash');
 
 module.exports = {
-	async getQuizzes(topic) {
+	async getQuizzes(topic, user) {
 		if (topic) {
 			let topic = db('topics').where('id', topic).orWhere('name', topic).select('id');
 			return db('quizzes').where('topic_id', topic);
 		}
+
 		let questions = db
 			.select(db.raw('count(quiz_id)::integer'))
 			.from('questions')
 			.whereRaw('quiz_id = q.id')
 			.as('question_count');
-		return db('quizzes as q')
-			.join('topics as t', 'q.topic_id', 't.id')
-			.join('users as u', 'q.author', 'u.id')
-			.select(
-				'q.id',
-				'q.title',
-				'q.votes',
-				'q.description',
-				'u.username as author',
-				't.name as topic',
-				questions,
-			);
+
+		if (user.id) {
+			let vote = db
+				.select('vote')
+				.from('users_quizzes')
+				.whereRaw('quiz_id = q.id')
+				.as('user_vote');
+
+			return db('quizzes as q')
+				.join('topics as t', 'q.topic_id', 't.id')
+				.join('users as u', 'q.author', 'u.id')
+				.select(
+					'q.id',
+					'q.title',
+					'q.votes',
+					'q.description',
+					'u.username as author',
+					't.name as topic',
+					questions,
+					vote,
+				);
+		} else {
+			return db('quizzes as q')
+				.join('topics as t', 'q.topic_id', 't.id')
+				.join('users as u', 'q.author', 'u.id')
+				.select(
+					'q.id',
+					'q.title',
+					'q.votes',
+					'q.description',
+					'u.username as author',
+					't.name as topic',
+					questions,
+				);
+		}
 	},
 
 	async getQuiz(quiz_id, user) {
