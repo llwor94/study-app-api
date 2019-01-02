@@ -22,6 +22,20 @@ module.exports = {
 				.andWhereRaw('quiz_id = q.id')
 				.as('user_vote');
 
+			let score = db
+				.select('score')
+				.from('users_quizzes')
+				.where('user_id', user.id)
+				.andWhereRaw('quiz_id = q.id')
+				.as('score');
+
+			let favorite = db
+				.select('favorite')
+				.from('users_quizzes')
+				.where('user_id', user.id)
+				.andWhereRaw('quiz_id = q.id')
+				.as('favorite');
+
 			return db('quizzes as q')
 				.join('topics as t', 'q.topic_id', 't.id')
 				.join('users as u', 'q.author', 'u.id')
@@ -34,6 +48,8 @@ module.exports = {
 					't.name as topic',
 					questions,
 					vote,
+					score,
+					favorite,
 				);
 		} else {
 			return db('quizzes as q')
