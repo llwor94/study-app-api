@@ -101,7 +101,7 @@ module.exports = {
 			.select('id', 'username', 'img_url')
 			.first();
 		let questions = await db('questions')
-			.count('*')
+			.select(db.raw('count(quiz_id)::integer'))
 			.groupBy('quiz_id')
 			.where({ quiz_id })
 			.first();
