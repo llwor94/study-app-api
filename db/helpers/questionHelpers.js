@@ -11,25 +11,18 @@ module.exports = {
 		return db('questions').returning('id').insert(question);
 	},
 	async getQuestions(quiz_id, user) {
-		let questions;
-		if (user.authorized) {
-			questions = await db('questions')
-				.where({ quiz_id })
-				.select(
-					'id',
-					'question',
-					'option1',
-					'option2',
-					'option3',
-					'option4',
-					'quiz_id',
-					'answer',
-				);
-		} else {
-			questions = await db('questions')
-				.where({ quiz_id })
-				.select('id', 'question', 'option1', 'option2', 'option3', 'option4', 'quiz_id');
-		}
+		let questions = await db('questions')
+			.where({ quiz_id })
+			.select(
+				'id',
+				'question',
+				'option1',
+				'option2',
+				'option3',
+				'option4',
+				'quiz_id',
+				'answer',
+			);
 
 		return questions.map(question => {
 			question.options = _.compact([

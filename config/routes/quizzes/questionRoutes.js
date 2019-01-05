@@ -24,8 +24,12 @@ router.get('/', ({ quiz, user }, res, next) => {
 		.catch(next);
 });
 
-router.get('/:questionId', ({ question }, res, next) => {
-	res.status(200).json(_.pick(question, [ 'question', 'options', 'quiz_id' ]));
+router.get('/:questionId', ({ question, user }, res, next) => {
+	if (user.authorized)
+		return res
+			.status(200)
+			.json(_.pick(question, [ 'question', 'options', 'quiz_id', 'answer' ]));
+	else res.status(200).json(_.pick(question, [ 'question', 'options', 'quiz_id' ]));
 });
 
 router.get('/:questionId/response', ({ question, query }, res, next) => {
