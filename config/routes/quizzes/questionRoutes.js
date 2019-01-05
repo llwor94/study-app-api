@@ -14,9 +14,10 @@ router.param('questionId', (req, res, next, id) => {
 		.catch(next);
 });
 
-router.get('/', ({ quiz }, res, next) => {
+router.get('/', ({ quiz, user }, res, next) => {
+	console.log(user);
 	helpers
-		.getQuestions(quiz.id)
+		.getQuestions(quiz.id, user)
 		.then(response => {
 			res.status(200).json(response);
 		})
