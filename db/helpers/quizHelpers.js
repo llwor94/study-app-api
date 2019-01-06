@@ -174,7 +174,7 @@ module.exports = {
 			let questions = await db('questions').where({ quiz_id });
 			if (score > questions.length) return;
 		}
-		if (vote !== entry.vote) {
+		if (vote && vote !== entry.vote) {
 			let difference = Math.abs(vote - entry.vote);
 			if (vote < entry.vote)
 				await db('quizzes').where('id', quiz_id).decrement('votes', difference);
