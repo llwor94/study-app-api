@@ -128,6 +128,14 @@ module.exports = {
 			return topic.id;
 		}
 	},
+
+	getQuizScores(id) {
+		return db('users_quizzes as uq')
+			.join('users as u', 'uq.user_id', 'u.id')
+			.where('uq.quiz_id', id)
+			.select('u.username', 'u.img_url', 'uq.score', 'uq.quiz_id');
+	},
+
 	async createQuiz({ title, author, time_limit_seconds, topic, description }) {
 		let topic_id = await this.getTopicId(topic);
 
