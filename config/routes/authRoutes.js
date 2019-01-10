@@ -55,9 +55,11 @@ router.patch('/update', async ({ body, user }, res, next) => {
 	if (!user.id) return next({ code: 401 });
 
 	let getUser = await db('users').where({ id: user.id }).first();
-	if (!bcrypt.compareSync(body.currentPassword, getUser.password)) return next({ code: 401 });
 
-	if (body.newPassword) body.newPassword = bcrypt.hashSync(body.newPassword, 8);
+	if (body.newPassword) {
+		if (!bcrypt.compareSync(body.currentPassword, getUser.password)) return next({ code: 401 });
+		body.newPassword = bcrypt.hashSync(body.newPassword, 8);
+	}
 
 	db('users')
 		.update({ username: body.newUsername, password: body.newPassword, img_url: body.newImg })
