@@ -13,7 +13,6 @@ router.get('/', ({ query }, res, next) => {
 			})
 			.catch(next);
 	} else {
-		console.log('here');
 		helpers
 			.getUsers()
 			.then(users => {
@@ -25,7 +24,14 @@ router.get('/', ({ query }, res, next) => {
 });
 
 router.get('/:id', (req, res, next) => {
-	helpers.getUserById(req.params.id).then(user => res.status(200).json(user)).catch(next);
+	console.log(req.params.id);
+	helpers
+		.getUserById(req.params.id)
+		.then(user => {
+			console.log(user);
+			res.status(200).json(user);
+		})
+		.catch(next);
 });
 
 router.use('/friends', friendRouter);
