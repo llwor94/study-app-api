@@ -6,6 +6,7 @@ const postRoutes = require('./routes/posts');
 const { errorHandler, getUser } = require('./middleware');
 
 module.exports = server => {
+	server.use(getUser);
 	server.use('/api/auth', getUser, authRoutes);
 	server.use('/api/quizzes', getUser, quizRoutes);
 	server.use('/api/users', getUser, userRoutes);

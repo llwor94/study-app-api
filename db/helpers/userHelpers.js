@@ -17,4 +17,8 @@ module.exports = {
 	getUsers() {
 		return db('users').select('email', 'username', 'id', 'img_url');
 	},
+
+	getUserById(id) {
+		return db('users').where(id).select('email', 'username', 'id', 'img_url').first();
+	},
 };
