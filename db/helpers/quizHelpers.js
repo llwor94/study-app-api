@@ -45,6 +45,7 @@ module.exports = {
 					'q.votes',
 					'q.description',
 					'u.username as author',
+					'u.img_url as author_img',
 					't.name as topic',
 					questions,
 					vote,
