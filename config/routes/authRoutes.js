@@ -4,7 +4,7 @@ const jwt = require('jsonwebtoken');
 const bcrypt = require('bcryptjs');
 
 const db = require('../../db/dbConfig');
-const { invalidLogin, invalidRegister } = require('../schema');
+const { invalidLogin, registerSchema } = require('../schema');
 
 const router = express.Router();
 
@@ -14,18 +14,19 @@ function generateToken(payload) {
 	});
 }
 
-router.post('/register', ({ body }, res, next) => {
-	if (invalidRegister(body)) return next({ code: 400 });
-
-	body.password = bcrypt.hashSync(body.password, 8);
-	db('users')
-		.insert(body)
-		.returning('id')
-		.then(([ id ]) => {
-			let token = generateToken({ id });
-			return res.status(200).json({ token, user: { id, username: body.username } });
-		})
-		.catch(next);
+router.post('/register', (req, res, next) => {
+	let register = registerSchema(req.body);
+	//if (invalidRegister(body)) return next({ code: 400 });
+	console.log('register', register);
+	// body.password = bcrypt.hashSync(body.password, 8);
+	// db('users')
+	// 	.insert(body)
+	// 	.returning('id')
+	// 	.then(([ id ]) => {
+	// 		let token = generateToken({ id });
+	// 		return res.status(200).json({ token, user: { id, username: body.username } });
+	// 	})
+	// 	.catch(next);
 });
 
 router.post('/login', ({ body }, res, next) => {

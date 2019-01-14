@@ -7,10 +7,10 @@ const { errorHandler, getUser } = require('./middleware');
 
 module.exports = server => {
 	server.use(getUser);
-	server.use('/api/auth', getUser, authRoutes);
-	server.use('/api/quizzes', getUser, quizRoutes);
-	server.use('/api/users', getUser, userRoutes);
-	server.use('/api/posts', getUser, postRoutes);
+	server.use('/api/auth', authRoutes);
+	server.use('/api/quizzes', quizRoutes);
+	server.use('/api/users', userRoutes);
+	server.use('/api/posts', postRoutes);
 
 	server.use(errorHandler);
 };

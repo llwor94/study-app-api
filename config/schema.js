@@ -70,9 +70,8 @@ const updatePostSchema = Joi.object()
 	.or('title', 'body');
 
 module.exports = {
-	invalidRegister(user) {
-		const { error } = Joi.validate(user, registerUserSchema, { stripUnknown: true });
-		return error;
+	register(user) {
+		return Joi.validate(user, registerUserSchema, { stripUnknown: true });
 	},
 	invalidLogin(user) {
 		const { error } = Joi.validate(user, loginUserSchema, { stripUnknown: true });

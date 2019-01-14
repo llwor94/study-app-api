@@ -5,13 +5,15 @@ module.exports = {
 	getUser(req, res, next) {
 		const token = req.headers.authorization;
 		req.user = {};
-		if (!token) return next();
+		console.log('token', token);
 
-		jwt.verify(token, secret, (err, decodedToken) => {
-			if (err) return next(err);
-			req.user.id = decodedToken.id;
-			next();
-		});
+		if (token) {
+			jwt.verify(token, secret, (err, decodedToken) => {
+				if (err) return next(err);
+				req.user.id = decodedToken.id;
+				next();
+			});
+		} else return next();
 	},
 	errorHandler(err, req, res, next) {
 		switch (err.code) {
