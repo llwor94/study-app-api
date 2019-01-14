@@ -16,17 +16,17 @@ function generateToken(payload) {
 
 router.post('/register', (req, res, next) => {
 	let register = registerSchema(req.body);
-	//if (invalidRegister(body)) return next({ code: 400 });
-	console.log('register', register);
-	// body.password = bcrypt.hashSync(body.password, 8);
-	// db('users')
-	// 	.insert(body)
-	// 	.returning('id')
-	// 	.then(([ id ]) => {
-	// 		let token = generateToken({ id });
-	// 		return res.status(200).json({ token, user: { id, username: body.username } });
-	// 	})
-	// 	.catch(next);
+	if (register.error) return next({ code: 400 });
+	let body = register.value;
+	body.password = bcrypt.hashSync(body.password, 8);
+	db('users')
+		.insert(body)
+		.returning('id')
+		.then(([ id ]) => {
+			let token = generateToken({ id });
+			return res.status(200).json({ token, user: { id, username: body.username } });
+		})
+		.catch(next);
 });
 
 router.post('/login', ({ body }, res, next) => {
