@@ -9,6 +9,7 @@ module.exports = {
 			.as('comment_count');
 
 		return db('posts as p')
+			.where('p.quiz_id', null)
 			.join('users as u', 'u.id', 'p.author')
 			.leftJoin('topics as t', 'p.topic_id', 't.id')
 			.select(
@@ -61,13 +62,26 @@ module.exports = {
 			return topic.id;
 		}
 	},
-	async createPost({ title, body, topic, author }) {
+	async createPost({ title, body, topic, author, quiz }) {
 		let topic_id = undefined;
+		let quiz_id = undefined;
+
 		if (topic) {
 			topic_id = await this.getTopicId(topic);
 		}
+		if (quiz) {
+			quiz = await db('quizzes').where('id', quiz).first();
+			console.log(quiz);
+			if (!quiz) return;
+			quiz_id = quiz.id;
+			if (topic_id) {
+				if (quiz.topic_id !== topic_id) return;
+			} else {
+				topic_id = quiz.topic_id;
+			}
+		}
 
-		return db('posts').returning('id').insert({ title, body, topic_id, author });
+		return db('posts').returning('id').insert({ title, body, topic_id, author, quiz_id });
 	},
 	updatePost({ title = undefined, body = undefined }, id) {
 		return db('posts').where({ id }).returning('id').update({ title, body });

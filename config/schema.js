@@ -60,7 +60,8 @@ const updateQuestionSchema = Joi.object()
 const postSchema = {
 	title: Joi.string().required(),
 	body: Joi.string().required(),
-	topic: Joi.string().max(20),
+	topic: Joi.string().max(20).allow('', null),
+	quiz: Joi.number().integer(),
 };
 
 const updatePostSchema = Joi.object()
