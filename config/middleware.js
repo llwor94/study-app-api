@@ -16,6 +16,7 @@ module.exports = {
 		} else return next();
 	},
 	errorHandler(err, req, res, next) {
+		console.log(err);
 		switch (err.code) {
 			case 400:
 				return res.status(400).json({

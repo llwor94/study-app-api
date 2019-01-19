@@ -10,10 +10,12 @@ module.exports = {
 
 		return db('posts as p')
 			.join('users as u', 'u.id', 'p.author')
+			.leftJoin('topics as t', 'p.topic_id', 't.id')
 			.select(
 				'p.id',
 				'p.title',
 				'p.body',
+				't.name as topic',
 				'p.created_at',
 				'u.username as author',
 				'u.img_url as author_img',
@@ -42,8 +44,25 @@ module.exports = {
 
 		return post;
 	},
-	createPost(post) {
-		return db('posts').returning('id').insert(post);
+	async getTopicId(name) {
+		let topic = await db('topics')
+			.where(db.raw('LOWER("name") = ?', name.toLowerCase()))
+			.select('id')
+			.first();
+		if (!topic) {
+			let [ id ] = await db('topics').returning('id').insert({ name });
+			return id;
+		} else {
+			return topic.id;
+		}
+	},
+	async createPost({ title, body, topic, author }) {
+		let topic_id = undefined;
+		if (topic) {
+			topic_id = await this.getTopicId(topic);
+		}
+
+		return db('posts').returning('id').insert({ title, body, topic_id, author });
 	},
 	updatePost({ title = undefined, body = undefined }, id) {
 		return db('posts').where({ id }).returning('id').update({ title, body });
