@@ -42,6 +42,10 @@ router.get('/:quizId/scores', ({ quiz }, res, next) => {
 	helpers.getQuizScores(quiz.id).then(response => res.status(200).json(response)).catch(next);
 });
 
+router.get('/:quizId/posts', ({ quiz }, res, next) => {
+	helpers.getQuizPosts(quiz.id).then(response => res.status(200).json(response)).catch(next);
+});
+
 router.patch('/:quizId/edit', ({ quiz, body, user }, res, next) => {
 	if (!user.authorized) return next({ code: 401 });
 	if (invalidQuiz(body, true)) return next({ code: 400 });

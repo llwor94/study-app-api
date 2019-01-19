@@ -71,7 +71,7 @@ module.exports = {
 		}
 		if (quiz) {
 			quiz = await db('quizzes').where('id', quiz).first();
-			console.log(quiz);
+
 			if (!quiz) return;
 			quiz_id = quiz.id;
 			if (topic_id) {

@@ -139,7 +139,28 @@ module.exports = {
 			.where('uq.quiz_id', id)
 			.select('u.username', 'u.img_url', 'uq.score', 'uq.quiz_id');
 	},
+	getQuizPosts(quiz_id) {
+		let comments = db
+			.select(db.raw('count(post_id)::integer'))
+			.from('comments')
+			.whereRaw('post_id = p.id')
+			.as('comment_count');
 
+		return db('posts as p')
+			.where('p.quiz_id', quiz_id)
+			.join('users as u', 'u.id', 'p.author')
+			.leftJoin('topics as t', 'p.topic_id', 't.id')
+			.select(
+				'p.id',
+				'p.title',
+				'p.body',
+				't.name as topic',
+				'p.created_at',
+				'u.username as author',
+				'u.img_url as author_img',
+				comments,
+			);
+	},
 	async createQuiz({ title, author, time_limit_seconds, topic, description }) {
 		let topic_id = await this.getTopicId(topic);
 
@@ -174,7 +195,7 @@ module.exports = {
 		quiz_id,
 	) {
 		let entry = await db('users_quizzes').where({ user_id }).andWhere({ quiz_id }).first();
-		console.log(entry);
+
 		if (!entry) {
 			let body = { ..._.omitBy({ vote, score, favorite }, _.isUndefined), user_id, quiz_id };
 			if (vote) {
