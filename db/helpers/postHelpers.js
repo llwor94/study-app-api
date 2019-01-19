@@ -23,7 +23,12 @@ module.exports = {
 			);
 	},
 	async getPost(id) {
-		let post = await db('posts').where({ id }).first();
+		let post = await db('posts as p')
+			.where({ 'p.id': id })
+			.leftJoin('topics as t', 'p.topic_id', 't.id')
+			.select('p.id', 'p.title', 'p.body', 't.name as topic', 'p.created_at', 'p.author')
+			.first();
+
 		if (!post) return null;
 		let author = await db('users')
 			.where('id', post.author)
