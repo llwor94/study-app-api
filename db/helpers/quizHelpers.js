@@ -190,7 +190,7 @@ module.exports = {
 		return db('quizzes').where({ id }).del();
 	},
 	async userQuizUpdate(
-		{ vote = undefined, score = undefined, favorite = undefined },
+		{ vote = undefined, score = null, favorite = undefined },
 		user_id,
 		quiz_id,
 	) {
