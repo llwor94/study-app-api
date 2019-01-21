@@ -3,11 +3,12 @@ const router = express.Router();
 
 const commentRouter = require('./commentRouter');
 const helpers = require('../../../db/helpers/postHelpers');
-const { invalidPost } = require('../../schema');
+const { invalidPost, invalidUserPostUpdate } = require('../../schema');
 
 router.param('postId', (req, res, next, id) => {
+	console.log(id, req.user);
 	helpers
-		.getPost(id)
+		.getPost(id, req.user)
 		.then(post => {
 			if (!post) return next({ code: 404 });
 			if (post.author.id === req.user.id) req.user.authorized = true;
@@ -19,7 +20,7 @@ router.param('postId', (req, res, next, id) => {
 
 router.get('/', (req, res, next) => {
 	helpers
-		.getPosts()
+		.getPosts(req.user)
 		.then(response => {
 			res.status(200).json(response);
 		})
@@ -48,6 +49,18 @@ router.patch('/:postId', ({ post, body, user }, res, next) => {
 	if (invalidPost(body, true)) return next({ code: 400 });
 	helpers
 		.updatePost(body, post.id)
+		.then(response => {
+			if (!response) return next({ code: 400 });
+			res.status(200).json(response);
+		})
+		.catch(next);
+});
+
+router.patch('/:postId/vote', ({ post, body, user }, res, next) => {
+	if (!user.id) return next({ code: 401 });
+	if (invalidUserPostUpdate(body)) return next({ code: 400 });
+	helpers
+		.updateUserPost(body, user.id, post.id)
 		.then(response => {
 			if (!response) return next({ code: 400 });
 			res.status(200).json(response);

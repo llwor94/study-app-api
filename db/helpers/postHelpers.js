@@ -1,29 +1,64 @@
 const db = require('../dbConfig');
 
 module.exports = {
-	getPosts() {
+	getPosts(user) {
 		let comments = db
 			.select(db.raw('count(post_id)::integer'))
 			.from('comments')
 			.whereRaw('post_id = p.id')
 			.as('comment_count');
+		if (user.id) {
+			let vote = db
+				.select('vote')
+				.from('users_posts')
+				.where('user_id', user.id)
+				.andWhereRaw('post_id = p.id')
+				.as('user_vote');
 
-		return db('posts as p')
-			.where('p.quiz_id', null)
-			.join('users as u', 'u.id', 'p.author')
-			.leftJoin('topics as t', 'p.topic_id', 't.id')
-			.select(
-				'p.id',
-				'p.title',
-				'p.body',
-				't.name as topic',
-				'p.created_at',
-				'u.username as author',
-				'u.img_url as author_img',
-				comments,
-			);
+			let favorite = db
+				.select('favorite')
+				.from('users_posts')
+				.where('user_id', user.id)
+				.andWhereRaw('post_id = p.id')
+				.as('favorite');
+
+			return db('posts as p')
+				.where('p.quiz_id', null)
+				.join('users as u', 'u.id', 'p.author')
+				.leftJoin('topics as t', 'p.topic_id', 't.id')
+				.select(
+					'p.id',
+					'p.title',
+					'p.body',
+					'p.votes',
+					't.name as topic',
+					'p.created_at',
+					'u.username as author',
+					'u.img_url as author_img',
+					vote,
+					favorite,
+					comments,
+				);
+		} else {
+			return db('posts as p')
+				.where('p.quiz_id', null)
+				.join('users as u', 'u.id', 'p.author')
+				.leftJoin('topics as t', 'p.topic_id', 't.id')
+				.select(
+					'p.id',
+					'p.title',
+					'p.body',
+					'p.votes',
+					't.name as topic',
+					'p.created_at',
+					'u.username as author',
+					'u.img_url as author_img',
+					comments,
+				);
+		}
 	},
-	async getPost(id) {
+	async getPost(id, user) {
+		console.log(id, user);
 		let post = await db('posts as p')
 			.where({ 'p.id': id })
 			.leftJoin('topics as t', 'p.topic_id', 't.id')
@@ -47,7 +82,24 @@ module.exports = {
 			);
 		post.author = author;
 		post.comments = comments;
-
+		if (user.id) {
+			let user_post = await db('users_posts')
+				.where({ user_id: user.id, post_id: id })
+				.first();
+			if (user_post) {
+				post = {
+					...post,
+					user_vote: user_post.vote,
+					favorite: user_post.favorite ? true : false,
+				};
+			} else {
+				post = {
+					...post,
+					user_vote: 0,
+					favorite: false,
+				};
+			}
+		}
 		return post;
 	},
 	async getTopicId(name) {
@@ -88,5 +140,29 @@ module.exports = {
 	},
 	deletePost(id) {
 		return db('posts').where({ id }).del();
+	},
+
+	async updateUserPost({ vote = undefined, favorite = undefined }, user_id, post_id) {
+		let entry = await db('users_posts').where({ user_id }).andWhere({ post_id }).first();
+		if (!entry) {
+			if (vote) {
+				if (vote === 1) await db('posts').where('id', post_id).increment('votes', 1);
+				if (vote === -1) await db('posts').where('id', post_id).decrement('votes', 1);
+			}
+			return db('users_posts').returning('id').insert({ vote, favorite, user_id, post_id });
+		}
+
+		if (vote !== undefined && vote !== entry.vote) {
+			let difference = Math.abs(vote - entry.vote);
+
+			if (vote < entry.vote)
+				await db('posts').where('id', post_id).decrement('votes', difference);
+			else await db('posts').where('id', post_id).increment('votes', difference);
+		}
+
+		return db('users_posts')
+			.returning('id')
+			.where({ quiz_id, user_id })
+			.update({ vote, favorite });
 	},
 };

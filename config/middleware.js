@@ -11,6 +11,7 @@ module.exports = {
 			jwt.verify(token, secret, (err, decodedToken) => {
 				if (err) return next(err);
 				req.user.id = decodedToken.id;
+
 				next();
 			});
 		} else return next();

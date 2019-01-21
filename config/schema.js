@@ -37,6 +37,13 @@ const UserQuizSchema = Joi.object()
 	})
 	.or('vote', 'favorite', 'score');
 
+const UserPostSchema = Joi.object()
+	.keys({
+		vote: Joi.number().integer().min(-1).max(1),
+		favorite: Joi.boolean(),
+	})
+	.or('vote', 'favorite');
+
 const questionSchema = {
 	question: Joi.string().required(),
 	option1: Joi.string().required(),
@@ -105,6 +112,10 @@ module.exports = {
 			return error;
 		}
 		const { error } = Joi.validate(post, postSchema, { stripUnknown: true });
+		return error;
+	},
+	invalidUserPostUpdate(input) {
+		const { error } = Joi.validate(input, UserPostSchema, { stripUnknown: true });
 		return error;
 	},
 };
