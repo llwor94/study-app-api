@@ -8,6 +8,12 @@ module.exports = {
 			return db('quizzes').where('topic_id', topic);
 		}
 
+		let posts = db
+			.select(db.raw('count(quiz_id)::integer'))
+			.from('posts')
+			.whereRaw('quiz_id = q.id')
+			.as('post_count');
+
 		let questions = db
 			.select(db.raw('count(quiz_id)::integer'))
 			.from('questions')
@@ -49,6 +55,7 @@ module.exports = {
 					'u.img_url as author_img',
 					't.name as topic',
 					questions,
+					posts,
 					vote,
 					score,
 					favorite,
@@ -67,6 +74,7 @@ module.exports = {
 					'u.img_url as author_img',
 					't.name as topic',
 					questions,
+					posts,
 				);
 		}
 	},
