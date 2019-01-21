@@ -162,7 +162,7 @@ module.exports = {
 
 		return db('users_posts')
 			.returning('id')
-			.where({ quiz_id, user_id })
+			.where({ post_id, user_id })
 			.update({ vote, favorite });
 	},
 };
