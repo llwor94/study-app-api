@@ -173,6 +173,7 @@ module.exports = {
 				.leftJoin('topics as t', 'p.topic_id', 't.id')
 				.select(
 					'p.id',
+					'p.quiz_id as quiz',
 					'p.title',
 					'p.body',
 					'p.votes',
@@ -192,6 +193,7 @@ module.exports = {
 			.leftJoin('topics as t', 'p.topic_id', 't.id')
 			.select(
 				'p.id',
+				'p.quiz_id as quiz',
 				'p.title',
 				'p.body',
 				'p.votes',
