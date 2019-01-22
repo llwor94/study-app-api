@@ -147,12 +147,44 @@ module.exports = {
 			.where('uq.quiz_id', id)
 			.select('u.username', 'u.img_url', 'uq.score', 'uq.quiz_id');
 	},
-	getQuizPosts(quiz_id) {
+	getQuizPosts(quiz_id, user_id) {
 		let comments = db
 			.select(db.raw('count(post_id)::integer'))
 			.from('comments')
 			.whereRaw('post_id = p.id')
 			.as('comment_count');
+
+		if (user_id) {
+			let vote = db
+				.select('vote')
+				.from('users_posts')
+				.where({ user_id })
+				.andWhereRaw('post_id = p.id')
+				.as('user_vote');
+			let favorite = db
+				.select('favorite')
+				.from('users_posts')
+				.where({ user_id })
+				.andWhereRaw('post_id = p.id')
+				.as('favorite');
+			return db('posts as p')
+				.where('p.quiz_id', quiz_id)
+				.join('users as u', 'u.id', 'p.author')
+				.leftJoin('topics as t', 'p.topic_id', 't.id')
+				.select(
+					'p.id',
+					'p.title',
+					'p.body',
+					'p.votes',
+					't.name as topic',
+					'p.created_at',
+					'u.username as author',
+					'u.img_url as author_img',
+					comments,
+					vote,
+					favorite,
+				);
+		}
 
 		return db('posts as p')
 			.where('p.quiz_id', quiz_id)
@@ -162,6 +194,7 @@ module.exports = {
 				'p.id',
 				'p.title',
 				'p.body',
+				'p.votes',
 				't.name as topic',
 				'p.created_at',
 				'u.username as author',
