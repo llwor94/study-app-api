@@ -18,6 +18,7 @@ const quizSchema = {
 	topic: Joi.string().max(20).required(),
 	description: Joi.string().allow('', null),
 	votes: Joi.number().integer(),
+	question_time_limit: Joi.number().integer().max(60).allow('', null),
 };
 
 const updateQuizSchema = Joi.object()
@@ -26,8 +27,9 @@ const updateQuizSchema = Joi.object()
 		time_limit_seconds: Joi.number().integer(),
 		topic: Joi.string().max(20),
 		description: Joi.string(),
+		question_time_limit: Joi.number().integer().max(60).allow('', null),
 	})
-	.or('title', 'time_limit_seconds', 'topic', 'description');
+	.or('title', 'time_limit_seconds', 'topic', 'description', 'question_time_limit');
 
 const UserQuizSchema = Joi.object()
 	.keys({

@@ -51,6 +51,7 @@ module.exports = {
 					'q.votes',
 					'q.description',
 					'q.time_limit_seconds',
+					'q.question_time_limit',
 					'u.username as author',
 					'u.img_url as author_img',
 					't.name as topic',
@@ -70,6 +71,7 @@ module.exports = {
 					'q.votes',
 					'q.description',
 					'q.time_limit_seconds',
+					'q.question_time_limit',
 					'u.username as author',
 					'u.img_url as author_img',
 					't.name as topic',
@@ -89,6 +91,7 @@ module.exports = {
 				'q.votes',
 				'q.description',
 				'q.time_limit_seconds',
+				'q.question_time_limit',
 				'q.author',
 				't.name as topic',
 			)
@@ -204,18 +207,33 @@ module.exports = {
 				comments,
 			);
 	},
-	async createQuiz({ title, author, time_limit_seconds, topic, description }) {
+	async createQuiz({
+		title,
+		author,
+		time_limit_seconds,
+		topic,
+		description,
+		question_time_limit,
+	}) {
 		let topic_id = await this.getTopicId(topic);
 
 		return db('quizzes')
 			.returning('id')
-			.insert({ title, author, time_limit_seconds, topic_id, description });
+			.insert({
+				title,
+				author,
+				time_limit_seconds,
+				topic_id,
+				description,
+				question_time_limit,
+			});
 	},
 	async updateQuiz(
 		{
 			topic = undefined,
 			title = undefined,
 			time_limit_seconds = undefined,
+			question_time_limit = undefined,
 			description = undefined,
 		},
 		id,
@@ -227,7 +245,7 @@ module.exports = {
 		return db('quizzes')
 			.where({ id })
 			.returning('id')
-			.update({ topic_id, title, time_limit_seconds, description });
+			.update({ topic_id, title, time_limit_seconds, question_time_limit, description });
 	},
 	deleteQuiz(id) {
 		return db('quizzes').where({ id }).del();
